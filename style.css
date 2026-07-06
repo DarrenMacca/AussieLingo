@@ -1,0 +1,374 @@
+/* ==========================================================================
+   SECTION 1: SYSTEM CORE DESIGN TOKENS & ROOT SETUP
+   ========================================================================== */
+:root {
+    /* Main Deep Royal Blue Theme Matrix Color Variables */
+    --primary-deep-royal: #0a194f;
+    --primary-royal-mid: #102a83;
+    --primary-royal-light: #1b42c5;
+    --primary-neon-glow: #3b66ff;
+    
+    /* Pure Glassmorphism Transparency Layers Spec System */
+    --glass-bg-primary: rgba(10, 25, 79, 0.25);
+    --glass-bg-secondary: rgba(16, 42, 131, 0.4);
+    --glass-bg-cards: rgba(255, 255, 255, 0.04);
+    --glass-border-light: rgba(255, 255, 255, 0.12);
+    --glass-border-heavy: rgba(255, 255, 255, 0.22);
+    --glass-blur-radius: 16px;
+    
+    /* High contrast text definitions */
+    --text-pure-white: #ffffff;
+    --text-muted-silver: #cbd5e1;
+    --text-dark-subtle: #94a3b8;
+    
+    /* Layout Variables */
+    --interface-max-width: 1440px;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-rounded-lg: 16px;
+    --radius-rounded-sm: 8px;
+}
+
+/* Base Document Canvas Normalizations */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #030712;
+    color: var(--text-pure-white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   SECTION 2: GLASSMORPHIC AMBIENT BACKGROUND GLOW BLOBS
+   ========================================================================== */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    z-index: 0;
+    opacity: 0.45;
+    pointer-events: none;
+}
+.blob-1 {
+    top: -10%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--primary-royal-light) 0%, transparent 80%);
+}
+.blob-2 {
+    bottom: 20%;
+    right: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--primary-deep-royal) 0%, transparent 80%);
+}
+.blob-3 {
+    top: 40%;
+    left: 35%;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, #1e1b4b 0%, transparent 80%);
+}
+
+/* App Wrapper Master Scaffold */
+.app-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--interface-max-width);
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ==========================================================================
+   SECTION 3: HEADER & FOOTER UI COMPONENTS
+   ========================================================================== */
+.app-header {
+    background: var(--glass-bg-primary);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    border: 1px solid var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+    padding: 3rem 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+.brand-tag {
+    display: inline-block;
+    background: rgba(59, 102, 255, 0.25);
+    border: 1px solid var(--primary-neon-glow);
+    color: var(--text-pure-white);
+    padding: 0.35rem 0.85rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+.app-header h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ffffff 40%, var(--text-muted-silver) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.app-header p {
+    color: var(--text-muted-silver);
+    font-size: 1.1rem;
+    max-width: 800px;
+}
+
+.app-footer {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--glass-border-light);
+    color: var(--text-dark-subtle);
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   SECTION 4: CORE INTERFACE LAYOUT SHELL ARCHITECTURE
+   ========================================================================== */
+.app-layout-shell {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Sidebar Wrapper Panels */
+.sidebar-wrapper {
+    position: sticky;
+    top: 2rem;
+    z-index: 10;
+}
+.sidebar-sticky-panel {
+    background: var(--glass-bg-primary);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    border: 1px solid var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+    padding: 2rem 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+.sidebar-header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border-light);
+}
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+.sidebar-header p {
+    font-size: 0.85rem;
+    color: var(--text-dark-subtle);
+}
+
+/* Navigation Interactive Items */
+.filter-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.filter-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.85rem 1.15rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-rounded-sm);
+    color: var(--text-muted-silver);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+.btn-icon {
+    margin-right: 0.85rem;
+    font-size: 1.1rem;
+}
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-pure-white);
+    transform: translateX(4px);
+}
+.filter-btn.active {
+    background: var(--glass-bg-secondary);
+    border-color: var(--glass-border-heavy);
+    color: var(--text-pure-white);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(16, 42, 131, 0.4);
+}
+
+/* ==========================================================================
+   SECTION 5: DISPLAY RESPONSIVE GRID & CARDS
+   ========================================================================== */
+.slang-responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Glassmorphic Data Cards */
+.slang-card {
+    background: var(--glass-bg-cards);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    border: 1px solid var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.slang-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--glass-border-heavy);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 30px rgba(16, 42, 131, 0.3);
+}
+
+/* Internal Card Components */
+.category-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-dark-subtle);
+    border: 1px solid var(--glass-border-light);
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.aussie-term {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-pure-white);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.english-translation {
+    color: var(--text-muted-silver);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.english-translation strong {
+    color: var(--text-dark-subtle);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   SECTION 6: INTERACTIVE PRONUNCIATION CONTROLS
+   ========================================================================== */
+.card-actions {
+    margin-top: auto;
+}
+
+.audio-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(59, 102, 255, 0.12);
+    border: 1px solid rgba(59, 102, 255, 0.3);
+    border-radius: var(--radius-rounded-sm);
+    color: var(--text-pure-white);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.audio-btn:hover {
+    background: var(--primary-royal-light);
+    border-color: var(--primary-neon-glow);
+    box-shadow: 0 0 12px rgba(59, 102, 255, 0.5);
+}
+
+.audio-btn:active {
+    transform: scale(0.98);
+}
+
+/* Empty State Filter Messaging Styles */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dark-subtle);
+    font-size: 1.1rem;
+    background: var(--glass-bg-cards);
+    border: 1px dashed var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+}
+
+/* ==========================================================================
+   SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .app-layout-shell {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar-wrapper {
+        position: relative;
+        top: 0;
+    }
+    
+    .filter-navigation {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-wrapper {
+        padding: 1rem;
+    }
+    
+    .app-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .app-header h1 {
+        font-size: 2rem;
+    }
+    
+    .filter-navigation {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .slang-responsive-grid {
+        grid-template-columns: 1fr;
+    }
+}
