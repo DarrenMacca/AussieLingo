@@ -94,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
-
     /**
      * 5. Navigation Control Filter Core Mechanism
      */
@@ -162,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isFlashcardMode) {
             const internalAudioButton = slangCard.querySelector('.audio-btn');
             
-            // Extract the word string payload safely before running the flip transitions
+            // Fixed String Capture: Pulls strictly from data attributes to protect against text culling
             const targetText = slangCard.getAttribute('data-spoken') || 
                                (internalAudioButton ? internalAudioButton.getAttribute('data-word') : '');
             
@@ -171,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
             slangCard.classList.toggle('flipped');
 
             if (willBeFlipped) {
-                // Execute a micro-delay execution track to ensure mobile browsers don't clip the audio thread
                 setTimeout(() => {
                     if (targetText && typeof window.speakAussieSlang === 'function') {
                         window.speakAussieSlang(targetText, internalAudioButton);
@@ -207,13 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         const availableVoices = window.speechSynthesis.getVoices();
-        
-        // Scan internal system voice array layers for authentic Australian accents
-        const australianVoice = availableVoices.find(v => v.lang === 'en-AU' || v.lang.includes('AU')) || 
-                               availableVoices.find(v => v.lang.startsWith('en-'));
+        const australianVoice = availableVoices.find(v => v.lang === 'en-AU' || v.lang.includes('AU')) || availableVoices.find(v => v.lang.startsWith('en-'));
 
         if (australianVoice) utterance.voice = australianVoice;
-        utterance.rate = 0.88; // Pace modifier to simulate authentic strine presentation channels
+        utterance.rate = 0.88;
 
         utterance.onstart = () => {
             if (triggerButton) {
@@ -239,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.speechSynthesis.speak(utterance);
     }
 
-    // Explicit registration directly onto the global window object layer
+    // Explicit registration directly onto the global window platform layer
     window.speakAussieSlang = speakAussieSlang;
 
     // 9. Initial Execution Invocations
@@ -251,7 +246,3 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 }); // Ends DOMContentLoaded Hook
-
-
-
-
