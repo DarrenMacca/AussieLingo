@@ -90,34 +90,24 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         `;
     }
 
-        /**
+
+/**
      * 3. Core Interface Render Canvas Channel
      */
     function renderDictionaryGrid() {
         if (!gridRoot) return;
-
         if (typeof AUSSIE_SLANG_DATA === 'undefined' || !Array.isArray(AUSSIE_SLANG_DATA)) {
-            gridRoot.innerHTML = `
-                <div class="no-results" style="border-color: #ef4444; color: #ef4444;">
-                    <p><strong>Initialization Error:</strong> Could not load array layer data safely from dictionary-data.js.</p>
-                </div>
-            `;
+            gridRoot.innerHTML = `<div class="no-results"><p>Initialization Error</p></div>`;
             return;
         }
-
         const filteredData = (activeCategory === 'all')
             ? AUSSIE_SLANG_DATA
             : AUSSIE_SLANG_DATA.filter(item => item.category === activeCategory);
 
         if (filteredData.length === 0) {
-            gridRoot.innerHTML = `
-                <div class="no-results">
-                    <p>No Aussie terms found matching your criteria.</p>
-                </div>
-            `;
+            gridRoot.innerHTML = `<div class="no-results"><p>No Aussie terms found.</p></div>`;
             return;
         }
-
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
 
@@ -127,15 +117,8 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (button.classList.contains('active')) return;
-
-            filterButtons.forEach(btn => {
-                btn.classList.remove('active');
-                btn.removeAttribute('aria-current');
-            });
-
-            button.classList.add('active');
-            button.setAttribute('aria-current', 'page');
-
+            filterButtons.forEach(btn => { btn.classList.remove('active'); btn.removeAttribute('aria-current'); });
+            button.classList.add('active'); button.setAttribute('aria-current', 'page');
             activeCategory = button.getAttribute('data-category');
             renderDictionaryGrid();
         });
@@ -147,8 +130,6 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
     if (modeCheckbox) {
         modeCheckbox.addEventListener('change', (e) => {
             isFlashcardMode = e.target.checked;
-            
-            // Fixed: Toggle class on both parent nodes to guarantee fallback CSS catches it
             const appWrapper = document.querySelector('.app-wrapper');
             if (isFlashcardMode) {
                 if (appWrapper) appWrapper.classList.add('flashcard-active');
@@ -158,50 +139,35 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
                 gridRoot.classList.remove('flashcard-active');
                 if (window.speechSynthesis) window.speechSynthesis.cancel();
             }
-            
             renderDictionaryGrid();
         });
     }
 
-           /**
+    /**
      * 6. Live Container Event Delegate for Flashcard 3D Rotation & Audio Channels
      */
     gridRoot.addEventListener('click', (event) => {
         const audioBtn = event.target.closest('.audio-btn');
         const slangCard = event.target.closest('.slang-card');
-        
         if (!slangCard) return;
 
-        // --- AUDIO TRIGGER PIPELINE (Runs flawlessly in ALL display modes) ---
         if (audioBtn) {
-            // Stops click event leaks to prevent card-flips from stopping active audio
             event.stopPropagation();
             event.preventDefault();
-
-            // Dynamic tracking fallback layers to find text string targets safely
             const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
             const targetText = audioBtn.getAttribute('data-word') || (wordElement ? wordElement.textContent : '');
-
-            // SAFE ACCESS FIX: Checks for the function on the global window context directly
-            const globalSpeakEngine = window.speakAussieSlang || speakAussieSlang;
-
-            if (targetText && typeof globalSpeakEngine === 'function') {
-                globalSpeakEngine(targetText, audioBtn);
+            if (targetText && typeof window.speakAussieSlang === 'function') {
+                window.speakAussieSlang(targetText, audioBtn);
             }
-            return; // Clean functional exit
+            return;
         }
 
-        // --- FLASHCARD FLIP PIPELINE (Runs exclusively when mode is active) ---
         if (isFlashcardMode) {
             slangCard.classList.toggle('flipped');
-
             const isFlipped = slangCard.classList.contains('flipped');
-            
-            // Instantly kill speech processes if card flips back to definition faces
             if (!isFlipped && window.speechSynthesis) {
                 window.speechSynthesis.cancel();
-                const activeAudioBtns = slangCard.querySelectorAll('.audio-btn');
-                activeAudioBtns.forEach(btn => {
+                slangCard.querySelectorAll('.audio-btn').forEach(btn => {
                     btn.classList.remove('playing');
                     btn.innerHTML = '<span class="btn-icon">🔊</span> Listen';
                 });
@@ -209,16 +175,42 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         }
     });
 
+    /**
+     * 7. SYSTEM UTILITY: SYSTEM VOICE GENERATION ENGINE
+     */
+    function speakAussieSlang(textToSpeak, triggerButton) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        document.querySelectorAll('.audio-btn.playing').forEach(btn => {
+            btn.classList.remove('playing'); btn.innerHTML = '<span class="btn-icon">🔊</span> Listen';
+        });
 
+        const cleanText = textToSpeak.trim();
+        if (!cleanText) return;
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        const availableVoices = window.speechSynthesis.getVoices();
+        const australianVoice = availableVoices.find(v => v.lang === 'en-AU' || v.lang.includes('AU')) || availableVoices.find(v => v.lang.startsWith('en-'));
 
-    // 7. Initial Runtime Boot Trigger Execution Path
+        if (australianVoice) utterance.voice = australianVoice;
+        utterance.rate = 0.88;
+
+        utterance.onstart = () => { if (triggerButton) { triggerButton.classList.add('playing'); triggerButton.innerHTML = '<span class="btn-icon">⏳</span> Talkin...'; } };
+        utterance.onend = () => { if (triggerButton) { triggerButton.classList.remove('playing'); triggerButton.innerHTML = '<span class="btn-icon">🔊</span> Listen'; } };
+        utterance.onerror = () => { if (triggerButton) { triggerButton.classList.remove('playing'); triggerButton.innerHTML = '<span class="btn-icon">🔊</span> Listen'; } };
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // BRIDGE THE HOOK TO GLOBAL WINDOW OBJECT
+    window.speakAussieSlang = speakAussieSlang;
+
+    // 8. Runtime Boot Triggers
     renderDictionaryGrid();
-
-    // 8. Background Voice Loading Cache Warm-up Handshake
     if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
     }
-});
+}); // Ends DOMContentLoaded
 
 
 
+                          
