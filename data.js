@@ -9,17 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let isFlashcardMode = modeCheckbox ? modeCheckbox.checked : false;
 
     /**
-     * 3. HTML String Template Assembly Channel (RESTORED EXACT KEYS)
+     * 3. HTML String Template Assembly Channel (Restored)
      */
     function createSlangCardTemplate(item) {
-        // Strict mapping back to your data's native structural keys
-        const cleanWord = item.word || "Unknown Word";
-        const cleanDefinition = item.definition || "No definition available.";
-        const cleanCategory = item.category || "General";
-
-        const escapedWord = String(cleanWord).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        const escapedDefinition = String(cleanDefinition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        const escapedCategory = String(cleanCategory).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+        // Escaping variables to prevent layout injection breaks
+        const escapedWord = String(item.word).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+        const escapedDefinition = String(item.definition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+        const escapedCategory = String(item.category).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
 
         const badgeMarkup = `<span class="category-badge">${escapedCategory}</span>`;
         const audioButtonMarkup = `
@@ -205,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const cleanText = String(textToSpeak).trim();
-        if (!cleanText || cleanText === 'undefined' || cleanText === 'Unknown Word') return;
+        if (!cleanText || cleanText === 'undefined') return;
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         const availableVoices = window.speechSynthesis.getVoices();
@@ -250,3 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 }); // Ends DOMContentLoaded Hook
+
+
+
+
