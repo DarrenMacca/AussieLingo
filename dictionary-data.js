@@ -711,6 +711,12 @@ const AUSSIE_SLANG_DATA = [
         "category": "actions-verbs"
     },
     {
+        "english": "The Aussie call to arms",
+        "aussie": "Aussie Aussie Aussie oi oi oi",
+        "audio": "Aussie_Aussie_Aussie_oi_oi_oi.mp3",
+        "category": "actions-verbs"
+    },
+    {
         "english": "Hard work",
         "aussie": "Yakka",
         "audio": "yakka.mp3",
