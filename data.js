@@ -90,7 +90,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         `;
     }
 
-    /**
+       /**
      * 3. Core Interface Render Canvas Channel
      */
     function renderDictionaryGrid() {
@@ -120,6 +120,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
 
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
+
     /**
      * 4. Navigation Control Filter Core Mechanism
      */
@@ -146,11 +147,14 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
     if (modeCheckbox) {
         modeCheckbox.addEventListener('change', (e) => {
             isFlashcardMode = e.target.checked;
+            const appWrapper = document.querySelector('.app-wrapper');
             
-            // Toggle container classes to toggle explicit card height and properties
             if (isFlashcardMode) {
+                // FIXED: Adds class to wrapper node to match layout query logic
+                if (appWrapper) appWrapper.classList.add('flashcard-active');
                 gridRoot.classList.add('flashcard-active');
             } else {
+                if (appWrapper) appWrapper.classList.remove('flashcard-active');
                 gridRoot.classList.remove('flashcard-active');
                 if (window.speechSynthesis) window.speechSynthesis.cancel();
             }
@@ -165,6 +169,9 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
     gridRoot.addEventListener('click', (event) => {
         if (!isFlashcardMode) return;
 
+        // Skip flip handling if the user explicitly clicked the audio play button inside a card
+        if (event.target.closest('.audio-btn')) return;
+
         const slangCard = event.target.closest('.slang-card');
         if (!slangCard) return;
 
@@ -172,12 +179,14 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         slangCard.classList.toggle('flipped');
 
         const isFlipped = slangCard.classList.contains('flipped');
-        const textTarget = slangCard.getAttribute('data-spoken');
-        const internalAudioButton = slangCard.querySelector('.flashcard-back .audio-btn');
+        const textTarget = slangCard.getAttribute('data-spoken') || slangCard.querySelector('.aussie-word')?.textContent;
+        const internalAudioButton = slangCard.querySelector('.audio-btn');
 
         if (isFlipped && textTarget && internalAudioButton) {
             // Card flipped to Aussie side -> Execute drawl vocalisation engine path
-            speakAussieSlang(textTarget, internalAudioButton);
+            if (typeof speakAussieSlang === 'function') {
+                speakAussieSlang(textTarget, internalAudioButton);
+            }
         } else {
             // Card flipped back to English side -> Kill voices silently immediately
             if (window.speechSynthesis) {
@@ -185,7 +194,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
             }
             if (internalAudioButton) {
                 internalAudioButton.classList.remove('playing');
-                internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span>';
+                internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
             }
         }
     });
@@ -198,64 +207,5 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
     }
 });
-
-/**
- * ==========================================================================
- * NATIVE TEXT-TO-SPEECH SYNTHESIZER ENGINE
- * ==========================================================================
- */
-let currentActiveButton = null;
-
-function speakAussieSlang(textToSpeak, buttonElement) {
-    if (!window.speechSynthesis) return;
-
-    window.speechSynthesis.cancel();
-    if (currentActiveButton) {
-        currentActiveButton.classList.remove('playing');
-        currentActiveButton.innerHTML = '<span class="btn-icon">🔊</span>';
-    }
-
-    const cleanPhrase = decodeURIComponent(textToSpeak);
-    const utterance = new SpeechSynthesisUtterance(cleanPhrase);
-    currentActiveButton = buttonElement;
-
-    utterance.lang = 'en-AU';
-
-    const voices = window.speechSynthesis.getVoices();
-    const aussieVoice = voices.find(voice => 
-        voice.lang === 'en-AU' || 
-        voice.lang === 'en_AU' ||
-        voice.name.toLowerCase().includes('australia') ||
-        voice.name.toLowerCase().includes('en-au')
-    );
-
-    if (aussieVoice) utterance.voice = aussieVoice;
-
-    utterance.rate = 0.78;   // Aussie Drawl pacing
-    utterance.pitch = 0.92;  // Natural flatted notes modulation
-
-    if (buttonElement) {
-        buttonElement.classList.add('playing');
-        buttonElement.innerHTML = '<span class="btn-icon">💬</span>';
-    }
-
-    window.speechSynthesis.speak(utterance);
-
-    utterance.onend = () => {
-        if (buttonElement) {
-            buttonElement.classList.remove('playing');
-            buttonElement.innerHTML = '<span class="btn-icon">🔊</span>';
-        }
-        currentActiveButton = null;
-    };
-
-    utterance.onerror = () => {
-        if (buttonElement) {
-            buttonElement.classList.remove('playing');
-            buttonElement.innerHTML = '<span class="btn-icon">🔊</span>';
-        }
-        currentActiveButton = null;
-    };
-}
 
 
