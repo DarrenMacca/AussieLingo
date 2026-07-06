@@ -12,9 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
      * 3. HTML String Template Assembly Channel
      */
     function createSlangCardTemplate(item) {
-        const escapedWord = String(item.word).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        const escapedDefinition = String(item.definition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        const escapedCategory = String(item.category).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+        const cleanWord = item.word || item.term || "Unknown Word";
+        const cleanDefinition = item.definition || item.meaning || "No definition available.";
+        const cleanCategory = item.category || "General";
+
+        const escapedWord = String(cleanWord).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+        const escapedDefinition = String(cleanDefinition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+        const escapedCategory = String(cleanCategory).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
 
         const badgeMarkup = `<span class="category-badge">${escapedCategory}</span>`;
         const audioButtonMarkup = `
@@ -25,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isFlashcardMode) {
             return `
-                <div class="slang-card" style="width: 100%; display: block; padding: 0;">
+                <div class="slang-card" data-spoken="${escapedWord}" style="width: 100%; display: block; padding: 0;">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">
                             <div class="slang-card-header">
@@ -93,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
-
     /**
      * 5. Navigation Control Filter Core Mechanism
      */
@@ -144,13 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!slangCard) return;
 
-        // --- AUDIO TRIGGER PIPELINE (Speaker Button Clicked) ---
+        // --- AUDIO TRIGGER PIPELINE (Speaker Button Manual Taps) ---
         if (audioBtn) {
             event.stopPropagation();
             event.preventDefault();
 
-            const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
-            const targetText = audioBtn.getAttribute('data-word') || (wordElement ? wordElement.textContent : '');
+            const targetText = audioBtn.getAttribute('data-word');
 
             if (targetText && typeof window.speakAussieSlang === 'function') {
                 window.speakAussieSlang(targetText, audioBtn);
@@ -158,11 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- FLASHCARD FLIP PIPELINE (Card Body Clicked) ---
+        // --- FLASHCARD FLIP PIPELINE (Card Space Tapped) ---
         if (isFlashcardMode) {
-            const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
             const internalAudioButton = slangCard.querySelector('.audio-btn');
-            const targetText = internalAudioButton ? internalAudioButton.getAttribute('data-word') : (wordElement ? wordElement.textContent : '');
+            
+            // Fixed String Capture: Pulls exactly from data attributes to protect against text culling
+            const targetText = slangCard.getAttribute('data-spoken') || 
+                               (internalAudioButton ? internalAudioButton.getAttribute('data-word') : '');
             
             const willBeFlipped = !slangCard.classList.contains('flipped');
 
@@ -199,8 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = '<span class="btn-icon">🔊</span> Listen';
         });
 
-        const cleanText = textToSpeak.trim();
-        if (!cleanText) return;
+        const cleanText = String(textToSpeak).trim();
+        if (!cleanText || cleanText === 'undefined') return;
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         const availableVoices = window.speechSynthesis.getVoices();
@@ -244,4 +248,4 @@ document.addEventListener('DOMContentLoaded', () => {
             window.speechSynthesis.getVoices();
         };
     }
-});
+}); // Ends DOMContentLoaded Hook
