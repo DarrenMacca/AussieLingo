@@ -163,7 +163,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         });
     }
 
-    /**
+        /**
      * 6. Live Container Event Delegate for Flashcard 3D Rotation & Audio Channels
      */
     gridRoot.addEventListener('click', (event) => {
@@ -172,29 +172,29 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         
         if (!slangCard) return;
 
-        // --- AUDIO TRIGGER PIPELINE ---
+        // --- AUDIO TRIGGER PIPELINE (Runs flawlessly in ALL display modes) ---
         if (audioBtn) {
-            // Stop the click from bubbling up and flipping the card!
+            // Stops click event leaks to prevent card-flips from stopping active audio
             event.stopPropagation();
             event.preventDefault();
 
-            // Safely locate the string to speak directly from the nearest text track
+            // Dynamic tracking fallback layers to find text string targets safely
             const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
             const targetText = audioBtn.getAttribute('data-word') || (wordElement ? wordElement.textContent : '');
 
             if (targetText && typeof speakAussieSlang === 'function') {
                 speakAussieSlang(targetText, audioBtn);
             }
-            return; // Exit completely to avoid flipping the card
+            return; // Clean functional exit
         }
 
-        // --- FLASHCARD FLIP PIPELINE ---
+        // --- FLASHCARD FLIP PIPELINE (Runs exclusively when mode is active) ---
         if (isFlashcardMode) {
             slangCard.classList.toggle('flipped');
 
             const isFlipped = slangCard.classList.contains('flipped');
             
-            // If flipped to the English side, cancel running audio paths immediately
+            // Instantly kill speech processes if card flips back to definition faces
             if (!isFlipped && window.speechSynthesis) {
                 window.speechSynthesis.cancel();
                 const activeAudioBtns = slangCard.querySelectorAll('.audio-btn');
@@ -205,6 +205,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
             }
         }
     });
+
 
     // 7. Initial Runtime Boot Trigger Execution Path
     renderDictionaryGrid();
