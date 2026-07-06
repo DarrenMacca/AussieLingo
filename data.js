@@ -61,9 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
 
-        /**
+    /**
      * 4. Multi-Layer Interactivity Pipeline Event Delegates
-     * Optimized Dynamic Native Australian Accent Voice Selection Pipeline
+     * Uses Built-in Browser Text-to-Speech Engine with Australian Voice Filters
      */
     gridRoot.addEventListener('click', (event) => {
         const audioBtn = event.target.closest('.audio-btn');
@@ -73,21 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const slangText = slangCard.querySelector('.aussie-term').textContent;
         if (!slangText) return;
 
-        // Instantly kill any current vocalizations to allow rapid card clicking
         if (window.speechSynthesis) {
             window.speechSynthesis.cancel();
         }
 
-        // Initialize standard Speech Synthesis mapping
         const utterance = new SpeechSynthesisUtterance(slangText);
-        
-        // CRITICAL UPDATE: Explicitly request Australian English structural accent profiles
         utterance.lang = 'en-AU';
-
-        // Deep-scan device profiles to capture a native premium Australian accent
-        const voices = window.speechSynthesis.getVoices();
         
-        // Prioritize local distinct regional voices (like "Natasha" on Windows or "Karen" on iOS/Mac)
+        const voices = window.speechSynthesis.getVoices();
         const aussieVoice = voices.find(voice => 
             voice.lang === 'en-AU' || 
             voice.lang.includes('en-AU') || 
@@ -98,19 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
             utterance.voice = aussieVoice;
         }
 
-        // Accent Modulation Parameters for authentic local presentation flow
-        utterance.rate = 0.82;   // Slow down speech slightly so the vowels drawl out naturally
-        utterance.pitch = 0.95;  // Drop pitch a fraction for a more laid-back tone
+        utterance.rate = 0.82;
+        utterance.pitch = 0.95;
 
-        // UI Visual Action Feedback State adjustments
         const initialText = `<span class="btn-icon">🔊</span> Listen Intro`;
         audioBtn.innerHTML = `<span class="btn-icon">💬</span> Speaking...`;
         audioBtn.style.opacity = '0.7';
 
-        // Play the speech track live out of speakers
         window.speechSynthesis.speak(utterance);
 
-        // Reset the interface button configurations once audio track finishes playing
         utterance.onend = () => {
             audioBtn.innerHTML = initialText;
             audioBtn.style.opacity = '1';
@@ -139,16 +128,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const targetCategory = button.getAttribute('data-category');
             const results = (targetCategory === 'all') 
-                ? slangData 
-                : slangData.filter(item => item.category === targetCategory);
+                ? AUSSIE_SLANG_DATA 
+                : AUSSIE_SLANG_DATA.filter(item => item.category === targetCategory);
 
             renderDictionaryGrid(results);
         });
     });
 
     // 6. Runtime Initial Initialization Spark Execution Core Path
-    if (typeof slangData !== 'undefined' && Array.isArray(slangData)) {
-        renderDictionaryGrid(slangData);
+    if (typeof AUSSIE_SLANG_DATA !== 'undefined' && Array.isArray(AUSSIE_SLANG_DATA)) {
+        renderDictionaryGrid(AUSSIE_SLANG_DATA);
     } else {
         gridRoot.innerHTML = `
             <div class="no-results" style="border-color: #ef4444; color: #ef4444;">
