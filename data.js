@@ -149,28 +149,49 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
     gridRoot.addEventListener('click', (event) => {
         const audioBtn = event.target.closest('.audio-btn');
         const slangCard = event.target.closest('.slang-card');
+        
         if (!slangCard) return;
 
+        // --- AUDIO TRIGGER PIPELINE (Runs when clicking the literal speaker button) ---
         if (audioBtn) {
+            // Stops click event leaks to prevent card-flips from stopping active audio
             event.stopPropagation();
             event.preventDefault();
+
+            // Dynamic tracking fallback layers to find text string targets safely
             const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
             const targetText = audioBtn.getAttribute('data-word') || (wordElement ? wordElement.textContent : '');
+
             if (targetText && typeof window.speakAussieSlang === 'function') {
                 window.speakAussieSlang(targetText, audioBtn);
             }
-            return;
+            return; // Clean functional exit
         }
 
+        // --- FLASHCARD FLIP PIPELINE (Runs when clicking anywhere else on the card face) ---
         if (isFlashcardMode) {
             slangCard.classList.toggle('flipped');
+
             const isFlipped = slangCard.classList.contains('flipped');
-            if (!isFlipped && window.speechSynthesis) {
-                window.speechSynthesis.cancel();
-                slangCard.querySelectorAll('.audio-btn').forEach(btn => {
-                    btn.classList.remove('playing');
-                    btn.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-                });
+            const internalAudioButton = slangCard.querySelector('.audio-btn');
+            
+            if (isFlipped) {
+                // AUTOMATIC AUDIO ON FLIP: Finds the text string layer and fires vocalization instantly
+                const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
+                const targetText = internalAudioButton ? internalAudioButton.getAttribute('data-word') : (wordElement ? wordElement.textContent : '');
+                
+                if (targetText && typeof window.speakAussieSlang === 'function') {
+                    window.speakAussieSlang(targetText, internalAudioButton);
+                }
+            } else {
+                // Instantly kill speech processes if card flips back to definition faces
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                }
+                if (internalAudioButton) {
+                    internalAudioButton.classList.remove('playing');
+                    internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
+                }
             }
         }
     });
