@@ -29,14 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const categoryLabel = displayCategories[item.category] || item.category;
         
-        // Web-safe sanitization for HTML attribute data targeting
-        const safeAudioSrc = encodeURIComponent(item.audio);
+        // Clean out any slashes or multiple word variations for clean pronunciation execution
+        const spokenWordClean = item.aussie.split('/')[0].trim();
+        const safeSpokenWord = encodeURIComponent(spokenWordClean);
 
         return `
             <article class="slang-card" data-category="${item.category}">
                 <div class="slang-card-header">
                     <span class="category-badge">${categoryLabel}</span>
-                    <button class="audio-btn" onclick="playSlangAudio('${safeAudioSrc}', this)" aria-label="Play audio pronunciation">
+                    <button class="audio-btn" onclick="speakAussieSlang('${safeSpokenWord}', this)" aria-label="Listen to pronunciation">
                         <span class="btn-icon">🔊</span> Listen Intro
                     </button>
                 </div>
@@ -82,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const targetCategory = button.getAttribute('data-category');
             
-            // Verifies if the dataset array from dictionary-data.js exists globally before filtering
             if (typeof AUSSIE_SLANG_DATA !== 'undefined' && Array.isArray(AUSSIE_SLANG_DATA)) {
                 const results = (targetCategory === 'all') 
                     ? AUSSIE_SLANG_DATA 
@@ -107,64 +107,82 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
     }
+
+    // 6. Background Voice Loading Cache Warm-up Handshake
+    if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
 });
 
 /**
  * ==========================================================================
- * GLOBAL AUDIO CONTROLLER ENGINE
+ * NATIVE TEXT-TO-SPEECH SYNTHESIZER ENGINE
  * Placed outside DOM scope so inline 'onclick' elements can access it.
  * ==========================================================================
  */
-let currentAudioInstance = null;
 let currentActiveButton = null;
 
-function playSlangAudio(audioFile, buttonElement) {
-    // If the exact same audio is playing, pause it and reset state
-    if (currentAudioInstance && currentActiveButton === buttonElement) {
-        if (!currentAudioInstance.paused) {
-            currentAudioInstance.pause();
-            buttonElement.classList.remove('playing');
-            buttonElement.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
-            return;
-        }
+function speakAussieSlang(textToSpeak, buttonElement) {
+    if (!window.speechSynthesis) {
+        console.warn("Speech Synthesis is not supported in this browser.");
+        return;
     }
 
-    // Stop and scrub any prior instance before executing the new string path
-    if (currentAudioInstance) {
-        currentAudioInstance.pause();
-        if (currentActiveButton) {
-            currentActiveButton.classList.remove('playing');
-            currentActiveButton.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
-        }
-    }
-
-    // Path structure configuration matching your asset architecture folder
-    const audioPath = `assets/audio/${decodeURIComponent(audioFile)}`;
-    
-    currentAudioInstance = new Audio(audioPath);
-    currentActiveButton = buttonElement;
-
-    buttonElement.classList.add('playing');
-    buttonElement.innerHTML = '<span class="btn-icon">⏳</span> Loading...'; 
-
-    currentAudioInstance.play()
-        .then(() => {
-            buttonElement.innerHTML = '<span class="btn-icon">⏸️</span> Pause';
-        })
-        .catch(error => {
-            console.error("Audio stream asset dropped 404 mismatch error:", error);
-            buttonElement.classList.remove('playing');
-            buttonElement.innerHTML = '<span class="btn-icon">❌</span> Error';
-            setTimeout(() => {
-                buttonElement.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
-            }, 1500);
-        });
-
-    // Reset indicator elements automatically once the clip successfully runs to completion
-    currentAudioInstance.onended = () => {
+    // If already speaking, click pauses it and resets state
+    if (window.speechSynthesis.speaking && currentActiveButton === buttonElement) {
+        window.speechSynthesis.cancel();
         buttonElement.classList.remove('playing');
         buttonElement.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
-        currentAudioInstance = null;
+        currentActiveButton = null;
+        return;
+    }
+
+    // Stop any active speeches before running the new phrase string
+    window.speechSynthesis.cancel();
+    if (currentActiveButton) {
+        currentActiveButton.classList.remove('playing');
+        currentActiveButton.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
+    }
+
+    const cleanPhrase = decodeURIComponent(textToSpeak);
+    const utterance = new SpeechSynthesisUtterance(cleanPhrase);
+    currentActiveButton = buttonElement;
+
+    // Layer A: Enforce native en-AU locale target formatting
+    utterance.lang = 'en-AU';
+
+    // Layer B: Extract deep system voices looking for premium local streams
+    const voices = window.speechSynthesis.getVoices();
+    const aussieVoice = voices.find(voice => 
+        voice.lang === 'en-AU' || 
+        voice.lang === 'en_AU' ||
+        voice.name.toLowerCase().includes('australia') ||
+        voice.name.toLowerCase().includes('en-au')
+    );
+
+    if (aussieVoice) {
+        utterance.voice = aussieVoice;
+    }
+
+    // Layer C: Accent modulation tweaks for a relaxed Australian flow
+    utterance.rate = 0.78;   // Natural down-under drawl pacing
+    utterance.pitch = 0.92;  // Flattens stiff, high-pitched robotic notes
+
+    // Update UI button elements to show action status
+    buttonElement.classList.add('playing');
+    buttonElement.innerHTML = '<span class="btn-icon">💬</span> Speaking...';
+
+    window.speechSynthesis.speak(utterance);
+
+    utterance.onend = () => {
+        buttonElement.classList.remove('playing');
+        buttonElement.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
+        currentActiveButton = null;
+    };
+
+    utterance.onerror = () => {
+        buttonElement.classList.remove('playing');
+        buttonElement.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
         currentActiveButton = null;
     };
 }
