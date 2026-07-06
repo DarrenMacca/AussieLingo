@@ -13,18 +13,26 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * 2. Component Card Generation Engine
      */
-    function createSlangCardTemplate(item) {
-        const displayCategories = {
-            'everyday-people': '👥 People',
-            'core-phrases': '💬 Phrases',
-            'food-drink': '🍺 Food & Drink',
-            'time-places': '📍 Places',
-            'clothing-items': '🩴 Clothing',
-            'adjectives-modifiers': '✨ Adjective',
-            'actions-verbs': '🏃 Verbs',
-            'idioms': '🦘 Idiom',
-            'misc': '🃏 Misc'
-        };
+   function createSlangCardTemplate(item) {
+    const displayCategories = {
+        'everyday-people': '👥 Everyday People',
+        'core-phrases': '💬 Core Greetings & Phrases',
+        'Multiple Use - Same Word': '🔄 Multiple Use - Same Word',
+        'food-drink': '🍺 Food & Drink',
+        'time-places': '📍 Time & Places',
+        'clothing-items': '🩴 Clothing & Items',
+        'adjectives-modifiers': '✨ Adjectives & Modifiers',
+        'actions-verbs': '🏃 Actions & Verbs',
+        'idioms': '🦘 Metaphors & Idioms',
+        'misc': '🃏 Miscellaneous Slang'
+    };
+
+    // Safely fallback to the raw category string if an undefined key is passed
+    const categoryLabel = displayCategories[item.category] || item.category;
+
+    // Your template rendering logic continues below...
+}
+
 
         const readableCategory = displayCategories[item.category] || '🇦🇺 Slang';
         
