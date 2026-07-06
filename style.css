@@ -169,14 +169,14 @@ body {
     padding: 2rem 1.5rem;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     
-    /* Scroll-Safe Constraints for Small Device Viewports */
+    /* Scroll-Safe Viewport Heights Adjustments */
     max-height: calc(100vh - 4rem);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
-/* WebKit scroll track overrides */
+/* WebKit scroll override properties */
 .sidebar-sticky-panel::-webkit-scrollbar {
     width: 4px;
 }
@@ -299,7 +299,7 @@ body {
     gap: 0.5rem;
 }
 
-/* Synced class names perfectly across both CSS and data.js rendering pipelines */
+/* Unified selector tracking hooks across both components and script controllers */
 .aussie-term, .aussie-word {
     font-size: 1.5rem;
     font-weight: 700;
@@ -344,6 +344,7 @@ body {
     transform: scale(0.96);
 }
 
+/* Active playback layout tracker token */
 .audio-btn.playing {
     background: rgba(16, 42, 131, 0.6);
     border-color: var(--primary-neon-glow);
@@ -407,104 +408,11 @@ body {
         grid-template-columns: 1fr;
     }
 }
-/* ==========================================================================
-   SECTION 6: INTERACTIVE PRONUNCIATION CONTROLS
-   ========================================================================== */
-.audio-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.85rem;
-    background: rgba(59, 102, 255, 0.12);
-    border: 1px solid rgba(59, 102, 255, 0.3);
-    border-radius: var(--radius-rounded-sm);
-    color: var(--text-pure-white);
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    white-space: nowrap;
-}
-
-.audio-btn:hover {
-    background: var(--primary-royal-light);
-    border-color: var(--primary-neon-glow);
-    box-shadow: 0 0 12px rgba(59, 102, 255, 0.5);
-}
-
-.audio-btn:active {
-    transform: scale(0.96);
-}
-
-/* New CSS State handler matching active playback from data.js engine */
-.audio-btn.playing {
-    background: rgba(16, 42, 131, 0.6);
-    border-color: var(--primary-neon-glow);
-    box-shadow: inset 0 0 8px rgba(59, 102, 255, 0.4);
-}
-
-.btn-icon {
-    font-size: 1rem;
-}
-
-/* Empty State Filter Messaging Styles */
-.no-results {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-dark-subtle);
-    font-size: 1.1rem;
-    background: var(--glass-bg-cards);
-    border: 1px dashed var(--glass-border-light);
-    border-radius: var(--radius-rounded-lg);
-}
 
 /* ==========================================================================
-   SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
-   ========================================================================== */
-@media (max-width: 1024px) {
-    .app-layout-shell {
-        grid-template-columns: 1fr;
-    }
-    
-    .sidebar-wrapper {
-        position: relative;
-        top: 0;
-    }
-    
-    .filter-navigation {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 0.5rem;
-    }
-}
-
-@media (max-width: 640px) {
-    .app-wrapper {
-        padding: 1rem;
-    }
-    
-    .app-header {
-        padding: 2rem 1.5rem;
-    }
-    
-    .app-header h1 {
-        font-size: 2rem;
-    }
-    
-    .filter-navigation {
-        grid-template-columns: 1fr;
-    }
-    
-    .slang-responsive-grid {
-        grid-template-columns: 1fr;
-    }
-   /* ==========================================================================
    SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE
    ========================================================================== */
-/* Set up the 3D space perspective only when flashcard view state is locked active */
+/* Sets explicit spatial 3D perspective to contain absolute cards grid nodes */
 .flashcard-active .slang-card {
     perspective: 1000px;
     cursor: pointer;
@@ -512,10 +420,10 @@ body {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    height: 220px; /* Locked explicit layout height to prevent container shifting on rotate */
+    height: 220px; /* Locks height properties to shield layout grid from jumping dimensions */
 }
 
-/* Inner flipper containment boundaries */
+/* Inner card rotating containment box */
 .flashcard-inner {
     position: relative;
     width: 100%;
@@ -525,12 +433,12 @@ body {
     transform-style: preserve-3d;
 }
 
-/* Trigger 180 degree rotation matrix class toggle */
+/* 180 degree rotation trigger state handle */
 .flashcard-active .slang-card.flipped .flashcard-inner {
     transform: rotateY(180deg);
 }
 
-/* Front and Back face layout panels layer shared properties */
+/* Front & Back panel structural layout properties */
 .flashcard-front, .flashcard-back {
     position: absolute;
     width: 100%;
@@ -546,7 +454,7 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Front Face Panel styling assignments: Starts with standard English */
+/* Front view initialization settings (Definitions) */
 .flashcard-front {
     background: var(--glass-bg-cards);
     backdrop-filter: blur(var(--glass-blur-radius));
@@ -554,7 +462,7 @@ body {
     color: var(--text-pure-white);
 }
 
-/* Back Face Panel styling assignments: Reveals the raw Aussie lingo */
+/* Reverse view initialization settings (Reveals terminology) */
 .flashcard-back {
     background: rgba(16, 42, 131, 0.2);
     backdrop-filter: blur(var(--glass-blur-radius));
@@ -563,10 +471,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* Adjust card body positioning values safely for inner card dimensions */
 .flashcard-active .slang-card-body {
     margin-top: auto;
     margin-bottom: auto;
-}
-
 }
