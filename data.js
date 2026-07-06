@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * 3. HTML String Template Assembly Channel (Restored)
      */
     function createSlangCardTemplate(item) {
-        // Escaping variables cleanly to avoid single-quote code execution crashes
+        // FIXED: Escaping single quotes safely using standard entity strings to avoid syntax errors
         const escapedWord = String(item.word).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
         const escapedDefinition = String(item.definition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
         const escapedCategory = String(item.category).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
+
     /**
      * 5. Navigation Control Filter Core Mechanism
      */
