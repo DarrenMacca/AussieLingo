@@ -143,7 +143,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         });
     }
 
-    /**
+        /**
      * 6. Live Container Event Delegate for Flashcard 3D Rotation & Audio Channels
      */
     gridRoot.addEventListener('click', (event) => {
@@ -152,7 +152,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         
         if (!slangCard) return;
 
-        // --- AUDIO TRIGGER PIPELINE (Runs when clicking the literal speaker button) ---
+        // --- AUDIO TRIGGER PIPELINE (When clicking the literal speaker button) ---
         if (audioBtn) {
             // Stops click event leaks to prevent card-flips from stopping active audio
             event.stopPropagation();
@@ -168,23 +168,28 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
             return; // Clean functional exit
         }
 
-        // --- FLASHCARD FLIP PIPELINE (Runs when clicking anywhere else on the card face) ---
+        // --- FLASHCARD FLIP PIPELINE (When clicking anywhere else on the card face) ---
         if (isFlashcardMode) {
+            // CRITICAL SLOW-DOWN CORRECTION: Gather the text string BEFORE changing any layout states
+            const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
+            const internalAudioButton = slangCard.querySelector('.audio-btn');
+            const targetText = internalAudioButton ? internalAudioButton.getAttribute('data-word') : (wordElement ? wordElement.textContent : '');
+            
+            const willBeFlipped = !slangCard.classList.contains('flipped');
+
+            // Apply the visual 3D rotation state transition class to the DOM node
             slangCard.classList.toggle('flipped');
 
-            const isFlipped = slangCard.classList.contains('flipped');
-            const internalAudioButton = slangCard.querySelector('.audio-btn');
-            
-            if (isFlipped) {
-                // AUTOMATIC AUDIO ON FLIP: Finds the text string layer and fires vocalization instantly
-                const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
-                const targetText = internalAudioButton ? internalAudioButton.getAttribute('data-word') : (wordElement ? wordElement.textContent : '');
-                
-                if (targetText && typeof window.speakAussieSlang === 'function') {
-                    window.speakAussieSlang(targetText, internalAudioButton);
-                }
+            if (willBeFlipped) {
+                // Introduce a tiny 50ms delay to let the browser compute the 3D layer split 
+                // before passing the extracted text string safely down into the engine
+                setTimeout(() => {
+                    if (targetText && typeof window.speakAussieSlang === 'function') {
+                        window.speakAussieSlang(targetText, internalAudioButton);
+                    }
+                }, 50);
             } else {
-                // Instantly kill speech processes if card flips back to definition faces
+                // Instantly kill speech processes if the card is flipped back to the definition face
                 if (window.speechSynthesis) {
                     window.speechSynthesis.cancel();
                 }
@@ -195,6 +200,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
             }
         }
     });
+
 
     /**
      * 7. SYSTEM UTILITY: SYSTEM VOICE GENERATION ENGINE
