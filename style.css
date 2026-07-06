@@ -169,14 +169,14 @@ body {
     padding: 2rem 1.5rem;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     
-    /* Scroll-Safe Viewport Heights Adjustments */
+    /* Scroll-Safe Constraints for Small Laptops & Screen Heights */
     max-height: calc(100vh - 4rem);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
-/* WebKit scroll override properties */
+/* WebKit scroll track overrides */
 .sidebar-sticky-panel::-webkit-scrollbar {
     width: 4px;
 }
@@ -237,6 +237,7 @@ body {
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(16, 42, 131, 0.4);
 }
+
 /* ==========================================================================
    SECTION 5: DISPLAY RESPONSIVE GRID & CARDS
    ========================================================================== */
@@ -299,7 +300,7 @@ body {
     gap: 0.5rem;
 }
 
-/* Unified selector tracking hooks across both components and script controllers */
+/* Synced class name layout links */
 .aussie-term, .aussie-word {
     font-size: 1.5rem;
     font-weight: 700;
@@ -344,7 +345,6 @@ body {
     transform: scale(0.96);
 }
 
-/* Active playback layout tracker token */
 .audio-btn.playing {
     background: rgba(16, 42, 131, 0.6);
     border-color: var(--primary-neon-glow);
@@ -367,111 +367,94 @@ body {
     border-radius: var(--radius-rounded-lg);
 }
 
+
 /* ==========================================================================
-   SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
-   ========================================================================== */
+SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
+========================================================================== */
 @media (max-width: 1024px) {
-    .app-layout-shell {
-        grid-template-columns: 1fr;
-    }
-    
-    .sidebar-wrapper {
-        position: relative;
-        top: 0;
-    }
-    
-    .filter-navigation {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 0.5rem;
-    }
+.app-layout-shell {
+grid-template-columns: 1fr;
+} [1]
+.sidebar-wrapper {
+position: relative;
+top: 0;
 }
-
+.filter-navigation {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 0.5rem;
+}
+}
 @media (max-width: 640px) {
-    .app-wrapper {
-        padding: 1rem;
-    }
-    
-    .app-header {
-        padding: 2rem 1.5rem;
-    }
-    
-    .app-header h1 {
-        font-size: 2rem;
-    }
-    
-    .filter-navigation {
-        grid-template-columns: 1fr;
-    }
-    
-    .slang-responsive-grid {
-        grid-template-columns: 1fr;
-    }
+.app-wrapper {
+padding: 1rem;
 }
-
+.app-header {
+padding: 2rem 1.5rem;
+}
+.app-header h1 {
+font-size: 2rem;
+}
+.filter-navigation {
+grid-template-columns: 1fr;
+}
+.slang-responsive-grid {
+grid-template-columns: 1fr;
+}
+}
 /* ==========================================================================
-   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE
-   ========================================================================== */
-/* Sets explicit spatial 3D perspective to contain absolute cards grid nodes */
+SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE
+========================================================================== /
 .flashcard-active .slang-card {
-    perspective: 1000px;
-    cursor: pointer;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    height: 220px; /* Locks height properties to shield layout grid from jumping dimensions */
+perspective: 1000px;
+cursor: pointer;
+background: transparent !important;
+border: none !important;
+box-shadow: none !important;
+padding: 0 !important;
+height: 220px; / Secure height boundary blocks sizing jumps */
 }
-
-/* Inner card rotating containment box */
+/* Inner flipper layout element wrapper */
 .flashcard-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: left;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
+position: relative;
+width: 100%;
+height: 100%;
+text-align: left;
+transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+transform-style: preserve-3d;
 }
-
-/* 180 degree rotation trigger state handle */
 .flashcard-active .slang-card.flipped .flashcard-inner {
-    transform: rotateY(180deg);
+transform: rotateY(180deg);
 }
-
-/* Front & Back panel structural layout properties */
+/* Face element containers shared styles */
 .flashcard-front, .flashcard-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    border-radius: var(--radius-rounded-lg);
-    border: 1px solid var(--glass-border-light);
-    padding: 1.75rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Front view initialization settings (Definitions) */
+position: absolute;
+width: 100%;
+height: 100%;
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+border-radius: var(--radius-rounded-lg);
+border: 1px solid var(--glass-border-light);
+padding: 1.75rem;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+} [1, 2, 3, 4]
 .flashcard-front {
-    background: var(--glass-bg-cards);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    color: var(--text-pure-white);
+background: var(--glass-bg-cards);
+backdrop-filter: blur(var(--glass-blur-radius));
+-webkit-backdrop-filter: blur(var(--glass-blur-radius));
+color: var(--text-pure-white);
 }
-
-/* Reverse view initialization settings (Reveals terminology) */
 .flashcard-back {
-    background: rgba(16, 42, 131, 0.2);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    border-color: var(--glass-border-heavy);
-    transform: rotateY(180deg);
+background: rgba(16, 42, 131, 0.2);
+backdrop-filter: blur(var(--glass-blur-radius));
+-webkit-backdrop-filter: blur(var(--glass-blur-radius));
+border-color: var(--glass-border-heavy);
+transform: rotateY(180deg);
 }
-
 .flashcard-active .slang-card-body {
-    margin-top: auto;
-    margin-bottom: auto;
+margin-top: auto;
+margin-bottom: auto;
 }
