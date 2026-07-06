@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let isFlashcardMode = modeCheckbox ? modeCheckbox.checked : false;
 
     /**
-     * 3. HTML String Template Assembly Channel (Restored)
+     * 3. HTML String Template Assembly Channel (Restored & Fixed Syntax)
      */
     function createSlangCardTemplate(item) {
-        // FIXED: Escaping single quotes safely using standard entity strings to avoid syntax errors
+        // FIXED SYNTAX: Properly escapes single quotes using valid string properties
         const escapedWord = String(item.word).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
         const escapedDefinition = String(item.definition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
         const escapedCategory = String(item.category).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
+
     /**
      * 5. Navigation Control Filter Core Mechanism
      */
