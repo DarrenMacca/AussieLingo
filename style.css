@@ -447,129 +447,122 @@ body {
 }
 
 /* ==========================================================================
-   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE (TOUCH TARGET PATCH)
+   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE (CONTAINMENT SAFETY PATCH)
    ========================================================================== */
-/* Sets explicit spatial 3D perspective to contain absolute cards grid nodes */
-.flashcard-active .slang-grid-root,
+
+/* 1. Global structural enforcement when flashcards are active */
+body.flashcard-active .slang-responsive-grid,
 .flashcard-active .slang-responsive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 1.5rem;
-    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)) !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
 }
 
+/* 2. Reset the main card block to act as an uncollapsible container */
+body.flashcard-active .slang-card,
 .flashcard-active .slang-card {
-    perspective: 1200px;
-    cursor: pointer;
+    perspective: 1200px !important;
+    cursor: pointer !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    height: 220px;
-    position: relative;
-    width: 100%; /* Guarantees the structural bounding box spans full column tracks */
+    height: 220px !important;
+    position: relative !important;
+    width: 100% !important;
+    display: block !important; /* Prevents JS flex/grid overrides from shrinking the card width */
 }
 
-/* Inner flipper layout element wrapper */
+/* 3. Force the flipper wrapper to span the full width of the card */
 .flashcard-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: left;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    text-align: left !important;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform-style: preserve-3d !important;
 }
 
-/* 180 degree rotation trigger state handle */
-.flashcard-active .slang-card.flipped .flashcard-inner {
-    transform: rotateY(180deg);
+/* Flipped interaction handle */
+.slang-card.flipped .flashcard-inner {
+    transform: rotateY(180deg) !important;
 }
 
-/* Face element containers shared styles */
-.flashcard-front, .flashcard-back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;  /* CRITICAL: Forces faces to match parent card bounds */
-    height: 100% !important; /* CRITICAL: Forces faces to match parent card bounds */
+/* 4. CRITICAL MOBILE EDGE-TO-EDGE ENFORCEMENT */
+/* Force absolute card faces to fill 100% width of their grid block, leaving no room to shrink */
+body.flashcard-active .flashcard-front,
+body.flashcard-active .flashcard-back,
+.flashcard-active .flashcard-front,
+.flashcard-active .flashcard-back {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important; /* Anchors right edge to eliminate the narrow column effect */
+    width: 100% !important; /* Completely overrides inline JS width adjustments */
+    height: 100% !important;
     -webkit-backface-visibility: hidden !important;
     backface-visibility: hidden !important;
-    border-radius: var(--radius-rounded-lg);
-    border: 1px solid var(--glass-border-light);
-    padding: 1.75rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    transform: translateZ(0);
-    box-sizing: border-box; /* Prevents paddings from leaking out past widths */
+    border-radius: var(--radius-rounded-lg) !important;
+    border: 1px solid var(--glass-border-light) !important;
+    padding: 1.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important; /* Safely encloses padding within the 100% width barrier */
 }
 
-/* Front view initialization settings (Definitions) */
+/* Front face initialization matrix */
 .flashcard-front {
-    background: var(--glass-bg-cards);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    color: var(--text-pure-white);
-    transform: rotateY(0deg); 
-    z-index: 2;
+    background: var(--glass-bg-cards) !important;
+    backdrop-filter: blur(var(--glass-blur-radius)) !important;
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius)) !important;
+    color: var(--text-pure-white) !important;
+    transform: rotateY(0deg) !important;
+    z-index: 2 !important;
 }
 
-/* Reverse view initialization settings (Reveals terminology) */
+/* Back face initialization matrix */
 .flashcard-back {
-    background: rgba(16, 42, 131, 0.25);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    border-color: var(--glass-border-heavy);
-    color: var(--text-pure-white);
-    transform: rotateY(180deg);
-    z-index: 1;
+    background: rgba(16, 42, 131, 0.35) !important;
+    backdrop-filter: blur(var(--glass-blur-radius)) !important;
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius)) !important;
+    border-color: var(--glass-border-heavy) !important;
+    color: var(--text-pure-white) !important;
+    transform: rotateY(180deg) !important;
+    z-index: 1 !important;
 }
 
-/* Internal components orientation mechanics */
+/* 5. Internal item layouts inside active flashcards */
 .flashcard-active .slang-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: auto;
-}
-
-.flashcard-active .audio-btn {
-    flex-shrink: 0;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    margin-bottom: auto !important;
 }
 
 .flashcard-active .slang-card-body {
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 100%;
-    text-align: center;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    width: 100% !important;
+    text-align: center !important;
 }
 
-.flashcard-active .aussie-term, 
-.flashcard-active .aussie-word,
-.flashcard-active .english-translation {
-    display: block;
-    width: 100%;
-}
-
-/* Mobile adjustments inside active flashcard layers */
+/* 6. Mobile breakout viewport adjustments */
 @media (max-width: 640px) {
+    body.flashcard-active .slang-responsive-grid,
     .flashcard-active .slang-responsive-grid {
-        grid-template-columns: 1fr !important; /* Force a single full-width column on mobile */
-    }
-
-    .flashcard-front, .flashcard-back {
-        padding: 1.25rem;
+        grid-template-columns: 1fr !important; /* Locks mobile layout into a single full-width column track */
+        width: 100% !important;
     }
     
+    body.flashcard-active .slang-card,
     .flashcard-active .slang-card {
-        height: 200px;
-        width: 100%;
+        height: 200px !important;
+        width: 100% !important;
     }
 }
-
-
 
 
 
