@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
      * 3. HTML String Template Assembly Channel
      */
     function createSlangCardTemplate(item) {
-        const cleanWord = item.word || item.term || "Unknown Word";
+        // FIXED TRACKING: Directly maps item.lingo first to catch your raw data keys perfectly
+        const cleanWord = item.lingo || item.word || item.term || "Unknown Word";
         const cleanDefinition = item.definition || item.meaning || "No definition available.";
         const cleanCategory = item.category || "General";
 
@@ -97,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
+
     /**
      * 5. Navigation Control Filter Core Mechanism
      */
