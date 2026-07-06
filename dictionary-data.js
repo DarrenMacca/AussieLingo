@@ -137,8 +137,8 @@ const AUSSIE_SLANG_DATA = [
     },
     {
         "english": "An uncoordinated, clumsy, or foolish person",
-        "aussie": "Drill",
-        "audio": "drill.mp3",
+        "aussie": "Dill",
+        "audio": "dill.mp3",
         "category": "everyday-people"
     },
     {
