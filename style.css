@@ -447,9 +447,17 @@ body {
 }
 
 /* ==========================================================================
-   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE (CRITICAL OVERLAP FIX)
+   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE (TOUCH TARGET PATCH)
    ========================================================================== */
 /* Sets explicit spatial 3D perspective to contain absolute cards grid nodes */
+.flashcard-active .slang-grid-root,
+.flashcard-active .slang-responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
 .flashcard-active .slang-card {
     perspective: 1200px;
     cursor: pointer;
@@ -458,7 +466,8 @@ body {
     box-shadow: none !important;
     padding: 0 !important;
     height: 220px;
-    position: relative; /* Fixed: Ensures children baseline calculations stay confined */
+    position: relative;
+    width: 100%; /* Guarantees the structural bounding box spans full column tracks */
 }
 
 /* Inner flipper layout element wrapper */
@@ -468,7 +477,7 @@ body {
     height: 100%;
     text-align: left;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d; /* Fixed: Explicitly forces hardware 3D layer isolation */
+    transform-style: preserve-3d;
 }
 
 /* 180 degree rotation trigger state handle */
@@ -481,13 +490,10 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    
-    /* Fixed: Double layer browser support handles to force text culling */
+    width: 100% !important;  /* CRITICAL: Forces faces to match parent card bounds */
+    height: 100% !important; /* CRITICAL: Forces faces to match parent card bounds */
     -webkit-backface-visibility: hidden !important;
     backface-visibility: hidden !important;
-    
     border-radius: var(--radius-rounded-lg);
     border: 1px solid var(--glass-border-light);
     padding: 1.75rem;
@@ -495,6 +501,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: translateZ(0);
+    box-sizing: border-box; /* Prevents paddings from leaking out past widths */
 }
 
 /* Front view initialization settings (Definitions) */
@@ -503,8 +511,6 @@ body {
     backdrop-filter: blur(var(--glass-blur-radius));
     -webkit-backdrop-filter: blur(var(--glass-blur-radius));
     color: var(--text-pure-white);
-    
-    /* Fixed: Explicit baseline position matrix to prevent 3D clipping bleeding */
     transform: rotateY(0deg); 
     z-index: 2;
 }
@@ -516,13 +522,11 @@ body {
     -webkit-backdrop-filter: blur(var(--glass-blur-radius));
     border-color: var(--glass-border-heavy);
     color: var(--text-pure-white);
-    
-    /* Fixed: Secure back rotation anchor matrix */
     transform: rotateY(180deg);
     z-index: 1;
 }
 
-/* Structural adjustments for text placements inside active flashcard layers */
+/* Internal components orientation mechanics */
 .flashcard-active .slang-card-header {
     display: flex;
     align-items: center;
@@ -539,7 +543,7 @@ body {
     margin-top: auto;
     margin-bottom: auto;
     width: 100%;
-    text-align: center; /* Centers your slang text like standard interactive flashcard suites */
+    text-align: center;
 }
 
 .flashcard-active .aussie-term, 
@@ -551,14 +555,20 @@ body {
 
 /* Mobile adjustments inside active flashcard layers */
 @media (max-width: 640px) {
+    .flashcard-active .slang-responsive-grid {
+        grid-template-columns: 1fr !important; /* Force a single full-width column on mobile */
+    }
+
     .flashcard-front, .flashcard-back {
         padding: 1.25rem;
     }
     
     .flashcard-active .slang-card {
         height: 200px;
+        width: 100%;
     }
 }
+
 
 
 
