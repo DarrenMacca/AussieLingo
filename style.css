@@ -447,17 +447,17 @@ body {
 }
 
 /* ==========================================================================
-   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE
+   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE (PATCHED)
    ========================================================================== */
 /* Sets explicit spatial 3D perspective to contain absolute cards grid nodes */
 .flashcard-active .slang-card {
-    perspective: 1200px; /* Slight bump for crisp depth perspective */
+    perspective: 1200px;
     cursor: pointer;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    height: 220px; /* Secure height boundary blocks sizing jumps */
+    height: 220px;
 }
 
 /* Inner flipper layout element wrapper */
@@ -482,7 +482,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    -webkit-backface-visibility: hidden; /* Guards legacy Safari layout engines */
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     border-radius: var(--radius-rounded-lg);
     border: 1px solid var(--glass-border-light);
@@ -491,9 +491,37 @@ body {
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    
-    /* Forces GPU layer rendering to stop text from bleeding through back */
     transform: translateZ(0);
+}
+
+/* FIXED ALIGNMENT ENGINE: Safely overrides structural variances inside flashcard templates */
+.flashcard-active .slang-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: auto; /* Securely pins header elements to the absolute top edge */
+}
+
+.flashcard-active .audio-btn {
+    flex-shrink: 0; /* Prevents the variable button strings from compressing layout tracks */
+}
+
+.flashcard-active .slang-card-body {
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 100%;
+}
+
+/* Synchronized font configuration parameters for text strings */
+.flashcard-active .aussie-term, 
+.flashcard-active .aussie-word {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-pure-white);
+    letter-spacing: -0.01em;
+    display: block;
+    width: 100%;
 }
 
 /* Mobile adjustments inside active flashcard layers */
@@ -501,27 +529,8 @@ body {
     .flashcard-front, .flashcard-back {
         padding: 1.25rem;
     }
-}
-
-/* Front view initialization settings (Definitions) */
-.flashcard-front {
-    background: var(--glass-bg-cards);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    color: var(--text-pure-white);
-    z-index: 2; /* Forces front face forward */
-}
-
-/* Reverse view initialization settings (Reveals terminology) */
-.flashcard-back {
-    background: rgba(16, 42, 131, 0.25);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    border-color: var(--glass-border-heavy);
-    transform: rotateY(180deg) translateZ(1px); /* Bumped 1px forward in 3D grid space to avoid flat plane clipping */
-}
-
-.flashcard-active .slang-card-body {
-    margin-top: auto;
-    margin-bottom: auto;
+    
+    .flashcard-active .slang-card {
+        height: 200px; /* Slight height reduction for tighter tracking on compact mobile screens */
+    }
 }
