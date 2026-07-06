@@ -24,6 +24,11 @@ const slangData = [
   { english: "A family relative", aussie: "Rellie / Rello", audio: "rellie-rello.mp3", category: "everyday-people" },
   { english: "A humorous, mild insult for small children or novice surfers", aussie: "Shark biscuit", audio: "shark-biscuit.mp3", category: "everyday-people" },
   { english: "Dedicated members of the local surfing subculture", aussie: "Surfies", audio: "surfies.mp3", category: "everyday-people" },
+  { english: "An uncoordinated, clumsy, or foolish person", aussie: "Drill", audio: "drill.mp3", category: "everyday-people" },
+  { english: "A hard-working, honest, and reliable working-class individual", aussie: "Battler", audio: "battler.mp3", category: "everyday-people" },
+  { english: "An eccentric, wild, or slightly crazy character", aussie: "Droaff", audio: "droaff.mp3", category: "everyday-people" },
+  { english: "A complaining or whining person", aussie: "Whinger", audio: "whinger.mp3", category: "everyday-people" },
+
 
   // SECTION: CORE GREETINGS & PHRASES
   { english: "Hello or good day", aussie: "G'day", audio: "gday.mp3", category: "core-phrases" },
@@ -33,6 +38,9 @@ const slangData = [
   { english: "Good for you, well done, or an expression of casual approval", aussie: "Good on ya", audio: "good-on-ya.mp3", category: "core-phrases" },
   { english: "No problem, you are completely welcome, or it is okay", aussie: "No drama", audio: "no-drama.mp3", category: "core-phrases" },
   { english: "An extreme variation of no worries", aussie: "No wuckas", audio: "no-wuckas.mp3", category: "core-phrases" },
+  { english: "How are things going with you?", aussie: "How ya goin'?", audio: "how-ya-goin.mp3", category: "core-phrases" },
+  { english: "An exclamation used to get attention or show surprise", aussie: "Oi!", audio: "oi.mp3", category: "core-phrases" },
+
 
   // SECTION: FOOD & DRINK
   { english: "Barbecue", aussie: "Barbie", audio: "barbie.mp3", category: "food-drink" },
@@ -51,10 +59,14 @@ const slangData = [
   { english: "A chocolate-coated biscuit", aussie: "Choccy Biccy", audio: "choccy-biccy.mp3", category: "food-drink" },
   { english: "A cold bottle or can of beer", aussie: "Cold One / Coldie", audio: "cold-one.mp3", category: "food-drink" },
   { english: "Concentrated fruit-flavoured syrup mixed with fresh water", aussie: "Cordial", audio: "cordial.mp3", category: "food-drink" },
-  { english: "Alcoholic beverages of any description", aussie: "Grog", audio: "grog.mp3", category: "food-drink" },
+  { english: "Alcoholic beverages of any description", aussie: "Grog or Piss", audio: "grog-or-piss.mp3", category: "food-drink" },
   { english: "A full cardboard commercial carton containing 24 beers", aussie: "Slab", audio: "slab.mp3", category: "food-drink" },
   { english: "Evening dinner or supper", aussie: "Tea", audio: "tea.mp3", category: "food-drink" },
   { english: "Avocado", aussie: "Avo", audio: "avo.mp3", category: "food-drink" },
+  { english: "The fast-food chain McDonald's", aussie: "Macca's", audio: "maccas.mp3", category: "food-drink" },
+  { english: "A standard large commercial glass of beer (typically 425ml)", aussie: "Schooner", audio: "schooner.mp3", category: "food-drink" },
+  { english: "A long, ice-cold glass of tap water", aussie: "Adam's Ale", audio: "adams-ale.mp3", category: "food-drink" },
+
 
   // SECTION: TIME & PLACES
   { english: "Afternoon", aussie: "Arvo", audio: "arvo.mp3", category: "time-places" },
@@ -68,6 +80,9 @@ const slangData = [
   { english: "A retail pharmacy or drugstore", aussie: "Chemist", audio: "chemist.mp3", category: "time-places" },
   { english: "The deep, arid, remote interior regions of the continent", aussie: "Outback", audio: "outback.mp3", category: "time-places" },
   { english: "A highly advantageous physical position or location", aussie: "Pozzy", audio: "pozzy.mp3", category: "time-places" },
+  { english: "This coming afternoon or late today", aussie: "S'arvo", audio: "sarvo.mp3", category: "time-places" },
+  { english: "An isolated, dusty local dirt road out in the bush", aussie: "Track", audio: "track.mp3", category: "time-places" },
+
 
   // SECTION: CLOTHING & ITEMS
   { english: "Sunglasses", aussie: "Sunnies", audio: "sunnies.mp3", category: "clothing-items" },
@@ -86,6 +101,8 @@ const slangData = [
   { english: "A classic flannelette or plaid button-down shirt", aussie: "Flannie / Flanno", audio: "flannie.mp3", category: "clothing-items" },
   { english: "A small aluminium fishing boat", aussie: "Tinny", audio: "tinny-boat.mp3", category: "clothing-items" },
   { english: "A gift or present", aussie: "Prezzy", audio: "prezzy.mp3", category: "clothing-items" },
+  { english: "A hooded sweatshirt or fleece jumper", aussie: "Hoody", audio: "hoody.mp3", category: "clothing-items" },
+
 
     // ==========================================================================
   // DEDICATED SECTION: ADJECTIVES & MODIFIERS
@@ -131,6 +148,10 @@ const slangData = [
   { english: "To take a very quick, close look or investigate an object", aussie: "Squiz", audio: "squiz.mp3", category: "actions-verbs" },
   { english: "To deliberately sunbathe on a beach or lawn", aussie: "Sunbake", audio: "sunbake.mp3", category: "actions-verbs" },
   { english: "To deliberately arrange, organize, or schedule a future meeting", aussie: "Tee-up", audio: "tee-up.mp3", category: "actions-verbs" },
+  { english: "To perform a sharp, sudden U-turn while driving a vehicle", aussie: "Chuck a U-ey", audio: "chuck-a-uey.mp3", category: "actions-verbs" },
+  { english: "To intentionally look through, inspect, or search something quickly", aussie: "Have a captain's cook", audio: "captains-cook.mp3", category: "actions-verbs" },
+  { english: "To look at something with absolute astonishment or disbelief", aussie: "Have a gander", audio: "have-a-gander.mp3", category: "actions-verbs" },
+
 
   // SECTION: METAPHORS & IDIOMS
   { english: "Lacking intelligence or sanity", aussie: "A stubby short of a six-pack", audio: "stubby-short-sixpack.mp3", category: "idioms" },
@@ -152,6 +173,9 @@ const slangData = [
   { english: "Explains being completely stuffed with food or highly intoxicated", aussie: "As full as a goog", audio: "full-as-a-goog.mp3", category: "idioms" },
   { english: "Expressing immense, smug self-satisfaction or supreme happiness", aussie: "Grinning like a shot fox", audio: "grinning-shot-fox.mp3", category: "idioms" },
   { english: "A phrase used to express absolute certainty regarding an outcome", aussie: "London to a brick", audio: "london-to-a-brick.mp3", category: "idioms" },
+  { english: "Staring out in total shock, absolute confusion, or stunned disbelief", aussie: "Stunned mullet", audio: "stunned-mullet.mp3", category: "idioms" },
+  { english: "To put in maximum physical effort or work exceptionally hard", aussie: "Put the hard yards in", audio: "hard-yards.mp3", category: "idioms" },
+
 
   // SECTION: MISCELLANEOUS SLANG
   { english: "Australia", aussie: "Straya", audio: "straya.mp3", category: "misc" },
@@ -177,4 +201,8 @@ const slangData = [
   { english: "To firmly believe, think, or assert something to be true", aussie: "Reckon", audio: "reckon.mp3", category: "misc" },
   { english: "A single alcoholic beverage opened and consumed for transit", aussie: "Roadie", audio: "roadie.mp3", category: "misc" },
   { english: "A kangaroo", aussie: "Roo", audio: "roo.mp3", category: "misc" }
+  { english: "The legendary, high-energy Australian rock band AC/DC", aussie: "Acca Dacca", audio: "acca-dacca.mp3", category: "misc" },
+  { english: "The call to arms", aussie: "Aussie Aussie Aussie!!!", audio: "Aussie Aussie Aussie, Oi Oi Oi, Aussie Aussie Aussie, Oi Oi Oi, Aussie, Oi, Aussie, Oi, Aussie Aussie Aussie, Oi Oi Oi,.mp3", category: "misc" },
+
+
 ];
