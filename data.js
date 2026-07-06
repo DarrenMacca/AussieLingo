@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * 3. HTML String Template Assembly Channel (Restored)
      */
     function createSlangCardTemplate(item) {
-        // Escaping variables to prevent layout injection breaks
+        // Escaping variables cleanly to avoid single-quote code execution crashes
         const escapedWord = String(item.word).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
         const escapedDefinition = String(item.definition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
         const escapedCategory = String(item.category).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isFlashcardMode) {
             const internalAudioButton = slangCard.querySelector('.audio-btn');
             
-            // Fixed String Capture: Pulls strictly from data attributes to protect against text culling
+            // Extract the word string payload safely before running the flip transitions
             const targetText = slangCard.getAttribute('data-spoken') || 
                                (internalAudioButton ? internalAudioButton.getAttribute('data-word') : '');
             
@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             slangCard.classList.toggle('flipped');
 
             if (willBeFlipped) {
+                // Execute a micro-delay execution track to ensure mobile browsers don't clip the audio thread
                 setTimeout(() => {
                     if (targetText && typeof window.speakAussieSlang === 'function') {
                         window.speakAussieSlang(targetText, internalAudioButton);
@@ -205,10 +206,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         const availableVoices = window.speechSynthesis.getVoices();
-        const australianVoice = availableVoices.find(v => v.lang === 'en-AU' || v.lang.includes('AU')) || availableVoices.find(v => v.lang.startsWith('en-'));
+        
+        // Scan internal system voice array layers for authentic Australian accents
+        const australianVoice = availableVoices.find(v => v.lang === 'en-AU' || v.lang.includes('AU')) || 
+                               availableVoices.find(v => v.lang.startsWith('en-'));
 
         if (australianVoice) utterance.voice = australianVoice;
-        utterance.rate = 0.88;
+        utterance.rate = 0.88; // Pace modifier to simulate authentic strine presentation channels
 
         utterance.onstart = () => {
             if (triggerButton) {
@@ -234,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.speechSynthesis.speak(utterance);
     }
 
-    // Explicit registration directly onto the global window platform layer
+    // Explicit registration directly onto the global window object layer
     window.speakAussieSlang = speakAussieSlang;
 
     // 9. Initial Execution Invocations
