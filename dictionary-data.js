@@ -1,7 +1,7 @@
 /* ==========================================================================
    AUSTRALIAN SLANG CORE ARCHITECTURE MATRIX DATASET (PART 1 OF 2)
    ========================================================================== */
-const slangData = [
+const AUSSIE_SLANG_DATA = [
   // SECTION: EVERYDAY TERMS & PEOPLE
   { english: "An uncultured or unsophisticated person", aussie: "Bogan", audio: "bogan.mp3", category: "everyday-people" },
   { english: "A funny, goofy, or nerdy person", aussie: "Dag", audio: "dag.mp3", category: "everyday-people" },
