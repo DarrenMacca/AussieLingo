@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const categoryLabel = displayCategories[item.category] || item.category;
         
-        // Clean out any slashes or multiple word variations for clean pronunciation execution
-        const spokenWordClean = item.aussie.split('/')[0].trim();
-        const safeSpokenWord = encodeURIComponent(spokenWordClean);
+        // REPAIRED: Safely split slash variations and trim individual strings
+        const firstVariant = item.aussie.split('/')[0].trim();
+        const safeSpokenWord = encodeURIComponent(firstVariant);
 
         return `
             <article class="slang-card" data-category="${item.category}">
