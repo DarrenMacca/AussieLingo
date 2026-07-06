@@ -13,40 +13,36 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * 2. Component Card Generation Engine
      */
-   function createSlangCardTemplate(item) {
-    const displayCategories = {
-        'everyday-people': '👥 Everyday People',
-        'core-phrases': '💬 Core Greetings & Phrases',
-        'Multiple Use - Same Word': '🔄 Multiple Use - Same Word',
-        'food-drink': '🍺 Food & Drink',
-        'time-places': '📍 Time & Places',
-        'clothing-items': '🩴 Clothing & Items',
-        'adjectives-modifiers': '✨ Adjectives & Modifiers',
-        'actions-verbs': '🏃 Actions & Verbs',
-        'idioms': '🦘 Metaphors & Idioms',
-        'misc': '🃏 Miscellaneous Slang'
-    };
+    function createSlangCardTemplate(item) {
+        const displayCategories = {
+            'everyday-people': '👥 Everyday People',
+            'core-phrases': '💬 Core Greetings & Phrases',
+            'Multiple Use - Same Word': '🔄 Multiple Use - Same Word',
+            'food-drink': '🍺 Food & Drink',
+            'time-places': '📍 Time & Places',
+            'clothing-items': '🩴 Clothing & Items',
+            'adjectives-modifiers': '✨ Adjectives & Modifiers',
+            'actions-verbs': '🏃 Actions & Verbs',
+            'idioms': '🦘 Metaphors & Idioms',
+            'misc': '🃏 Miscellaneous Slang'
+        };
 
-    // Safely fallback to the raw category string if an undefined key is passed
-    const categoryLabel = displayCategories[item.category] || item.category;
-
-    // Your template rendering logic continues below...
-}
-
-
-        const readableCategory = displayCategories[item.category] || '🇦🇺 Slang';
+        const categoryLabel = displayCategories[item.category] || item.category;
         
+        // Web-safe sanitization for HTML attribute data targeting
+        const safeAudioSrc = encodeURIComponent(item.audio);
+
         return `
-            <article class="slang-card">
-                <div>
-                    <span class="category-badge">${readableCategory}</span>
-                    <h3 class="aussie-term">${item.aussie}</h3>
-                    <p class="english-translation">${item.english}</p>
-                </div>
-                <div class="card-actions">
-                    <button class="audio-btn">
+            <article class="slang-card" data-category="${item.category}">
+                <div class="slang-card-header">
+                    <span class="category-badge">${categoryLabel}</span>
+                    <button class="audio-btn" onclick="playSlangAudio('${safeAudioSrc}', this)" aria-label="Play audio pronunciation">
                         <span class="btn-icon">🔊</span> Listen Intro
                     </button>
+                </div>
+                <div class="slang-card-body">
+                    <h3 class="aussie-term">${item.aussie}</h3>
+                    <p class="english-translation">${item.english}</p>
                 </div>
             </article>
         `;
@@ -56,10 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
      * 3. Core Interface Render Canvas Channel
      */
     function renderDictionaryGrid(filteredData) {
+        if (!gridRoot) return;
+
         if (!filteredData || filteredData.length === 0) {
             gridRoot.innerHTML = `
                 <div class="no-results">
-                    <p>No Aussie terms found in this track matching your criteria.</p>
+                    <p>No Aussie terms found matching your criteria.</p>
                 </div>
             `;
             return;
@@ -68,65 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 4. Multi-Layer Interactivity Pipeline Event Delegates
-     * Synchronizes and locks on native, realistic Australian dialect strings
-     */
-    gridRoot.addEventListener('click', (event) => {
-        const audioBtn = event.target.closest('.audio-btn');
-        if (!audioBtn) return;
-
-        const slangCard = audioBtn.closest('.slang-card');
-        const slangText = slangCard.querySelector('.aussie-term').textContent;
-        if (!slangText) return;
-
-        if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-        }
-
-        const utterance = new SpeechSynthesisUtterance(slangText);
-        
-        // Step A: Hardcode primary locale instruction strings
-        utterance.lang = 'en-AU';
-
-        // Step B: Deep-scan system engine directories for a high-quality regional accent
-        const voices = window.speechSynthesis.getVoices();
-        
-        // Filter specifically for "Microsoft Natasha" (Windows), "Karen/Siri" (Apple), or local Google neural streams
-        let aussieVoice = voices.find(voice => 
-            voice.lang === 'en-AU' || 
-            voice.lang === 'en_AU' ||
-            voice.name.toLowerCase().includes('australia') ||
-            voice.name.toLowerCase().includes('en-au')
-        );
-
-        if (aussieVoice) {
-            utterance.voice = aussieVoice;
-        }
-
-        // Step C: Accent modulation layers for a true blue casual flow
-        utterance.rate = 0.78;   // Slowed down a bit more so vowels naturally stretch/drawl out
-        utterance.pitch = 0.92;  // Lower pitch slightly to remove robotic, stiff high notes
-
-        // UI Visual Feedback configuration changes
-        const initialText = `<span class="btn-icon">🔊</span> Listen Intro`;
-        audioBtn.innerHTML = `<span class="btn-icon">💬</span> Speaking...`;
-        audioBtn.style.opacity = '0.7';
-
-        window.speechSynthesis.speak(utterance);
-
-        utterance.onend = () => {
-            audioBtn.innerHTML = initialText;
-            audioBtn.style.opacity = '1';
-        };
-
-        utterance.onerror = () => {
-            audioBtn.innerHTML = initialText;
-            audioBtn.style.opacity = '1';
-        };
-    });
-
-    /**
-     * 5. Navigation Control Filter Core Mechanism
+     * 4. Navigation Control Filter Core Mechanism
      */
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -141,28 +81,91 @@ document.addEventListener('DOMContentLoaded', () => {
             button.setAttribute('aria-current', 'page');
 
             const targetCategory = button.getAttribute('data-category');
-            const results = (targetCategory === 'all') 
-                ? AUSSIE_SLANG_DATA 
-                : AUSSIE_SLANG_DATA.filter(item => item.category === targetCategory);
+            
+            // Verifies if the dataset array from dictionary-data.js exists globally before filtering
+            if (typeof AUSSIE_SLANG_DATA !== 'undefined' && Array.isArray(AUSSIE_SLANG_DATA)) {
+                const results = (targetCategory === 'all') 
+                    ? AUSSIE_SLANG_DATA 
+                    : AUSSIE_SLANG_DATA.filter(item => item.category === targetCategory);
 
-            renderDictionaryGrid(results);
+                renderDictionaryGrid(results);
+            }
         });
     });
 
-    // 6. Runtime Initial Initialization Spark Execution Core Path
+    /**
+     * 5. Runtime Initial Initialization Spark Execution Core Path
+     */
     if (typeof AUSSIE_SLANG_DATA !== 'undefined' && Array.isArray(AUSSIE_SLANG_DATA)) {
         renderDictionaryGrid(AUSSIE_SLANG_DATA);
     } else {
-        gridRoot.innerHTML = `
-            <div class="no-results" style="border-color: #ef4444; color: #ef4444;">
-                <p><strong>Initialization Error:</strong> Could not load dictionary array layers securely.</p>
-            </div>
-        `;
-    }
-
-    // 7. Background Voice Loading Cache Warm-up Handshake
-    // Forces Chrome, Edge, and mobile browsers to pre-fetch voice profiles early
-    if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+        if (gridRoot) {
+            gridRoot.innerHTML = `
+                <div class="no-results" style="border-color: #ef4444; color: #ef4444;">
+                    <p><strong>Initialization Error:</strong> Could not load dictionary array layers securely from dictionary-data.js.</p>
+                </div>
+            `;
+        }
     }
 });
+
+/**
+ * ==========================================================================
+ * GLOBAL AUDIO CONTROLLER ENGINE
+ * Placed outside DOM scope so inline 'onclick' elements can access it.
+ * ==========================================================================
+ */
+let currentAudioInstance = null;
+let currentActiveButton = null;
+
+function playSlangAudio(audioFile, buttonElement) {
+    // If the exact same audio is playing, pause it and reset state
+    if (currentAudioInstance && currentActiveButton === buttonElement) {
+        if (!currentAudioInstance.paused) {
+            currentAudioInstance.pause();
+            buttonElement.classList.remove('playing');
+            buttonElement.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
+            return;
+        }
+    }
+
+    // Stop and scrub any prior instance before executing the new string path
+    if (currentAudioInstance) {
+        currentAudioInstance.pause();
+        if (currentActiveButton) {
+            currentActiveButton.classList.remove('playing');
+            currentActiveButton.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
+        }
+    }
+
+    // Path structure configuration matching your asset architecture folder
+    // Change "assets/audio/" to your absolute or relative asset path
+    const audioPath = `assets/audio/${decodeURIComponent(audioFile)}`;
+    
+    currentAudioInstance = new Audio(audioPath);
+    currentActiveButton = buttonElement;
+
+    buttonElement.classList.add('playing');
+    buttonElement.innerHTML = '<span class="btn-icon">⏳</span> Loading...'; // Loader stream feedback
+
+    currentAudioInstance.play()
+        .then(() => {
+            buttonElement.innerHTML = '<span class="btn-icon">⏸️</span> Pause';
+        })
+        .catch(error => {
+            console.error("Audio stream asset dropped 404 mismatch error:", error);
+            buttonElement.classList.remove('playing');
+            buttonElement.innerHTML = '<span class="btn-icon">❌</span> Error';
+            setTimeout(() => {
+                buttonElement.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
+            }, 1500);
+        });
+
+    // Reset indicator elements automatically once the clip successfully runs to completion
+    currentAudioInstance.onended = () => {
+        buttonElement.classList.remove('playing');
+        buttonElement.innerHTML = '<span class="btn-icon">🔊</span> Listen Intro';
+        currentAudioInstance = null;
+        currentActiveButton = null;
+    };
+
