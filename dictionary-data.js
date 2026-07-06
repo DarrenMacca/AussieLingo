@@ -200,9 +200,10 @@ const slangData = [
   { english: "Earned money or cash", aussie: "Quid", audio: "quid.mp3", category: "misc" },
   { english: "To firmly believe, think, or assert something to be true", aussie: "Reckon", audio: "reckon.mp3", category: "misc" },
   { english: "A single alcoholic beverage opened and consumed for transit", aussie: "Roadie", audio: "roadie.mp3", category: "misc" },
+     { english: "The legendary, high-energy Australian rock band AC/DC", aussie: "Acca Dacca", audio: "acca-dacca.mp3", category: "misc" },
+  { english: "The call to arms", aussie: "Aussie Aussie Aussie Oi Oi Oi", audio: "aussie-chant.mp3", category: "misc" },
   { english: "A kangaroo", aussie: "Roo", audio: "roo.mp3", category: "misc" }
-  { english: "The legendary, high-energy Australian rock band AC/DC", aussie: "Acca Dacca", audio: "acca-dacca.mp3", category: "misc" },
-  { english: "The call to arms", aussie: "Aussie Aussie Aussie!!!", audio: "Aussie Aussie Aussie, Oi Oi Oi, Aussie Aussie Aussie, Oi Oi Oi, Aussie, Oi, Aussie, Oi, Aussie Aussie Aussie, Oi Oi Oi,.mp3", category: "misc" },
+
 
 
 ];
