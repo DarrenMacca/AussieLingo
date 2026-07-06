@@ -90,7 +90,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         `;
     }
 
-       /**
+        /**
      * 3. Core Interface Render Canvas Channel
      */
     function renderDictionaryGrid() {
@@ -147,10 +147,10 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
     if (modeCheckbox) {
         modeCheckbox.addEventListener('change', (e) => {
             isFlashcardMode = e.target.checked;
-            const appWrapper = document.querySelector('.app-wrapper');
             
+            // Fixed: Toggle class on both parent nodes to guarantee fallback CSS catches it
+            const appWrapper = document.querySelector('.app-wrapper');
             if (isFlashcardMode) {
-                // FIXED: Adds class to wrapper node to match layout query logic
                 if (appWrapper) appWrapper.classList.add('flashcard-active');
                 gridRoot.classList.add('flashcard-active');
             } else {
@@ -164,37 +164,44 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
     }
 
     /**
-     * 6. Live Container Event Delegate for Flashcard 3D Rotation Triggers
+     * 6. Live Container Event Delegate for Flashcard 3D Rotation & Audio Channels
      */
     gridRoot.addEventListener('click', (event) => {
-        if (!isFlashcardMode) return;
-
-        // Skip flip handling if the user explicitly clicked the audio play button inside a card
-        if (event.target.closest('.audio-btn')) return;
-
+        const audioBtn = event.target.closest('.audio-btn');
         const slangCard = event.target.closest('.slang-card');
+        
         if (!slangCard) return;
 
-        // Toggle rotation state animation handles on clicked card node
-        slangCard.classList.toggle('flipped');
+        // --- AUDIO TRIGGER PIPELINE ---
+        if (audioBtn) {
+            // Stop the click from bubbling up and flipping the card!
+            event.stopPropagation();
+            event.preventDefault();
 
-        const isFlipped = slangCard.classList.contains('flipped');
-        const textTarget = slangCard.getAttribute('data-spoken') || slangCard.querySelector('.aussie-word')?.textContent;
-        const internalAudioButton = slangCard.querySelector('.audio-btn');
+            // Safely locate the string to speak directly from the nearest text track
+            const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
+            const targetText = audioBtn.getAttribute('data-word') || (wordElement ? wordElement.textContent : '');
 
-        if (isFlipped && textTarget && internalAudioButton) {
-            // Card flipped to Aussie side -> Execute drawl vocalisation engine path
-            if (typeof speakAussieSlang === 'function') {
-                speakAussieSlang(textTarget, internalAudioButton);
+            if (targetText && typeof speakAussieSlang === 'function') {
+                speakAussieSlang(targetText, audioBtn);
             }
-        } else {
-            // Card flipped back to English side -> Kill voices silently immediately
-            if (window.speechSynthesis) {
+            return; // Exit completely to avoid flipping the card
+        }
+
+        // --- FLASHCARD FLIP PIPELINE ---
+        if (isFlashcardMode) {
+            slangCard.classList.toggle('flipped');
+
+            const isFlipped = slangCard.classList.contains('flipped');
+            
+            // If flipped to the English side, cancel running audio paths immediately
+            if (!isFlipped && window.speechSynthesis) {
                 window.speechSynthesis.cancel();
-            }
-            if (internalAudioButton) {
-                internalAudioButton.classList.remove('playing');
-                internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
+                const activeAudioBtns = slangCard.querySelectorAll('.audio-btn');
+                activeAudioBtns.forEach(btn => {
+                    btn.classList.remove('playing');
+                    btn.innerHTML = '<span class="btn-icon">🔊</span> Listen';
+                });
             }
         }
     });
@@ -207,5 +214,6 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
     }
 });
+
 
 
