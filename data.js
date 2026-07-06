@@ -139,14 +139,13 @@ function playSlangAudio(audioFile, buttonElement) {
     }
 
     // Path structure configuration matching your asset architecture folder
-    // Change "assets/audio/" to your absolute or relative asset path
     const audioPath = `assets/audio/${decodeURIComponent(audioFile)}`;
     
     currentAudioInstance = new Audio(audioPath);
     currentActiveButton = buttonElement;
 
     buttonElement.classList.add('playing');
-    buttonElement.innerHTML = '<span class="btn-icon">⏳</span> Loading...'; // Loader stream feedback
+    buttonElement.innerHTML = '<span class="btn-icon">⏳</span> Loading...'; 
 
     currentAudioInstance.play()
         .then(() => {
@@ -168,4 +167,4 @@ function playSlangAudio(audioFile, buttonElement) {
         currentAudioInstance = null;
         currentActiveButton = null;
     };
-
+}
