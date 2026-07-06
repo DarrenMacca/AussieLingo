@@ -1,258 +1,476 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Core DOM Element Bindings
-    const gridRoot = document.getElementById('slang-grid-root');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const modeCheckbox = document.getElementById('flashcard-mode-checkbox');
-
-    // 2. Global State Parameters
-    let activeCategory = 'all';
-    let isFlashcardMode = modeCheckbox ? modeCheckbox.checked : false;
-
-    /**
-     * 3. HTML String Template Assembly Channel
-     */
-    function createSlangCardTemplate(item) {
-        // UNIVERSAL LOOKUP MATRIX: Checks every possible key variant in your array
-        const cleanWord = item.word || item.term || item.lingo || item.slang || item.phrase || item.title || "No Word Found";
-        const cleanDefinition = item.definition || item.meaning || item.translation || item.desc || "No definition available.";
-        const cleanCategory = item.category || "General";
-
-        const escapedWord = String(cleanWord).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        const escapedDefinition = String(cleanDefinition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        const escapedCategory = String(cleanCategory).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-
-        const badgeMarkup = `<span class="category-badge">${escapedCategory}</span>`;
-        const audioButtonMarkup = `
-            <button class="audio-btn" data-word="${escapedWord}" aria-label="Listen to pronunciation of ${escapedWord}">
-                <span class="btn-icon">🔊</span> Listen
-            </button>
-        `;
-
-        if (isFlashcardMode) {
-            return `
-                <div class="slang-card" data-spoken="${escapedWord}" style="width: 100%; display: block; padding: 0;">
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front">
-                            <div class="slang-card-header">
-                                ${badgeMarkup}
-                                ${audioButtonMarkup}
-                            </div>
-                            <div class="slang-card-body">
-                                <h3 class="aussie-word">${escapedWord}</h3>
-                            </div>
-                        </div>
-                        <div class="flashcard-back">
-                            <div class="slang-card-header">
-                                <span class="category-badge" style="background: rgba(255,255,255,0.1)">Definition</span>
-                            </div>
-                            <div class="slang-card-body">
-                                <p class="english-translation">${escapedDefinition}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        return `
-            <div class="slang-card" style="width: 100%;">
-                <div class="slang-card-header">
-                    ${badgeMarkup}
-                    ${audioButtonMarkup}
-                </div>
-                <div class="slang-card-body">
-                    <h3 class="aussie-word">${escapedWord}</h3>
-                    <p class="english-translation">${escapedDefinition}</p>
-                </div>
-            </div>
-        `;
-    }
-
-    /**
-     * 4. Core Interface Render Canvas Channel
-     */
-    function renderDictionaryGrid() {
-        if (!gridRoot) return;
-
-        if (typeof AUSSIE_SLANG_DATA === 'undefined' || !Array.isArray(AUSSIE_SLANG_DATA)) {
-            gridRoot.innerHTML = `
-                <div class="no-results" style="border-color: #ef4444; color: #ef4444;">
-                    <p><strong>Initialization Error:</strong> Could not load array layer data safely from dictionary-data.js.</p>
-                </div>
-            `;
-            return;
-        }
-
-        const filteredData = (activeCategory === 'all')
-            ? AUSSIE_SLANG_DATA
-            : AUSSIE_SLANG_DATA.filter(item => item.category === activeCategory);
-
-        if (filteredData.length === 0) {
-            gridRoot.innerHTML = `
-                <div class="no-results">
-                    <p>No Aussie terms found matching your criteria.</p>
-                </div>
-            `;
-            return;
-        }
-
-        gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
-    }
-
-    /**
-     * 5. Navigation Control Filter Core Mechanism
-     */
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (button.classList.contains('active')) return;
-
-            filterButtons.forEach(btn => {
-                btn.classList.remove('active');
-                btn.removeAttribute('aria-current');
-            });
-
-            button.classList.add('active');
-            button.setAttribute('aria-current', 'page');
-
-            activeCategory = button.getAttribute('data-category');
-            renderDictionaryGrid();
-        });
-    });
-
-    /**
-     * 6. Interactive Flashcard Mode State Change Delegate Switch
-     */
-    if (modeCheckbox) {
-        modeCheckbox.addEventListener('change', (e) => {
-            isFlashcardMode = e.target.checked;
-            const appWrapper = document.querySelector('.app-wrapper');
-            
-            if (isFlashcardMode) {
-                if (appWrapper) appWrapper.classList.add('flashcard-active');
-                gridRoot.classList.add('flashcard-active');
-            } else {
-                if (appWrapper) appWrapper.classList.remove('flashcard-active');
-                gridRoot.classList.remove('flashcard-active');
-                if (window.speechSynthesis) window.speechSynthesis.cancel();
-            }
-            
-            renderDictionaryGrid();
-        });
-    }
-
-    /**
-     * 7. Live Container Event Delegate for Flashcard 3D Rotation & Audio Channels
-     */
-    gridRoot.addEventListener('click', (event) => {
-        const audioBtn = event.target.closest('.audio-btn');
-        const slangCard = event.target.closest('.slang-card');
-        
-        if (!slangCard) return;
-
-        // --- AUDIO TRIGGER PIPELINE (Speaker Button Manual Taps) ---
-        if (audioBtn) {
-            event.stopPropagation();
-            event.preventDefault();
-
-            const targetText = audioBtn.getAttribute('data-word');
-
-            if (targetText && typeof window.speakAussieSlang === 'function') {
-                window.speakAussieSlang(targetText, audioBtn);
-            }
-            return;
-        }
-
-        // --- FLASHCARD FLIP PIPELINE (Card Space Tapped) ---
-        if (isFlashcardMode) {
-            const internalAudioButton = slangCard.querySelector('.audio-btn');
-            
-            // Pull text directly from the custom data attribute set in Part 1
-            const targetText = slangCard.getAttribute('data-spoken') || 
-                               (internalAudioButton ? internalAudioButton.getAttribute('data-word') : '');
-            
-            const willBeFlipped = !slangCard.classList.contains('flipped');
-
-            slangCard.classList.toggle('flipped');
-
-            if (willBeFlipped) {
-                setTimeout(() => {
-                    if (targetText && typeof window.speakAussieSlang === 'function') {
-                        window.speakAussieSlang(targetText, internalAudioButton);
-                    }
-                }, 50);
-            } else {
-                if (window.speechSynthesis) {
-                    window.speechSynthesis.cancel();
-                }
-                if (internalAudioButton) {
-                    internalAudioButton.classList.remove('playing');
-                    internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-                }
-            }
-        }
-    });
-
-    /**
-     * 8. Text-to-Speech Engine Definition
-     */
-    function speakAussieSlang(textToSpeak, triggerButton) {
-        if (!window.speechSynthesis) return;
-
-        window.speechSynthesis.cancel();
-
-        document.querySelectorAll('.audio-btn.playing').forEach(btn => {
-            btn.classList.remove('playing');
-            btn.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-        });
-
-        const cleanText = String(textToSpeak).trim();
-        if (!cleanText || cleanText === 'undefined' || cleanText === 'No Word Found') return;
-
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        const availableVoices = window.speechSynthesis.getVoices();
-        const australianVoice = availableVoices.find(v => v.lang === 'en-AU' || v.lang.includes('AU')) || availableVoices.find(v => v.lang.startsWith('en-'));
-
-        if (australianVoice) utterance.voice = australianVoice;
-        utterance.rate = 0.88;
-
-        utterance.onstart = () => {
-            if (triggerButton) {
-                triggerButton.classList.add('playing');
-                triggerButton.innerHTML = '<span class="btn-icon">⏳</span> Talkin...';
-            }
-        };
-
-        utterance.onend = () => {
-            if (triggerButton) {
-                triggerButton.classList.remove('playing');
-                triggerButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-            }
-        };
-
-        utterance.onerror = () => {
-            if (triggerButton) {
-                triggerButton.classList.remove('playing');
-                triggerButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-            }
-        };
-
-        window.speechSynthesis.speak(utterance);
-    }
-
-    // Explicit registration directly onto the global window platform layer
-    window.speakAussieSlang = speakAussieSlang;
-
-    // 9. Initial Execution Invocations
-    renderDictionaryGrid();
-
-    if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-        window.speechSynthesis.onvoiceschanged = () => {
-            window.speechSynthesis.getVoices();
-        };
-    }
-}); // Ends DOMContentLoaded Hook
-
-
-
+/* ==========================================================================
+   SECTION 1: SYSTEM CORE DESIGN TOKENS & ROOT SETUP
+   ========================================================================== */
+:root {
+    /* Main Deep Royal Blue Theme Matrix Color Variables */
+    --primary-deep-royal: #0a194f;
+    --primary-royal-mid: #102a83;
+    --primary-royal-light: #1b42c5;
+    --primary-neon-glow: #3b66ff;
+    
+    /* Pure Glassmorphism Transparency Layers Spec System */
+    --glass-bg-primary: rgba(10, 25, 79, 0.25);
+    --glass-bg-secondary: rgba(16, 42, 131, 0.4);
+    --glass-bg-cards: rgba(255, 255, 255, 0.04);
+    --glass-border-light: rgba(255, 255, 255, 0.12);
+    --glass-border-heavy: rgba(255, 255, 255, 0.22);
+    --glass-blur-radius: 16px;
+    
+    /* High contrast text definitions */
+    --text-pure-white: #ffffff;
+    --text-muted-silver: #cbd5e1;
+    --text-dark-subtle: #94a3b8;
+    
+    /* Layout Variables */
+    --interface-max-width: 1440px;
+    --interface-padding: 2rem;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-rounded-lg: 16px;
+    --radius-rounded-sm: 8px;
 }
-}); // Ends DOMContentLoaded Hook
+
+/* Base Document Canvas Normalizations */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #030712;
+    color: var(--text-pure-white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   SECTION 2: GLASSMORPHIC AMBIENT BACKGROUND GLOW BLOBS
+   ========================================================================== */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    z-index: 0;
+    opacity: 0.45;
+    pointer-events: none;
+}
+.blob-1 {
+    top: -10%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--primary-royal-light) 0%, rgba(0,0,0,0) 80%);
+}
+.blob-2 {
+    bottom: 20%;
+    right: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--primary-deep-royal) 0%, rgba(0,0,0,0) 80%);
+}
+.blob-3 {
+    top: 40%;
+    left: 35%;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, #1e1b4b 0%, rgba(0,0,0,0) 80%);
+}
+
+/* App Wrapper Master Scaffold */
+.app-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--interface-max-width);
+    margin: 0 auto;
+    padding: var(--interface-padding);
+}
+
+/* ==========================================================================
+   SECTION 3: HEADER & FOOTER UI COMPONENTS
+   ========================================================================== */
+.app-header {
+    background: var(--glass-bg-primary);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    border: 1px solid var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+    padding: 3rem 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+.brand-tag {
+    display: inline-block;
+    background: rgba(59, 102, 255, 0.25);
+    border: 1px solid var(--primary-neon-glow);
+    color: var(--text-pure-white);
+    padding: 0.35rem 0.85rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+.app-header h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ffffff 40%, var(--text-muted-silver) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.app-header p {
+    color: var(--text-muted-silver);
+    font-size: 1.1rem;
+    max-width: 800px;
+}
+
+.app-footer {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--glass-border-light);
+    color: var(--text-dark-subtle);
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   SECTION 4: CORE INTERFACE LAYOUT SHELL ARCHITECTURE
+   ========================================================================== */
+.app-layout-shell {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Sidebar Wrapper Panels */
+.sidebar-wrapper {
+    position: sticky;
+    top: 2rem;
+    z-index: 10;
+}
+.sidebar-sticky-panel {
+    background: var(--glass-bg-primary);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    border: 1px solid var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+    padding: 2rem 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    
+    /* Scroll-Safe Constraints for Small Laptops & Screen Heights */
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+/* WebKit scroll track overrides */
+.sidebar-sticky-panel::-webkit-scrollbar {
+    width: 4px;
+}
+.sidebar-sticky-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+.sidebar-header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border-light);
+}
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+.sidebar-header p {
+    font-size: 0.85rem;
+    color: var(--text-dark-subtle);
+}
+
+/* Navigation Interactive Items */
+.filter-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.filter-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.85rem 1.15rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-rounded-sm);
+    color: var(--text-muted-silver);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+.btn-icon {
+    margin-right: 0.85rem;
+    font-size: 1.1rem;
+}
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-pure-white);
+    transform: translateX(4px);
+}
+.filter-btn.active {
+    background: var(--glass-bg-secondary);
+    border-color: var(--glass-border-heavy);
+    color: var(--text-pure-white);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(16, 42, 131, 0.4);
+}
+
+/* ==========================================================================
+   SECTION 5: DISPLAY RESPONSIVE GRID & CARDS
+   ========================================================================== */
+.slang-responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Glassmorphic Data Cards */
+.slang-card {
+    background: var(--glass-bg-cards);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    border: 1px solid var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.25rem;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.slang-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--glass-border-heavy);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 30px rgba(16, 42, 131, 0.3);
+}
+
+/* Fixed Layout Header Component */
+.slang-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}
+
+/* Internal Card Components */
+.category-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-dark-subtle);
+    border: 1px solid var(--glass-border-light);
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.02);
+    white-space: nowrap;
+}
+
+.slang-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Synced class name layout links */
+.aussie-term, .aussie-word {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-pure-white);
+    letter-spacing: -0.01em;
+}
+
+.english-translation {
+    color: var(--text-muted-silver);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   SECTION 6: INTERACTIVE PRONUNCIATION CONTROLS
+   ========================================================================== */
+.audio-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    background: rgba(59, 102, 255, 0.12);
+    border: 1px solid rgba(59, 102, 255, 0.3);
+    border-radius: var(--radius-rounded-sm);
+    color: var(--text-pure-white);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    white-space: nowrap;
+}
+
+.audio-btn:hover {
+    background: var(--primary-royal-light);
+    border-color: var(--primary-neon-glow);
+    box-shadow: 0 0 12px rgba(59, 102, 255, 0.5);
+}
+
+.audio-btn:active {
+    transform: scale(0.96);
+}
+
+.audio-btn.playing {
+    background: rgba(16, 42, 131, 0.6);
+    border-color: var(--primary-neon-glow);
+    box-shadow: inset 0 0 8px rgba(59, 102, 255, 0.4);
+}
+
+.btn-icon {
+    font-size: 1rem;
+}
+
+/* Empty State Filter Messaging Styles */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dark-subtle);
+    font-size: 1.1rem;
+    background: var(--glass-bg-cards);
+    border: 1px dashed var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+}
+
+
+/* ==========================================================================
+SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
+========================================================================== */
+@media (max-width: 1024px) {
+.app-layout-shell {
+grid-template-columns: 1fr;
+} [1]
+.sidebar-wrapper {
+position: relative;
+top: 0;
+}
+.filter-navigation {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 0.5rem;
+}
+}
+@media (max-width: 640px) {
+.app-wrapper {
+padding: 1rem;
+}
+.app-header {
+padding: 2rem 1.5rem;
+}
+.app-header h1 {
+font-size: 2rem;
+}
+.filter-navigation {
+grid-template-columns: 1fr;
+}
+.slang-responsive-grid {
+grid-template-columns: 1fr;
+}
+}
+/* ==========================================================================
+   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE
+   ========================================================================== */
+/* Sets explicit spatial 3D perspective to contain absolute cards grid nodes */
+.flashcard-active .slang-card {
+    perspective: 1200px; /* Slight bump for crisp depth perspective */
+    cursor: pointer;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    height: 220px; /* Secure height boundary blocks sizing jumps */
+}
+
+/* Inner flipper layout element wrapper */
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+/* 180 degree rotation trigger state handle */
+.flashcard-active .slang-card.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+/* Face element containers shared styles */
+.flashcard-front, .flashcard-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Guards legacy Safari layout engines */
+    backface-visibility: hidden;
+    border-radius: var(--radius-rounded-lg);
+    border: 1px solid var(--glass-border-light);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    
+    /* NEW: Forces GPU layer rendering to stop text from bleeding through back */
+    transform: translateZ(0);
+}
+
+/* Front view initialization settings (Definitions) */
+.flashcard-front {
+    background: var(--glass-bg-cards);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    color: var(--text-pure-white);
+    z-index: 2; /* Forces front face forward */
+}
+
+/* Reverse view initialization settings (Reveals terminology) */
+.flashcard-back {
+    background: rgba(16, 42, 131, 0.25);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    border-color: var(--glass-border-heavy);
+    transform: rotateY(180deg) translateZ(1px); /* Bumped 1px forward in 3D grid space to avoid flat plane clipping */
+}
+
+.flashcard-active .slang-card-body {
+    margin-top: auto;
+    margin-bottom: auto;
+}
