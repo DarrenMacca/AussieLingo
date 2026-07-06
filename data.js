@@ -163,7 +163,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         });
     }
 
-        /**
+           /**
      * 6. Live Container Event Delegate for Flashcard 3D Rotation & Audio Channels
      */
     gridRoot.addEventListener('click', (event) => {
@@ -182,8 +182,11 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
             const wordElement = slangCard.querySelector('.aussie-word') || slangCard.querySelector('.aussie-term');
             const targetText = audioBtn.getAttribute('data-word') || (wordElement ? wordElement.textContent : '');
 
-            if (targetText && typeof speakAussieSlang === 'function') {
-                speakAussieSlang(targetText, audioBtn);
+            // SAFE ACCESS FIX: Checks for the function on the global window context directly
+            const globalSpeakEngine = window.speakAussieSlang || speakAussieSlang;
+
+            if (targetText && typeof globalSpeakEngine === 'function') {
+                globalSpeakEngine(targetText, audioBtn);
             }
             return; // Clean functional exit
         }
@@ -205,6 +208,7 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
             }
         }
     });
+
 
 
     // 7. Initial Runtime Boot Trigger Execution Path
