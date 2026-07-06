@@ -23,6 +23,7 @@
     
     /* Layout Variables */
     --interface-max-width: 1440px;
+    --interface-padding: 2rem;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --radius-rounded-lg: 16px;
     --radius-rounded-sm: 8px;
@@ -33,6 +34,9 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+html, body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -63,21 +67,21 @@ body {
     left: -10%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, var(--primary-royal-light) 0%, transparent 80%);
+    background: radial-gradient(circle, var(--primary-royal-light) 0%, rgba(0,0,0,0) 80%);
 }
 .blob-2 {
     bottom: 20%;
     right: -5%;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, var(--primary-deep-royal) 0%, transparent 80%);
+    background: radial-gradient(circle, var(--primary-deep-royal) 0%, rgba(0,0,0,0) 80%);
 }
 .blob-3 {
     top: 40%;
     left: 35%;
     width: 450px;
     height: 450px;
-    background: radial-gradient(circle, #1e1b4b 0%, transparent 80%);
+    background: radial-gradient(circle, #1e1b4b 0%, rgba(0,0,0,0) 80%);
 }
 
 /* App Wrapper Master Scaffold */
@@ -87,7 +91,7 @@ body {
     width: 100%;
     max-width: var(--interface-max-width);
     margin: 0 auto;
-    padding: 2rem;
+    padding: var(--interface-padding);
 }
 
 /* ==========================================================================
@@ -164,7 +168,23 @@ body {
     border-radius: var(--radius-rounded-lg);
     padding: 2rem 1.5rem;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    
+    /* Scroll-Safe Constraints for Small Device Viewports */
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
+
+/* WebKit scroll track overrides */
+.sidebar-sticky-panel::-webkit-scrollbar {
+    width: 4px;
+}
+.sidebar-sticky-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
 .sidebar-header {
     margin-bottom: 1.75rem;
     padding-bottom: 1rem;
@@ -217,8 +237,6 @@ body {
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(16, 42, 131, 0.4);
 }
-
-
 /* ==========================================================================
    SECTION 5: DISPLAY RESPONSIVE GRID & CARDS
    ========================================================================== */
@@ -281,8 +299,8 @@ body {
     gap: 0.5rem;
 }
 
-/* Fixed selector name mismatch to align with data.js templates */
-.aussie-word {
+/* Synced class names perfectly across both CSS and data.js rendering pipelines */
+.aussie-term, .aussie-word {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-pure-white);
@@ -295,6 +313,100 @@ body {
     line-height: 1.5;
 }
 
+/* ==========================================================================
+   SECTION 6: INTERACTIVE PRONUNCIATION CONTROLS
+   ========================================================================== */
+.audio-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    background: rgba(59, 102, 255, 0.12);
+    border: 1px solid rgba(59, 102, 255, 0.3);
+    border-radius: var(--radius-rounded-sm);
+    color: var(--text-pure-white);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    white-space: nowrap;
+}
+
+.audio-btn:hover {
+    background: var(--primary-royal-light);
+    border-color: var(--primary-neon-glow);
+    box-shadow: 0 0 12px rgba(59, 102, 255, 0.5);
+}
+
+.audio-btn:active {
+    transform: scale(0.96);
+}
+
+.audio-btn.playing {
+    background: rgba(16, 42, 131, 0.6);
+    border-color: var(--primary-neon-glow);
+    box-shadow: inset 0 0 8px rgba(59, 102, 255, 0.4);
+}
+
+.btn-icon {
+    font-size: 1rem;
+}
+
+/* Empty State Filter Messaging Styles */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dark-subtle);
+    font-size: 1.1rem;
+    background: var(--glass-bg-cards);
+    border: 1px dashed var(--glass-border-light);
+    border-radius: var(--radius-rounded-lg);
+}
+
+/* ==========================================================================
+   SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .app-layout-shell {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar-wrapper {
+        position: relative;
+        top: 0;
+    }
+    
+    .filter-navigation {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-wrapper {
+        padding: 1rem;
+    }
+    
+    .app-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .app-header h1 {
+        font-size: 2rem;
+    }
+    
+    .filter-navigation {
+        grid-template-columns: 1fr;
+    }
+    
+    .slang-responsive-grid {
+        grid-template-columns: 1fr;
+    }
+}
 /* ==========================================================================
    SECTION 6: INTERACTIVE PRONUNCIATION CONTROLS
    ========================================================================== */
