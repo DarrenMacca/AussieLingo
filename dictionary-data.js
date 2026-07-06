@@ -27,6 +27,8 @@ const AUSSIE_SLANG_DATA = [
   { english: "An uncoordinated, clumsy, or foolish person", aussie: "Drill", audio: "drill.mp3", category: "everyday-people" },
   { english: "A hard-working, honest, and reliable working-class individual", aussie: "Battler", audio: "battler.mp3", category: "everyday-people" },
   { english: "An eccentric, wild, or slightly crazy character", aussie: "Droaff", audio: "droaff.mp3", category: "everyday-people" },
+   { english: "Yes", aussie: "Nah Yeah", audio: "nah yeah.mp3", category: "everyday-people" },
+{ english: "No", aussie: "Yeah Nah", audio: "yeah no.mp3", category: "everyday-people" },
   { english: "A complaining or whining person", aussie: "Whinger", audio: "whinger.mp3", category: "everyday-people" },
 
 
