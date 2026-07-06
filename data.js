@@ -70,49 +70,59 @@ document.addEventListener('DOMContentLoaded', () => {
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
 
-    /**
+        /**
      * 4. Multi-Layer Interactivity Pipeline Event Delegates
-     * Single shared container listener managing media events and interactions securely
+     * Uses Built-in Browser Text-to-Speech Engine
      */
     gridRoot.addEventListener('click', (event) => {
-        // Bubble up detection to verify if the clicked element is our audio action button
+        // Detect if the clicked element is our audio button
         const audioBtn = event.target.closest('.audio-btn');
         if (!audioBtn) return;
 
-        const audioFile = audioBtn.getAttribute('data-audio-file');
-        if (!audioFile) return;
+        // Extract the raw slang term text directly out of the active card markup
+        const slangCard = audioBtn.closest('.slang-card');
+        const slangText = slangCard.querySelector('.aussie-term').textContent;
+        if (!slangText) return;
 
-        // Immediately pause and terminate any pre-existing playing audio track
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
+        // Terminate any audio tracks currently outputting to speakers
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
         }
 
-        // Construct standard audio target file path routing pointing to your asset directory
-        const audioPath = `audio/${audioFile}`;
-        currentAudio = new Audio(audioPath);
+        // Initialize standard speech parameters
+        const utterance = new SpeechSynthesisUtterance(slangText);
+        
+        // Scan the client system engine profiles to request a native Australian voice
+        const voices = window.speechSynthesis.getVoices();
+        const aussieVoice = voices.find(voice => voice.lang === 'en-AU');
+        if (aussieVoice) {
+            utterance.voice = aussieVoice;
+        }
 
-        // UI Feedback Indicator State shifts
-        const initialText = audioBtn.innerHTML;
-        audioBtn.innerHTML = `<span class="btn-icon">⏳</span> Loading...`;
+        // Slow down playback speed slightly for global pronunciation clarity
+        utterance.rate = 0.85;
+        utterance.pitch = 1.0;
+
+        // Provide immediate visual feedback state adjustments to the interface
+        const initialText = `<span class="btn-icon">🔊</span> Listen Intro`;
+        audioBtn.innerHTML = `<span class="btn-icon">💬</span> Speaking...`;
         audioBtn.style.opacity = '0.7';
 
-        currentAudio.play()
-            .then(() => {
-                audioBtn.innerHTML = `<span class="btn-icon">🔊</span> Playing...`;
-            })
-            .catch((error) => {
-                console.warn(`Audio track error at ${audioPath}: File may not exist yet in your repository.`, error);
-                audioBtn.innerHTML = `<span class="btn-icon">❌</span> File Missing`;
-            })
-            .finally(() => {
-                audioBtn.style.opacity = '1';
-                // Automatically reset button copy formatting back to original layout specification after track ends
-                currentAudio.onended = () => {
-                    audioBtn.innerHTML = initialText;
-                };
-            });
+        // Trigger voice output
+        window.speechSynthesis.speak(utterance);
+
+        // Reset the interface interactive layouts clean when pronunciation concludes
+        utterance.onend = () => {
+            audioBtn.innerHTML = initialText;
+            audioBtn.style.opacity = '1';
+        };
+
+        utterance.onerror = () => {
+            audioBtn.innerHTML = initialText;
+            audioBtn.style.opacity = '1';
+        };
     });
+
 
     /**
      * 5. Navigation Control Filter Core Mechanism
