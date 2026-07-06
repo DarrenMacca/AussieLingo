@@ -1,71 +1,97 @@
+/**
+ * ==========================================================================
+ * THE GREAT AUSSIE SLANG DICTIONARY ENGINE
+ * Core Runtime Application Pipeline Script (Ultimate en-AU Accent Filter)
+ * ==========================================================================
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Core DOM Element Bindings
+    // 1. Core DOM Element Cache Handles
     const gridRoot = document.getElementById('slang-grid-root');
     const filterButtons = document.querySelectorAll('.filter-btn');
     const modeCheckbox = document.getElementById('flashcard-mode-checkbox');
 
-    // 2. Global State Parameters
+    // Runtime state tracking flags
+    let isFlashcardMode = false;
     let activeCategory = 'all';
-    let isFlashcardMode = modeCheckbox ? modeCheckbox.checked : false;
 
     /**
-     * 3. HTML String Template Assembly Channel (Restored & Fixed Syntax)
+     * 2. Component Card Generation Engine
      */
     function createSlangCardTemplate(item) {
-        // FIXED SYNTAX: Properly escapes single quotes using valid string properties
-        const escapedWord = String(item.word).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        const escapedDefinition = String(item.definition).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        const escapedCategory = String(item.category).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+        const displayCategories = {
+            'everyday-people': '👥 Everyday People',
+            'core-phrases': '💬 Core Greetings & Phrases',
+            'Multiple Use - Same Word': '🔄 Multiple Use - Same Word',
+            'food-drink': '🍺 Food & Drink',
+            'time-places': '📍 Time & Places',
+            'clothing-items': '🩴 Clothing & Items',
+            'adjectives-modifiers': '✨ Adjectives & Modifiers',
+            'actions-verbs': '🏃 Actions & Verbs',
+            'idioms': '🦘 Metaphors & Idioms',
+            'misc': '🃏 Miscellaneous Slang'
+        };
 
-        const badgeMarkup = `<span class="category-badge">${escapedCategory}</span>`;
-        const audioButtonMarkup = `
-            <button class="audio-btn" data-word="${escapedWord}" aria-label="Listen to pronunciation of ${escapedWord}">
-                <span class="btn-icon">🔊</span> Listen
-            </button>
-        `;
+        const categoryLabel = displayCategories[item.category] || item.category;
+        
+        // Split variations safely if a word holds multiple slash slangs
+        const splitArray = item.aussie.split('/');
+const firstVariant = splitArray[0].trim();
+const safeSpokenWord = encodeURIComponent(firstVariant);
 
-        if (isFlashcardMode) {
+        // Standard Regular Dictionary Card Layout
+        if (!isFlashcardMode) {
             return `
-                <div class="slang-card" data-spoken="${escapedWord}" style="width: 100%; display: block; padding: 0;">
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front">
-                            <div class="slang-card-header">
-                                ${badgeMarkup}
-                                ${audioButtonMarkup}
-                            </div>
-                            <div class="slang-card-body">
-                                <h3 class="aussie-word">${escapedWord}</h3>
-                            </div>
-                        </div>
-                        <div class="flashcard-back">
-                            <div class="slang-card-header">
-                                <span class="category-badge" style="background: rgba(255,255,255,0.1)">Definition</span>
-                            </div>
-                            <div class="slang-card-body">
-                                <p class="english-translation">${escapedDefinition}</p>
-                            </div>
-                        </div>
+                <article class="slang-card" data-category="${item.category}">
+                    <div class="slang-card-header">
+                        <span class="category-badge">${categoryLabel}</span>
+                        <button class="audio-btn" onclick="speakAussieSlang('${safeSpokenWord}', this); event.stopPropagation();" aria-label="Play audio pronunciation">
+                            <span class="btn-icon">🔊</span> Listen Intro
+                        </button>
                     </div>
-                </div>
+                    <div class="slang-card-body">
+                        <h3 class="aussie-term">${item.aussie}</h3>
+                        <p class="english-translation">${item.english}</p>
+                    </div>
+                </article>
             `;
         }
 
+        // Upgraded Double-Sided 3D Flashcard Mode Layout
         return `
-            <div class="slang-card" style="width: 100%;">
-                <div class="slang-card-header">
-                    ${badgeMarkup}
-                    ${audioButtonMarkup}
+            <article class="slang-card" data-category="${item.category}" data-spoken="${safeSpokenWord}">
+                <div class="flashcard-inner">
+                    <!-- FRONT FACE LAYER PANEL: Standard English translation display -->
+                    <div class="flashcard-front">
+                        <div class="slang-card-header">
+                            <span class="category-badge">${categoryLabel}</span>
+                            <span style="font-size: 0.8rem; color: var(--text-dark-subtle); font-weight: 600;">❔ Definition</span>
+                        </div>
+                        <div class="slang-card-body">
+                            <p class="english-translation" style="font-size: 1.1rem; text-align: center; font-weight: 500;">${item.english}</p>
+                        </div>
+                        <div style="font-size: 0.75rem; text-align: center; color: var(--text-dark-subtle);">Click Card to Flip</div>
+                    </div>
+                    <!-- BACK FACE LAYER PANEL: Aussie slang term reveal display with active speaker triggers -->
+                    <div class="flashcard-back">
+                        <div class="slang-card-header">
+                            <span class="category-badge">${categoryLabel}</span>
+                            <button class="audio-btn" aria-label="Listen audio profile" style="pointer-events: none;">
+                                <span class="btn-icon">🔊</span>
+                            </button>
+                        </div>
+                        <div class="slang-card-body">
+                            <h3 class="aussie-term" style="font-size: 1.8rem; text-align: center; color: var(--primary-neon-glow);">${item.aussie}</h3>
+                        </div>
+                        <div style="font-size: 0.75rem; text-align: center; color: var(--text-dark-subtle);">Click Card to Reset</div>
+                    </div>
                 </div>
-                <div class="slang-card-body">
-                    <h3 class="aussie-word">${escapedWord}</h3>
-                    <p class="english-translation">${escapedDefinition}</p>
-                </div>
-            </div>
+            </article>
         `;
     }
 
     /**
-     * 4. Core Interface Render Canvas Channel
+     * 3. Core Interface Render Canvas Channel
      */
     function renderDictionaryGrid() {
         if (!gridRoot) return;
@@ -94,9 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gridRoot.innerHTML = filteredData.map(item => createSlangCardTemplate(item)).join('');
     }
-
     /**
-     * 5. Navigation Control Filter Core Mechanism
+     * 4. Navigation Control Filter Core Mechanism
      */
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -116,18 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /**
-     * 6. Interactive Flashcard Mode State Change Delegate Switch
+     * 5. Interactive Flashcard Mode State Change Delegate Switch
      */
     if (modeCheckbox) {
         modeCheckbox.addEventListener('change', (e) => {
             isFlashcardMode = e.target.checked;
-            const appWrapper = document.querySelector('.app-wrapper');
             
+            // Toggle container classes to toggle explicit card height and properties
             if (isFlashcardMode) {
-                if (appWrapper) appWrapper.classList.add('flashcard-active');
                 gridRoot.classList.add('flashcard-active');
             } else {
-                if (appWrapper) appWrapper.classList.remove('flashcard-active');
                 gridRoot.classList.remove('flashcard-active');
                 if (window.speechSynthesis) window.speechSynthesis.cancel();
             }
@@ -137,113 +160,101 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 7. Live Container Event Delegate for Flashcard 3D Rotation & Audio Channels
+     * 6. Live Container Event Delegate for Flashcard 3D Rotation Triggers
      */
     gridRoot.addEventListener('click', (event) => {
-        const audioBtn = event.target.closest('.audio-btn');
+        if (!isFlashcardMode) return;
+
         const slangCard = event.target.closest('.slang-card');
-        
         if (!slangCard) return;
 
-        // --- AUDIO TRIGGER PIPELINE (Speaker Button Manual Taps) ---
-        if (audioBtn) {
-            event.stopPropagation();
-            event.preventDefault();
+        // Toggle rotation state animation handles on clicked card node
+        slangCard.classList.toggle('flipped');
 
-            const targetText = audioBtn.getAttribute('data-word');
+        const isFlipped = slangCard.classList.contains('flipped');
+        const textTarget = slangCard.getAttribute('data-spoken');
+        const internalAudioButton = slangCard.querySelector('.flashcard-back .audio-btn');
 
-            if (targetText && typeof window.speakAussieSlang === 'function') {
-                window.speakAussieSlang(targetText, audioBtn);
+        if (isFlipped && textTarget && internalAudioButton) {
+            // Card flipped to Aussie side -> Execute drawl vocalisation engine path
+            speakAussieSlang(textTarget, internalAudioButton);
+        } else {
+            // Card flipped back to English side -> Kill voices silently immediately
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
             }
-            return;
-        }
-
-        // --- FLASHCARD FLIP PIPELINE (Card Space Tapped) ---
-        if (isFlashcardMode) {
-            const internalAudioButton = slangCard.querySelector('.audio-btn');
-            
-            // Fixed String Capture: Pulls strictly from data attributes to protect against text culling
-            const targetText = slangCard.getAttribute('data-spoken') || 
-                               (internalAudioButton ? internalAudioButton.getAttribute('data-word') : '');
-            
-            const willBeFlipped = !slangCard.classList.contains('flipped');
-
-            slangCard.classList.toggle('flipped');
-
-            if (willBeFlipped) {
-                setTimeout(() => {
-                    if (targetText && typeof window.speakAussieSlang === 'function') {
-                        window.speakAussieSlang(targetText, internalAudioButton);
-                    }
-                }, 50);
-            } else {
-                if (window.speechSynthesis) {
-                    window.speechSynthesis.cancel();
-                }
-                if (internalAudioButton) {
-                    internalAudioButton.classList.remove('playing');
-                    internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-                }
+            if (internalAudioButton) {
+                internalAudioButton.classList.remove('playing');
+                internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span>';
             }
         }
     });
 
-    /**
-     * 8. Text-to-Speech Engine Definition
-     */
-    function speakAussieSlang(textToSpeak, triggerButton) {
-        if (!window.speechSynthesis) return;
-
-        window.speechSynthesis.cancel();
-
-        document.querySelectorAll('.audio-btn.playing').forEach(btn => {
-            btn.classList.remove('playing');
-            btn.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-        });
-
-        const cleanText = String(textToSpeak).trim();
-        if (!cleanText || cleanText === 'undefined') return;
-
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        const availableVoices = window.speechSynthesis.getVoices();
-        const australianVoice = availableVoices.find(v => v.lang === 'en-AU' || v.lang.includes('AU')) || availableVoices.find(v => v.lang.startsWith('en-'));
-
-        if (australianVoice) utterance.voice = australianVoice;
-        utterance.rate = 0.88;
-
-        utterance.onstart = () => {
-            if (triggerButton) {
-                triggerButton.classList.add('playing');
-                triggerButton.innerHTML = '<span class="btn-icon">⏳</span> Talkin...';
-            }
-        };
-
-        utterance.onend = () => {
-            if (triggerButton) {
-                triggerButton.classList.remove('playing');
-                triggerButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-            }
-        };
-
-        utterance.onerror = () => {
-            if (triggerButton) {
-                triggerButton.classList.remove('playing');
-                triggerButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
-            }
-        };
-
-        window.speechSynthesis.speak(utterance);
-    }
-
-    // Explicit registration directly onto the global window platform layer
-    window.speakAussieSlang = speakAussieSlang;
-
-    // 9. Initial Execution Invocations
+    // 7. Initial Runtime Boot Trigger Execution Path
     renderDictionaryGrid();
 
+    // 8. Background Voice Loading Cache Warm-up Handshake
     if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-        window.speechSynthesis.onvoiceschanged = () => {
-            window.speechSynthesis.getVoices();
-        };
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
     }
-}); // Ends DOMContentLoaded Hook
+});
+
+/**
+ * ==========================================================================
+ * NATIVE TEXT-TO-SPEECH SYNTHESIZER ENGINE
+ * ==========================================================================
+ */
+let currentActiveButton = null;
+
+function speakAussieSlang(textToSpeak, buttonElement) {
+    if (!window.speechSynthesis) return;
+
+    window.speechSynthesis.cancel();
+    if (currentActiveButton) {
+        currentActiveButton.classList.remove('playing');
+        currentActiveButton.innerHTML = '<span class="btn-icon">🔊</span>';
+    }
+
+    const cleanPhrase = decodeURIComponent(textToSpeak);
+    const utterance = new SpeechSynthesisUtterance(cleanPhrase);
+    currentActiveButton = buttonElement;
+
+    utterance.lang = 'en-AU';
+
+    const voices = window.speechSynthesis.getVoices();
+    const aussieVoice = voices.find(voice => 
+        voice.lang === 'en-AU' || 
+        voice.lang === 'en_AU' ||
+        voice.name.toLowerCase().includes('australia') ||
+        voice.name.toLowerCase().includes('en-au')
+    );
+
+    if (aussieVoice) utterance.voice = aussieVoice;
+
+    utterance.rate = 0.78;   // Aussie Drawl pacing
+    utterance.pitch = 0.92;  // Natural flatted notes modulation
+
+    if (buttonElement) {
+        buttonElement.classList.add('playing');
+        buttonElement.innerHTML = '<span class="btn-icon">💬</span>';
+    }
+
+    window.speechSynthesis.speak(utterance);
+
+    utterance.onend = () => {
+        if (buttonElement) {
+            buttonElement.classList.remove('playing');
+            buttonElement.innerHTML = '<span class="btn-icon">🔊</span>';
+        }
+        currentActiveButton = null;
+    };
+
+    utterance.onerror = () => {
+        if (buttonElement) {
+            buttonElement.classList.remove('playing');
+            buttonElement.innerHTML = '<span class="btn-icon">🔊</span>';
+        }
+        currentActiveButton = null;
+    };
+}
+
