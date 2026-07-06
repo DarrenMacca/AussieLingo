@@ -35,8 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const categoryLabel = displayCategories[item.category] || item.category;
         
         // Split variations safely if a word holds multiple slash slangs
-        const firstVariant = item.aussie.split('/')[0].trim();
-        const safeSpokenWord = encodeURIComponent(firstVariant);
+        const splitArray = item.aussie.split('/');
+const firstVariant = splitArray[0].trim();
+const safeSpokenWord = encodeURIComponent(firstVariant);
 
         // Standard Regular Dictionary Card Layout
         if (!isFlashcardMode) {
