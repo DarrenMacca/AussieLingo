@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * 3. HTML String Template Assembly Channel
      */
     function createSlangCardTemplate(item) {
-        // FIXED TRACKING: Directly maps item.lingo first to catch your raw data keys perfectly
-        const cleanWord = item.lingo || item.word || item.term || "Unknown Word";
-        const cleanDefinition = item.definition || item.meaning || "No definition available.";
+        // UNIVERSAL LOOKUP MATRIX: Checks every possible key variant in your array
+        const cleanWord = item.word || item.term || item.lingo || item.slang || item.phrase || item.title || "No Word Found";
+        const cleanDefinition = item.definition || item.meaning || item.translation || item.desc || "No definition available.";
         const cleanCategory = item.category || "General";
 
         const escapedWord = String(cleanWord).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isFlashcardMode) {
             const internalAudioButton = slangCard.querySelector('.audio-btn');
             
-            // Fixed String Capture: Pulls exactly from data attributes to protect against text culling
+            // Pull text directly from the custom data attribute set in Part 1
             const targetText = slangCard.getAttribute('data-spoken') || 
                                (internalAudioButton ? internalAudioButton.getAttribute('data-word') : '');
             
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const cleanText = String(textToSpeak).trim();
-        if (!cleanText || cleanText === 'undefined') return;
+        if (!cleanText || cleanText === 'undefined' || cleanText === 'No Word Found') return;
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         const availableVoices = window.speechSynthesis.getVoices();
@@ -250,4 +250,9 @@ document.addEventListener('DOMContentLoaded', () => {
             window.speechSynthesis.getVoices();
         };
     }
+}); // Ends DOMContentLoaded Hook
+
+
+
+}
 }); // Ends DOMContentLoaded Hook
