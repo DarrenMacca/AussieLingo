@@ -16,7 +16,7 @@
     --glass-border-heavy: rgba(255, 255, 255, 0.22);
     --glass-blur-radius: 16px;
     
-    /* High contrast text definitions */
+    /* High Contrast Text Definitions */
     --text-pure-white: #ffffff;
     --text-muted-silver: #cbd5e1;
     --text-dark-subtle: #94a3b8;
@@ -27,6 +27,9 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --radius-rounded-lg: 16px;
     --radius-rounded-sm: 8px;
+    
+    /* Mobile Accessibility Targets */
+    --touch-target-min: 44px;
 }
 
 /* Base Document Canvas Normalizations */
@@ -92,9 +95,7 @@ body {
     max-width: var(--interface-max-width);
     margin: 0 auto;
     padding: var(--interface-padding);
-}
-
-/* ==========================================================================
+}/* ==========================================================================
    SECTION 3: HEADER & FOOTER UI COMPONENTS
    ========================================================================== */
 .app-header {
@@ -236,14 +237,12 @@ body {
     color: var(--text-pure-white);
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(16, 42, 131, 0.4);
-}
-
-/* ==========================================================================
+}/* ==========================================================================
    SECTION 5: DISPLAY RESPONSIVE GRID & CARDS
    ========================================================================== */
 .slang-responsive-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
     gap: 1.5rem;
 }
 
@@ -351,10 +350,6 @@ body {
     box-shadow: inset 0 0 8px rgba(59, 102, 255, 0.4);
 }
 
-.btn-icon {
-    font-size: 1rem;
-}
-
 /* Empty State Filter Messaging Styles */
 .no-results {
     grid-column: 1 / -1;
@@ -367,41 +362,90 @@ body {
     border-radius: var(--radius-rounded-lg);
 }
 
-
 /* ==========================================================================
-SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
-========================================================================== */
+   SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
+   ========================================================================== */
 @media (max-width: 1024px) {
-.app-layout-shell {
-grid-template-columns: 1fr;
-} [1]
-.sidebar-wrapper {
-position: relative;
-top: 0;
+    .app-layout-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .sidebar-wrapper {
+        position: relative;
+        top: 0;
+        width: 100%;
+        z-index: 20;
+    }
+    
+    .sidebar-sticky-panel {
+        max-height: none;
+        overflow-y: visible;
+        padding: 1.5rem;
+    }
+
+    /* Convert structural grid layout into an horizontally swipeable button trail row */
+    .filter-navigation {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 0.75rem;
+        gap: 0.65rem;
+        -webkit-overflow-scrolling: touch; /* Custom touch layer momentum acceleration on mobile engines */
+        scrollbar-width: none; /* Firefox viewport normalization */
+    }
+    
+    .filter-navigation::-webkit-scrollbar {
+        display: none; /* Webkit browser interface removal patch */
+    }
+    
+    .filter-btn {
+        width: auto;
+        white-space: nowrap; /* Forces content string layout parameters into explicit linear structures */
+        padding: 0.75rem 1.25rem;
+        min-height: var(--touch-target-min);
+    }
+    
+    .filter-btn:hover {
+        transform: none; /* Disables translations on horizontal slider rails to preserve boundaries */
+    }
 }
-.filter-navigation {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-gap: 0.5rem;
-}
-}
+
 @media (max-width: 640px) {
-.app-wrapper {
-padding: 1rem;
+    body {
+        overflow-x: hidden;
+    }
+
+    .app-wrapper {
+        padding: 0.75rem;
+    }
+    
+    .app-header {
+        padding: 2rem 1.25rem;
+        margin-bottom: 1.25rem;
+        text-align: center;
+    }
+    
+    .app-header h1 {
+        font-size: 1.95rem; /* Dynamic layout adjustments to preserve text balance properties */
+        line-height: 1.2;
+    }
+    
+    .app-header p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    .slang-responsive-grid {
+        grid-template-columns: 1fr; /* Pure linear data block cascade arrangement constraints */
+        gap: 1rem;
+    }
+    
+    .slang-card {
+        padding: 1.25rem;
+    }
 }
-.app-header {
-padding: 2rem 1.5rem;
-}
-.app-header h1 {
-font-size: 2rem;
-}
-.filter-navigation {
-grid-template-columns: 1fr;
-}
-.slang-responsive-grid {
-grid-template-columns: 1fr;
-}
-}
+
 /* ==========================================================================
    SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE
    ========================================================================== */
@@ -448,8 +492,15 @@ grid-template-columns: 1fr;
     justify-content: space-between;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     
-    /* NEW: Forces GPU layer rendering to stop text from bleeding through back */
+    /* Forces GPU layer rendering to stop text from bleeding through back */
     transform: translateZ(0);
+}
+
+/* Mobile adjustments inside active flashcard layers */
+@media (max-width: 640px) {
+    .flashcard-front, .flashcard-back {
+        padding: 1.25rem;
+    }
 }
 
 /* Front view initialization settings (Definitions) */
