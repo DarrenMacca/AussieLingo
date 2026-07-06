@@ -403,58 +403,74 @@ grid-template-columns: 1fr;
 }
 }
 /* ==========================================================================
-SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE
-========================================================================== /
+   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE
+   ========================================================================== */
+/* Sets explicit spatial 3D perspective to contain absolute cards grid nodes */
 .flashcard-active .slang-card {
-perspective: 1000px;
-cursor: pointer;
-background: transparent !important;
-border: none !important;
-box-shadow: none !important;
-padding: 0 !important;
-height: 220px; / Secure height boundary blocks sizing jumps */
+    perspective: 1200px; /* Slight bump for crisp depth perspective */
+    cursor: pointer;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    height: 220px; /* Secure height boundary blocks sizing jumps */
 }
+
 /* Inner flipper layout element wrapper */
 .flashcard-inner {
-position: relative;
-width: 100%;
-height: 100%;
-text-align: left;
-transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-transform-style: preserve-3d;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
 }
+
+/* 180 degree rotation trigger state handle */
 .flashcard-active .slang-card.flipped .flashcard-inner {
-transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
+
 /* Face element containers shared styles */
 .flashcard-front, .flashcard-back {
-position: absolute;
-width: 100%;
-height: 100%;
--webkit-backface-visibility: hidden;
-backface-visibility: hidden;
-border-radius: var(--radius-rounded-lg);
-border: 1px solid var(--glass-border-light);
-padding: 1.75rem;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-} [1, 2, 3, 4]
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Guards legacy Safari layout engines */
+    backface-visibility: hidden;
+    border-radius: var(--radius-rounded-lg);
+    border: 1px solid var(--glass-border-light);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    
+    /* NEW: Forces GPU layer rendering to stop text from bleeding through back */
+    transform: translateZ(0);
+}
+
+/* Front view initialization settings (Definitions) */
 .flashcard-front {
-background: var(--glass-bg-cards);
-backdrop-filter: blur(var(--glass-blur-radius));
--webkit-backdrop-filter: blur(var(--glass-blur-radius));
-color: var(--text-pure-white);
+    background: var(--glass-bg-cards);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    color: var(--text-pure-white);
+    z-index: 2; /* Forces front face forward */
 }
+
+/* Reverse view initialization settings (Reveals terminology) */
 .flashcard-back {
-background: rgba(16, 42, 131, 0.2);
-backdrop-filter: blur(var(--glass-blur-radius));
--webkit-backdrop-filter: blur(var(--glass-blur-radius));
-border-color: var(--glass-border-heavy);
-transform: rotateY(180deg);
+    background: rgba(16, 42, 131, 0.25);
+    backdrop-filter: blur(var(--glass-blur-radius));
+    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
+    border-color: var(--glass-border-heavy);
+    transform: rotateY(180deg) translateZ(1px); /* Bumped 1px forward in 3D grid space to avoid flat plane clipping */
 }
+
 .flashcard-active .slang-card-body {
-margin-top: auto;
-margin-bottom: auto;
+    margin-top: auto;
+    margin-bottom: auto;
 }
