@@ -22,14 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const displayCategories = {
             'everyday-people': '👥 Everyday People',
             'core-phrases': '💬 Core Greetings & Phrases',
-            'Multiple Use - Same Word': '🔄 Multiple Use - Same Word',
             'food-drink': '🍺 Food & Drink',
             'time-places': '📍 Time & Places',
             'clothing-items': '🩴 Clothing & Items',
             'adjectives-modifiers': '✨ Adjectives & Modifiers',
             'actions-verbs': '🏃 Actions & Verbs',
             'idioms': '🦘 Metaphors & Idioms',
-            'misc': '🃏 Miscellaneous Slang'
+            'Multiple Use - Same Word': '🔄 Multiple Use - Same Word',
         };
 
         const categoryLabel = displayCategories[item.category] || item.category;
