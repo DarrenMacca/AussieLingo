@@ -85,16 +85,14 @@
             </aside>
 
             <!-- Main Stream Canvas Component Grid View Space Area -->
-         <main class="main-content-display">
-    <!-- The Quiz lives here, separate from the grid -->
-    <div id="quiz-container" class="glass-card">
-        <div id="progress-bar-container"><div id="progress-bar"></div></div>
-        <h3 id="quiz-question">Ready for a challenge, mate?</h3>
-        <div id="options-grid"></div>
-        <div id="quiz-feedback"></div>
-    </div> 
+       <main class="main-content-display">
+    <!-- This container will now float above the grid -->
+    <div id="quiz-overlay-wrapper" style="position: sticky; top: 0; z-index: 1000; margin-bottom: 20px;">
+        <div id="quiz-container" class="glass-card">
+            <!-- Your quiz content -->
+        </div>
+    </div>
 
-    <!-- The Grid is below, not inside the quiz div -->
     <div id="slang-grid-root" class="slang-responsive-grid"></div>
 </main>
             
