@@ -580,3 +580,20 @@ body.flashcard-active .flashcard-back,
 #quiz-container {
     border: 5px solid red !important; /* If you see a red box, the CSS is working */
 }
+/* --- Quiz Component Styles --- */
+#quiz-container {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Ensure the grid stays distinct --- */
+.slang-responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1.5rem;
+}
+
