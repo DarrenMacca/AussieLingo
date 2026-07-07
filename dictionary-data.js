@@ -668,7 +668,7 @@
 },
 {
 "english": "A swimming costume or swimsuit",
-"aussie": "Bothers / Togs / Cozzies",
+"aussie": "Bathers / Togs / Cozzies",
 "audio": "bathers_togs.mp3",
 "category": "clothing-items"
 },
@@ -1338,7 +1338,7 @@
 },
 {
 "english": "A slaughterhouse",
-"aussie": "Knacker_yard",
+"aussie": "Knacker yard",
 "audio": "take_them_to_the_knackers_yard.mp3",
 "category": "Multiple-Use-Same-Word"
 },
@@ -1428,8 +1428,8 @@
 },
 {
 "english": "Someone that is completely useless",
-"aussie": "About as good as a hat full of aresholes",
-"audio": "about_as_good_as_a_hat_full_of_aresholes.mp3",
+"aussie": "About as good as a hat full of arseholes",
+"audio": "about_as_good_as_a_hat_full_of_arseholes.mp3",
 "category": "Multiple-Use-Same-Word"
 },
 {
