@@ -7,7 +7,7 @@
 
 const AUSSIE_SLANG_DATA = [
     // ==========================================================================
-    // SECTION: EVERYDAY PEOPLE
+   // SECTION: EVERYDAY TERMS & PEOPLE
     // ==========================================================================
     {
         "english": "An uncultured or unsophisticated person",
@@ -478,7 +478,7 @@ const AUSSIE_SLANG_DATA = [
     },
 
     // ==========================================================================
-    // SECTION: CLOTHING & ITEMS
+  // SECTION: CLOTHING & ITEMS
     // ==========================================================================
     {
         "english": "Sunglasses",
@@ -584,7 +584,7 @@ const AUSSIE_SLANG_DATA = [
     },
 
     // ==========================================================================
-    // SECTION: ADJECTIVES & MODIFIERS
+ // DEDICATED SECTION: ADJECTIVES & MODIFIERS
     // ==========================================================================
     {
         "english": "Great, fantastic, or an expression of enthusiastic approval",
@@ -843,7 +843,7 @@ const AUSSIE_SLANG_DATA = [
 "category": "actions-verbs"
 },
 // ==========================================================================
-// SECTION: METAPHORS & IDIOMS
+ // SECTION: METAPHORS & IDIOMS
 // ==========================================================================
 {
 "english": "Lacking intelligence or sanity",
@@ -924,7 +924,7 @@ const AUSSIE_SLANG_DATA = [
 "category": "idioms"
 },
 // ==========================================================================
-// SECTION: MULTIPLE USE - SAME WORD
+// SECTION: MISCELLANEOUS SLANG
 // ==========================================================================
 {
 "english": "A pair of testicles",
