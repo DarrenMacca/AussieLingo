@@ -228,3 +228,17 @@ function showResults() {
 
 
 
+// Ensure this runs only when the page is ready
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('quiz-question')) {
+        startQuiz();
+    }
+});
+
+function startQuiz() {
+    console.log("Quiz initializing..."); // Check console (F12) to see if this logs
+    currentQuizIndex = 0;
+    quizScore = 0;
+    renderQuizQuestion();
+}
+
