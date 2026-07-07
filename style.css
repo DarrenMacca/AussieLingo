@@ -549,70 +549,29 @@ body.flashcard-active .flashcard-back,
     text-align: center !important;
 }
 
-/* 6. Mobile breakout viewport adjustments */
+/* --- 1. Mobile viewport adjustments --- */
 @media (max-width: 640px) {
     body.flashcard-active .slang-responsive-grid,
     .flashcard-active .slang-responsive-grid {
         grid-template-columns: 1fr !important;
         width: 100% !important;
     }
-    
     body.flashcard-active .slang-card,
     .flashcard-active .slang-card {
         height: 200px !important;
         width: 100% !important;
     }
-} /* <--- THIS CLOSING BRACE IS MANDATORY */
+}
 
-/* Add this to style.css to support your HTML structure */
+/* --- 2. Main Layout --- */
 .main-content-display {
-    flex: 1;
-    min-width: 0;
-}
-
-/* Ensure the grid inside it flows correctly */
-.slang-responsive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 1.5rem;
-}
-/* --- Quiz Component Styles --- */
-#quiz-container {
-    border: 5px solid red !important; /* If you see a red box, the CSS is working */
-}
-/* --- Quiz Component Styles --- */
-#quiz-container {
-    position: absolute; /* This pulls the quiz out of the page flow */
-    top: 20px;          /* Adjust these to move it where you want */
-    right: 20px;
-    width: 300px;       /* Make it a narrow box instead of a full row */
-    z-index: 1000;      /* Ensure it sits on top of everything */
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    border-radius: 12px;
-}
-
-/* --- Main Content Layout --- */
-.main-content-display {
-    position: relative; /* Anchors the floating quiz */
+    position: relative; /* Anchors the floating quiz inside this area */
     display: block; 
     padding: 20px;
+    width: 100%;
 }
 
-/* --- Floating Quiz Box --- */
-#quiz-container {
-    position: absolute; 
-    top: 20px;
-    right: 20px;
-    width: 300px;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* --- Dictionary Grid --- */
+/* --- 3. Dictionary Grid --- */
 #slang-grid-root, .slang-responsive-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -620,7 +579,20 @@ body.flashcard-active .flashcard-back,
     width: 100%;
 }
 
-/* --- Quiz Button Pills --- */
+/* --- 4. Floating Quiz Box --- */
+#quiz-container {
+    position: absolute; 
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- 5. Quiz Button Pills --- */
 .pill-btn {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
