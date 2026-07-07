@@ -1210,298 +1210,297 @@
     "english": "A highly derogatory term for a woman who has been around the town",
     "aussie": "Slag or Town bike or Root rat",
     "audio": "she_is_a_slag.mp3",
-    “category”: “Multiple-Use-Same-Word”
+  "category": "Multiple-Use-Same-Word"
   },
  
     {
     "english": "A group of close friends or mates",
     "aussie": "Bunch of fuckers",
     "audio": "how_you_bunch_of_fuckers_going.mp3",
-    “category”: “Multiple-Use-Same-Word”
+   "category": "Multiple-Use-Same-Word"
   },
   {
     "english": "Someone you do not like, or conversely, a very close mate depending on friendly context",
     "aussie": "Dogs arse",
     "audio": "gday_dogs_arse_or_that_person_is_a_dogs_arse.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
   }
  
 {
 "english": "Australia",
 "aussie": "Straya",
 "audio": "straya.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "Mosquito",
 "aussie": "Mozzie",
 "audio": "mozzie.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "Ambulance or an ambulance paramedic",
 "aussie": "Ambo",
 "audio": "ambo.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A kangaroo",
 "aussie": "Roo",
 "audio": "roo.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A large male kangaroo",
 "aussie": "Boomer",
 "audio": "boomer.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A large police vehicle deployed at checkpoints to catch drunk drivers",
 "aussie": "Booze Bus",
 "audio": "booze_bus.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "Historic, armed highwayman or outlaw roaming the outback",
 "aussie": "Bushranger",
 "audio": "bushranger.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "Short for definitely",
 "aussie": "Defo",
 "audio": "defo.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A retail transaction docket or bill",
 "aussie": "Receipt",
 "audio": "receipt.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 
 {
 "english": "Australian Rules Football (AFL) or Rugby League",
 "aussie": "Footy",
 "audio": "footy.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "Visibly annoyed, irritated, or deeply angry",
 "aussie": "Pissed off",
 "audio": "pissed_off.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "Earned money or cash",
 "aussie": "Quid",
 "audio": "quid.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To  believe, think, agree to be true",
 "aussie": "Reckon",
 "audio": "i_reckon_so.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "The legendary, high-energy Australian rock band AC/DC",
 "aussie": "Acca Dacca",
 "audio": "acca_dacca.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 
 {
 "english": "A large American car",
 "aussie": "Yank tank",
 "audio": "yank_tank.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An American",
 "aussie": "Septic tank",
 "audio": "septic_tank.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A pair of testicles",
 "aussie": "Knackers",
 "audio": "kicked_me_in_the_knackers.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A friend",
 "aussie": "Knackers",
 "audio": "gday_knackers.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A slaughterhouse",
 "aussie": "Knacker_yard",
 "audio": "take_them_to_the_knackers_yard.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To spit or clear phlegm aggressively",
 "aussie": "Slagging",
 "audio": "slagging_spit.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A genuinely bad, malicious, or disliked person",
 "aussie": "A complete cunt",
 "audio": "your_a_complete_cunt_mate.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A close friend or mate (highly casual/affectionate)",
 "aussie": "A good cunt",
 "audio": "your_a_good_cunt_mate.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An unfortunate, unlucky, or pitiful person",
 "aussie": "Poor cunt",
 "audio": "that_poor_cunt.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A person who is highly intelligent, clever, or tricky",
 "aussie": "Smart cunt",
 "audio": "well_arent_you_a_smart_cunt.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An arrogant, pretentious, or annoying person",
 "aussie": "Cocky cunt",
 "audio": "she_is_a_cocky_cunt.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An old man, often used with a mix of fondness and pity",
 "aussie": "Old cunt",
 "audio": "old_cunt.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A hard-working, resilient, or impressive individual",
 "aussie": "Tough cunt",
 "audio": "tough_cunt.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An exclamation used when something goes completely wrong",
 "aussie": "Munted",
 "audio": "munted.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To lie, exaggerate, or try to trick someone",
 "aussie": "Bullshit",
 "audio": "bullshit.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To be extremely angry, annoyed, or furious",
 "aussie": "Spitting chips",
 "audio": "spitting_chips.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A phrase used to describe bad luck or an unfortunate situation",
 "aussie": "Tough shit",
 "audio": "tough_shit.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To tease, mock, or joke around with a friend",
 "aussie": "Giving shit",
 "audio": "giving_shit.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "Something broken, or low quality",
 "aussie": "A piece of shit",
 "audio": "a_piece_of_shit.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "Someone that is completely useless",
 "aussie": "About as good as a hat full of aresholes",
 "audio": "about_as_good_as_a_hat_full_of_aresholes.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An expression used when something goes completely wrong",
 "aussie": "Shit hit the fan",
 "audio": "shit_hit_the_fan.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To panic, become terrified, or lose your nerve",
 "aussie": "Shitting yourself",
 "audio": "shitting_yourself.mp3",
-“category”: “Multiple-Use-Same-Word”
-},
+"category": "Multiple-Use-Same-Word"},
 {
 "english": "A location that is incredibly remote, isolated, or far away",
 "aussie": "Whoop whoop (beyond the black stump)",
 "audio": "back_of_whoop_whoop.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To lose your temper, get angry, or throw a tantrum",
 "aussie": "Chuck a mental",
 "audio": "chuck_a_mental.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An generic insult for an idiot, foolish, or incompetent person",
 "aussie": "Dickhead",
 "audio": "dickhead.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An annoying, foolish, or highly untrustworthy person",
 "aussie": "Arsehole",
 "audio": "arsehole.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To be extremely drunk or heavily intoxicated",
 "aussie": "Pissed as a fart",
 "audio": "pissed_as_a_fart.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An expression used when someone is talking nonsense or lying",
 "aussie": "Full of piss and wind",
 "audio": "piss_and_wind.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To stop wasting time or stop messing around",
 "aussie": "Stop fucking around",
 "audio": "stop_fucking_around.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "A useless, lazy, or completely incompetent person",
 "aussie": "Fuckwit",
 "audio": "fuckwit.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "To be completely exhausted, broken, or ruined",
 "aussie": "Fucked",
 "audio": "fucked.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 },
 {
 "english": "An exclamation of disbelief, shock, or heavy emphasis",
 "aussie": "Fuck me dead",
 "audio": "fuck_me_dead.mp3",
-“category”: “Multiple-Use-Same-Word”
+"category": "Multiple-Use-Same-Word"
 }
 ];
