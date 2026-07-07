@@ -633,7 +633,17 @@ body.flashcard-active .flashcard-back,
     gap: 20px;
     width: 100%;
 }
+.main-content-display {
+    display: block; /* Change from flex to block to stop stacking */
+    padding: 20px;
+}
 
+#slang-grid-root {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 0; /* Ensures it starts immediately after the quiz */
+}
 
 
 
