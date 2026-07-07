@@ -4,7 +4,7 @@
   const AUSSIE_SLANG_DATA = [    
      {
     "english": "A term of endearment or respect for a friend doing something crazy, silly, or funny",
-    "aussie": "You idiot mate - tosser",
+    "aussie": "You idiot",
     "category": "everyday-people"
   },
 {
