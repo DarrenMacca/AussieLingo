@@ -1,19 +1,6 @@
 
-  {
-    "english": "Someone you have absolutely no respect for",
-    "aussie": "He or she is lower than a snakes belly or lower than a foot print",
-    "audio": "he_is_lower_than_a_snakes_belly.mp3",
-    "category": "idioms"
-  },
-  {
-    "english": "No",
-    "aussie": "Nah yeah nah",
-    "audio": "nah_yeah_nah_your_not_doing_that.mp3",
-    "category": "core-phrases"
-  },
-  {
-    "english": "A term of endearment or respect for a friend doing something crazy, silly, or funny",/**
- * ==========================================================================
+ 
+  * ==========================================================================
  * THE GREAT AUSSIE SLANG DICTIONARY ENGINE
  * Static Data Repository Storage Layer - Compiled & Verified Database
  * ==========================================================================
@@ -269,7 +256,12 @@ const AUSSIE_SLANG_DATA = [
     // SECTION: CORE GREETINGS & PHRASES
     // ==========================================================================
 
-
+ {
+    "english": "No",
+    "aussie": "Nah yeah nah",
+    "audio": "nah_yeah_nah_your_not_doing_that.mp3",
+    "category": "core-phrases"
+  },
  {
     "english": "Hello or good day",
     "aussie": "G'day",
