@@ -167,3 +167,64 @@ function speakAussieSlang(textToSpeak, buttonElement) {
 if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
     window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 }
+let currentQuizIndex = 0;
+let quizScore = 0;
+const TOTAL_QUESTIONS = 20;
+
+function startQuiz() {
+    currentQuizIndex = 0;
+    quizScore = 0;
+    renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+    // 1. Progress Bar Update
+    const progress = (currentQuizIndex / TOTAL_QUESTIONS) * 100;
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+
+    // 2. Logic: Pick 1 correct, 3 random distractors
+    const target = AUSSIE_SLANG_DATA[Math.floor(Math.random() * AUSSIE_SLANG_DATA.length)];
+    let options = [target.aussie];
+    while(options.length < 4) {
+        let rand = AUSSIE_SLANG_DATA[Math.floor(Math.random() * AUSSIE_SLANG_DATA.length)].aussie;
+        if(!options.includes(rand)) options.push(rand);
+    }
+    options.sort(() => Math.random() - 0.5); // Shuffle
+
+    // 3. Render UI
+    document.getElementById('quiz-question').innerText = target.english;
+    const grid = document.getElementById('options-grid');
+    grid.innerHTML = '';
+    options.forEach(opt => {
+        const pill = document.createElement('button');
+        pill.className = 'pill-btn';
+        pill.innerText = opt;
+        pill.onclick = () => handleAnswer(opt, target.aussie);
+        grid.appendChild(pill);
+    });
+}
+
+function handleAnswer(selected, correct) {
+    if(selected === correct) quizScore++;
+    currentQuizIndex++;
+    
+    if(currentQuizIndex < TOTAL_QUESTIONS) {
+        renderQuizQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    const finalScore = (quizScore / TOTAL_QUESTIONS) * 100;
+    if(finalScore >= 85) {
+        alert("Crikey! You earned your Certificate! Score: " + finalScore + "%");
+        // Trigger certificate function here
+    } else {
+        alert("You muppet. Not quite, mate. You scored " + finalScore + "%. Try again!");
+        startQuiz();
+    }
+}
+
+
+
