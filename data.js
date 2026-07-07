@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'adjectives-modifiers': '✨ Adjectives & Modifiers',
             'actions-verbs': '🏃 Actions & Verbs',
             'idioms': '🦘 Metaphors & Idioms',
-            'Multiple Use - Same Word': '🔄 Multiple Use - Same Word',
+            'Multiple-Use-Same-Word': '🔄 Multiple Use - Same Word',
         };
 
         const categoryLabel = displayCategories[item.category] || item.category;
