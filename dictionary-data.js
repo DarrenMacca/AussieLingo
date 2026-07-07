@@ -1,17 +1,10 @@
- * ==========================================================================
- * THE GREAT AUSSIE SLANG DICTIONARY ENGINE
- * Static Data Repository Storage Layer - Compiled & Verified Database
- * ==========================================================================
- */
-
 // ==========================================================================
    // SECTION: EVERYDAY TERMS & PEOPLE
     // ==========================================================================
-const AUSSIE_SLANG_DATA = [    
-  {
+  const AUSSIE_SLANG_DATA = [    
+     {
     "english": "A term of endearment or respect for a friend doing something crazy, silly, or funny",
     "aussie": "You idiot",
-    "audio": "haha_you_idiot.mp3",
     "category": "everyday-people"
   },
 {
