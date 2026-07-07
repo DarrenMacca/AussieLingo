@@ -85,23 +85,17 @@
             </aside>
 
             <!-- Main Stream Canvas Component Grid View Space Area -->
-            <main class="main-content-display">
-    
-    <!-- 1. QUIZ CONTAINER -->
+         <main class="main-content-display">
+    <!-- The Quiz lives here, separate from the grid -->
     <div id="quiz-container" class="glass-card">
-        <div id="progress-bar-container" style="...">
-            <div id="progress-bar" style="..."></div>
-        </div>
+        <div id="progress-bar-container"><div id="progress-bar"></div></div>
         <h3 id="quiz-question">Ready for a challenge, mate?</h3>
-        <div id="options-grid" style="..."></div>
+        <div id="options-grid"></div>
         <div id="quiz-feedback"></div>
-    </div> <!-- Close this div here! -->
+    </div> 
 
-    <!-- 2. GRID ROOT (Separate from the quiz) -->
-    <div id="slang-grid-root" class="slang-responsive-grid">
-        <!-- Dynamic content goes here -->
-    </div>
-
+    <!-- The Grid is below, not inside the quiz div -->
+    <div id="slang-grid-root" class="slang-responsive-grid"></div>
 </main>
             
         </div>
