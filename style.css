@@ -582,21 +582,45 @@ body.flashcard-active .flashcard-back,
 }
 /* --- Quiz Component Styles --- */
 #quiz-container {
-    width: 100%;
-    margin-bottom: 30px;
-    padding: 25px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
+    position: absolute; /* This pulls the quiz out of the page flow */
+    top: 20px;          /* Adjust these to move it where you want */
+    right: 20px;
+    width: 300px;       /* Make it a narrow box instead of a full row */
+    z-index: 1000;      /* Ensure it sits on top of everything */
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 12px;
+}
+
+/* --- Main Content Layout --- */
+.main-content-display {
+    position: relative; /* Anchors the floating quiz */
+    display: block; 
+    padding: 20px;
+}
+
+/* --- Floating Quiz Box --- */
+#quiz-container {
+    position: absolute; 
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* --- Ensure the grid stays distinct --- */
-.slang-responsive-grid {
+/* --- Dictionary Grid --- */
+#slang-grid-root, .slang-responsive-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
 }
-/* Quiz Button Pills */
+
+/* --- Quiz Button Pills --- */
 .pill-btn {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -613,37 +637,9 @@ body.flashcard-active .flashcard-back,
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* Ensure the options grid is a clean flex layout */
 #options-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 15px;
 }
-/* Explicitly separate the Quiz and the Grid */
-#quiz-container {
-    grid-column: 1 / -1; /* Ensures it spans the full width */
-    margin-bottom: 30px;
-    width: 100%;
-}
-
-.slang-responsive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    width: 100%;
-}
-.main-content-display {
-    display: block; /* Change from flex to block to stop stacking */
-    padding: 20px;
-}
-
-#slang-grid-root {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 0; /* Ensures it starts immediately after the quiz */
-}
-
-
-
