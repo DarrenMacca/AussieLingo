@@ -140,17 +140,39 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
         });
     });
 
+        /**
+     * 5. Navigation Control Filter Core Mechanism
+     */
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('active')) return;
+
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.removeAttribute('aria-current');
+            });
+
+            button.classList.add('active');
+            button.setAttribute('aria-current', 'page');
+
+            activeCategory = button.getAttribute('data-category');
+            renderDictionaryGrid();
+        });
+    });
+
     /**
-     * 5. Interactive Flashcard Mode State Change Delegate Switch
+     * 6. Interactive Flashcard Mode State Change Delegate Switch
      */
     if (modeCheckbox) {
         modeCheckbox.addEventListener('change', (e) => {
             isFlashcardMode = e.target.checked;
+            const appWrapper = document.querySelector('.app-wrapper');
             
-            // Toggle container classes to toggle explicit card height and properties
             if (isFlashcardMode) {
+                if (appWrapper) appWrapper.classList.add('flashcard-active');
                 gridRoot.classList.add('flashcard-active');
             } else {
+                if (appWrapper) appWrapper.classList.remove('flashcard-active');
                 gridRoot.classList.remove('flashcard-active');
                 if (window.speechSynthesis) window.speechSynthesis.cancel();
             }
@@ -160,101 +182,118 @@ const safeSpokenWord = encodeURIComponent(firstVariant);
     }
 
     /**
-     * 6. Live Container Event Delegate for Flashcard 3D Rotation Triggers
+     * 7. Live Container Event Delegate for Flashcard 3D Rotation & Audio Channels
      */
     gridRoot.addEventListener('click', (event) => {
-        if (!isFlashcardMode) return;
-
+        const audioBtn = event.target.closest('.audio-btn');
         const slangCard = event.target.closest('.slang-card');
+        
         if (!slangCard) return;
 
-        // Toggle rotation state animation handles on clicked card node
-        slangCard.classList.toggle('flipped');
+        // --- AUDIO TRIGGER PIPELINE (Speaker Button Manual Taps) ---
+        if (audioBtn) {
+            event.stopPropagation();
+            event.preventDefault();
 
-        const isFlipped = slangCard.classList.contains('flipped');
-        const textTarget = slangCard.getAttribute('data-spoken');
-        const internalAudioButton = slangCard.querySelector('.flashcard-back .audio-btn');
+            const targetText = audioBtn.getAttribute('data-word');
 
-        if (isFlipped && textTarget && internalAudioButton) {
-            // Card flipped to Aussie side -> Execute drawl vocalisation engine path
-            speakAussieSlang(textTarget, internalAudioButton);
-        } else {
-            // Card flipped back to English side -> Kill voices silently immediately
-            if (window.speechSynthesis) {
-                window.speechSynthesis.cancel();
+            if (targetText && typeof window.speakAussieSlang === 'function') {
+                window.speakAussieSlang(targetText, audioBtn);
             }
-            if (internalAudioButton) {
-                internalAudioButton.classList.remove('playing');
-                internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span>';
+            return;
+        }
+
+        // --- FLASHCARD FLIP PIPELINE (Card Space Tapped) ---
+        if (isFlashcardMode) {
+            const internalAudioButton = slangCard.querySelector('.audio-btn');
+            
+            const targetText = slangCard.getAttribute('data-spoken') || 
+                               (internalAudioButton ? internalAudioButton.getAttribute('data-word') : '');
+            
+            const willBeFlipped = !slangCard.classList.contains('flipped');
+
+            slangCard.classList.toggle('flipped');
+
+            if (willBeFlipped) {
+                setTimeout(() => {
+                    if (targetText && typeof window.speakAussieSlang === 'function') {
+                        window.speakAussieSlang(targetText, internalAudioButton);
+                    }
+                }, 50);
+            } else {
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                }
+                if (internalAudioButton) {
+                    internalAudioButton.classList.remove('playing');
+                    internalAudioButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
+                }
             }
         }
     });
 
-    // 7. Initial Runtime Boot Trigger Execution Path
+    /**
+     * 8. Text-to-Speech Engine Definition
+     */
+    function speakAussieSlang(textToSpeak, triggerButton) {
+        if (!window.speechSynthesis) return;
+
+        window.speechSynthesis.cancel();
+
+        document.querySelectorAll('.audio-btn.playing').forEach(btn => {
+            btn.classList.remove('playing');
+            btn.innerHTML = '<span class="btn-icon">🔊</span> Listen';
+        });
+
+        const cleanText = String(textToSpeak).trim();
+        if (!cleanText || cleanText === 'undefined') return;
+
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        const availableVoices = window.speechSynthesis.getVoices();
+        
+        // Scan internal system voice array layers for authentic Australian accents
+        const australianVoice = availableVoices.find(v => v.lang === 'en-AU' || v.lang.includes('AU')) || 
+                               availableVoices.find(v => v.lang.startsWith('en-'));
+
+        if (australianVoice) utterance.voice = australianVoice;
+        utterance.rate = 0.88; // Pace modifier to simulate an authentic strine presentation drawl
+
+        utterance.onstart = () => {
+            if (triggerButton) {
+                triggerButton.classList.add('playing');
+                triggerButton.innerHTML = '<span class="btn-icon">⏳</span> Talkin...';
+            }
+        };
+
+        utterance.onend = () => {
+            if (triggerButton) {
+                triggerButton.classList.remove('playing');
+                triggerButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
+            }
+        };
+
+        utterance.onerror = () => {
+            if (triggerButton) {
+                triggerButton.classList.remove('playing');
+                triggerButton.innerHTML = '<span class="btn-icon">🔊</span> Listen';
+            }
+        };
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Explicit registration directly onto the global window platform layer
+    window.speakAussieSlang = speakAussieSlang;
+
+    // 9. Initial Execution Invocations
     renderDictionaryGrid();
 
-    // 8. Background Voice Loading Cache Warm-up Handshake
     if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
     }
-});
+}); // Ends DOMContentLoaded Hook
 
-/**
- * ==========================================================================
- * NATIVE TEXT-TO-SPEECH SYNTHESIZER ENGINE
- * ==========================================================================
- */
-let currentActiveButton = null;
 
-function speakAussieSlang(textToSpeak, buttonElement) {
-    if (!window.speechSynthesis) return;
-
-    window.speechSynthesis.cancel();
-    if (currentActiveButton) {
-        currentActiveButton.classList.remove('playing');
-        currentActiveButton.innerHTML = '<span class="btn-icon">🔊</span>';
-    }
-
-    const cleanPhrase = decodeURIComponent(textToSpeak);
-    const utterance = new SpeechSynthesisUtterance(cleanPhrase);
-    currentActiveButton = buttonElement;
-
-    utterance.lang = 'en-AU';
-
-    const voices = window.speechSynthesis.getVoices();
-    const aussieVoice = voices.find(voice => 
-        voice.lang === 'en-AU' || 
-        voice.lang === 'en_AU' ||
-        voice.name.toLowerCase().includes('australia') ||
-        voice.name.toLowerCase().includes('en-au')
-    );
-
-    if (aussieVoice) utterance.voice = aussieVoice;
-
-    utterance.rate = 0.78;   // Aussie Drawl pacing
-    utterance.pitch = 0.92;  // Natural flatted notes modulation
-
-    if (buttonElement) {
-        buttonElement.classList.add('playing');
-        buttonElement.innerHTML = '<span class="btn-icon">💬</span>';
-    }
-
-    window.speechSynthesis.speak(utterance);
-
-    utterance.onend = () => {
-        if (buttonElement) {
-            buttonElement.classList.remove('playing');
-            buttonElement.innerHTML = '<span class="btn-icon">🔊</span>';
-        }
-        currentActiveButton = null;
-    };
-
-    utterance.onerror = () => {
-        if (buttonElement) {
-            buttonElement.classList.remove('playing');
-            buttonElement.innerHTML = '<span class="btn-icon">🔊</span>';
-        }
-        currentActiveButton = null;
-    };
-}
 
