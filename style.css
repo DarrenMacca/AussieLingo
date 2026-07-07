@@ -596,4 +596,27 @@ body.flashcard-active .flashcard-back,
     grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
     gap: 1.5rem;
 }
+/* Quiz Button Pills */
+.pill-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    padding: 8px 16px;
+    margin: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
 
+.pill-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Ensure the options grid is a clean flex layout */
+#options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
