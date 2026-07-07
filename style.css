@@ -553,7 +553,7 @@ body.flashcard-active .flashcard-back,
 @media (max-width: 640px) {
     body.flashcard-active .slang-responsive-grid,
     .flashcard-active .slang-responsive-grid {
-        grid-template-columns: 1fr !important; /* Locks mobile layout into a single full-width column track */
+        grid-template-columns: 1fr !important;
         width: 100% !important;
     }
     
@@ -562,7 +562,18 @@ body.flashcard-active .flashcard-back,
         height: 200px !important;
         width: 100% !important;
     }
+} /* <--- THIS CLOSING BRACE IS MANDATORY */
+
+/* Add this to style.css to support your HTML structure */
+.main-content-display {
+    flex: 1;
+    min-width: 0;
 }
 
-
+/* Ensure the grid inside it flows correctly */
+.slang-responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1.5rem;
+}
 
