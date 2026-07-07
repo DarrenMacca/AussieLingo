@@ -1,23 +1,13 @@
-
- 
-  * ==========================================================================
+ * ==========================================================================
  * THE GREAT AUSSIE SLANG DICTIONARY ENGINE
  * Static Data Repository Storage Layer - Compiled & Verified Database
  * ==========================================================================
  */
 
-const AUSSIE_SLANG_DATA = [
 // ==========================================================================
    // SECTION: EVERYDAY TERMS & PEOPLE
     // ==========================================================================
-    
-
-{
-    "english": "A term of endearment or respect for a friend doing something crazy, silly, or funny",
-    "aussie": "You idiot",
-    "audio": "haha_you_idiot.mp3",
-    "category": "everyday-people"
-  },
+const AUSSIE_SLANG_DATA = [    
   {
     "english": "A term of endearment or respect for a friend doing something crazy, silly, or funny",
     "aussie": "You idiot",
@@ -251,7 +241,6 @@ const AUSSIE_SLANG_DATA = [
 "category": "everyday-people"
 },
 
-
 // ==========================================================================
     // SECTION: CORE GREETINGS & PHRASES
     // ==========================================================================
@@ -336,7 +325,6 @@ const AUSSIE_SLANG_DATA = [
     "audio": "you_litle_ripper.mp3",
     "category": "core-phrases"
   },
-
 
 
  // ==========================================================================
@@ -526,7 +514,6 @@ const AUSSIE_SLANG_DATA = [
 "category": "food-drink"
 },
 
-
 {
 "english": "A major social gathering or party heavily involving alcohol",
 "aussie": "Piss up",
@@ -539,7 +526,6 @@ const AUSSIE_SLANG_DATA = [
 "audio": "roadie.mp3",
 "category": "misc"
 },
-
 
 // ==========================================================================
     // SECTION: TIME & PLACES
@@ -593,16 +579,6 @@ const AUSSIE_SLANG_DATA = [
     "aussie": "Chrissie or Chrissy",
     "audio": "chrissie.mp3",
     "category": "time-places"
-
-
-
-
-
-
-
-
-
-
 
   },
   {
@@ -661,7 +637,6 @@ const AUSSIE_SLANG_DATA = [
 "audio": "i-have_to_go_have_a_slash.mp3",
 "category": "time-places"
 },
-
 
 
   // ==========================================================================
@@ -784,12 +759,9 @@ const AUSSIE_SLANG_DATA = [
 },
 
 
-
-
  // ==========================================================================
  // DEDICATED SECTION: ADJECTIVES & MODIFIERS
     // ==========================================================================
-
 
 {
     "english": "Great or excellent",
@@ -920,11 +892,9 @@ const AUSSIE_SLANG_DATA = [
 },
 
 
-
     // ==========================================================================
     // SECTION: ACTIONS & VERBS
     // ==========================================================================
-
 
 {
 "english": "A day off work due to illness (often faked)",
@@ -1092,7 +1062,6 @@ const AUSSIE_SLANG_DATA = [
 // ==========================================================================
 
 
-
   {
     "english": "Someone you have absolutely no respect for",
     "aussie": "He or she is lower than a snakes belly or lower than a foot print",
@@ -1240,13 +1209,9 @@ const AUSSIE_SLANG_DATA = [
 },
 
 
-
-
-
 // ==========================================================================
 // SECTION: MISCELLANEOUS SLANG
 // ==========================================================================
-
 
    {
     "english": "A highly derogatory term for a woman who has been around the town",
@@ -1255,8 +1220,7 @@ const AUSSIE_SLANG_DATA = [
     “category”: “Multiple-Use-Same-Word”
   },
  
- 
-   {
+    {
     "english": "A group of close friends or mates",
     "aussie": "Bunch of fuckers",
     "audio": "how_you_bunch_of_fuckers_going.mp3",
