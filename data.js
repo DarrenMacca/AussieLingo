@@ -241,4 +241,19 @@ function startQuiz() {
     quizScore = 0;
     renderQuizQuestion();
 }
+const quizNavBtn = document.getElementById('quiz-nav-btn');
+const backBtn = document.getElementById('back-to-dashboard-btn');
+const dashboard = document.querySelector('.main-content-display');
+const quizScreen = document.getElementById('quiz-screen');
 
+// Switch to Quiz Screen
+quizNavBtn.addEventListener('click', () => {
+    dashboard.classList.add('dashboard-hidden');
+    quizScreen.classList.add('visible-screen');
+});
+
+// Return to Dashboard
+backBtn.addEventListener('click', () => {
+    dashboard.classList.remove('dashboard-hidden');
+    quizScreen.classList.remove('visible-screen');
+});
