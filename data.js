@@ -100,54 +100,75 @@ return `
             renderDictionaryGrid();
         });
     }
+/**
+ * 1. Flashcard & Interaction Logic
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const gridRoot = document.getElementById('slang-grid-root');
+    const quizNavBtn = document.getElementById('quiz-nav-btn');
+    const backBtn = document.getElementById('back-to-dashboard-btn');
+    const dashboard = document.querySelector('.main-content-display');
+    const quizScreen = document.getElementById('quiz-screen');
 
     // Flashcard Click Delegation
-    gridRoot.addEventListener('click', (event) => {
-        if (!isFlashcardMode) return;
-        const slangCard = event.target.closest('.slang-card');
-        if (!slangCard) return;
+    if (gridRoot) {
+        gridRoot.addEventListener('click', (event) => {
+            // Assumes isFlashcardMode is defined globally or elsewhere
+            if (typeof isFlashcardMode !== 'undefined' && !isFlashcardMode) return;
+            
+            const slangCard = event.target.closest('.slang-card');
+            if (!slangCard) return;
 
-        slangCard.classList.toggle('flipped');
-        const isFlipped = slangCard.classList.contains('flipped');
-        const textTarget = slangCard.getAttribute('data-spoken');
-        const audioBtn = slangCard.querySelector('.flashcard-back .audio-btn');
+            slangCard.classList.toggle('flipped');
+            const isFlipped = slangCard.classList.contains('flipped');
+            const textTarget = slangCard.getAttribute('data-spoken');
+            const audioBtn = slangCard.querySelector('.flashcard-back .audio-btn');
 
-        if (isFlipped && textTarget) {
-            speakAussieSlang(textTarget, audioBtn);
-        } else if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-        }
-    });
+            if (isFlipped && textTarget) {
+                speakAussieSlang(textTarget, audioBtn);
+            } else if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+        });
+    }
 
-    renderDictionaryGrid();
+    // Screen Switching Logic
+    if (quizNavBtn && backBtn && dashboard && quizScreen) {
+        quizNavBtn.addEventListener('click', () => {
+            dashboard.classList.add('dashboard-hidden');
+            quizScreen.classList.add('visible-screen');
+            startQuiz(); // Initialize quiz when navigating to it
+        });
+
+        backBtn.addEventListener('click', () => {
+            dashboard.classList.remove('dashboard-hidden');
+            quizScreen.classList.remove('visible-screen');
+        });
+    }
+
+    // Initial Render
+    if (typeof renderDictionaryGrid === 'function') {
+        renderDictionaryGrid();
+    }
 });
 
 /**
- * 3. Native Australian Text-to-Speech Synthesizer Engine
+ * 2. Native Australian Text-to-Speech Synthesizer Engine
  */
 function speakAussieSlang(textToSpeak, buttonElement) {
     if (!window.speechSynthesis) return;
-
-    // Reset current audio state
     window.speechSynthesis.cancel();
 
     const cleanPhrase = decodeURIComponent(textToSpeak);
     const utterance = new SpeechSynthesisUtterance(cleanPhrase);
 
-    // Optimized Voice Selection: Searching for native Australian accent packs
     const voices = window.speechSynthesis.getVoices();
-    const aussieVoice = voices.find(v => 
-        v.lang.includes('en-AU') || 
-        v.name.toLowerCase().includes('australia')
-    );
+    const aussieVoice = voices.find(v => v.lang.includes('en-AU') || v.name.toLowerCase().includes('australia'));
 
     if (aussieVoice) utterance.voice = aussieVoice;
-
-    // Natural Aussie drawl cadence tuning
     utterance.rate = 0.85; 
     utterance.pitch = 0.90;
 
-    // UI Feedback
     if (buttonElement) {
         buttonElement.classList.add('playing');
         buttonElement.innerHTML = '<span class="btn-icon">💬</span>';
@@ -159,49 +180,53 @@ function speakAussieSlang(textToSpeak, buttonElement) {
             buttonElement.innerHTML = '<span class="btn-icon">🔊</span>';
         }
     };
-
     window.speechSynthesis.speak(utterance);
 }
 
-// Background Voice Loading Cache Warm-up
-if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-}
+/**
+ * 3. Quiz Engine
+ */
 let currentQuizIndex = 0;
 let quizScore = 0;
 const TOTAL_QUESTIONS = 20;
 
 function startQuiz() {
+    console.log("Quiz initializing...");
     currentQuizIndex = 0;
     quizScore = 0;
     renderQuizQuestion();
 }
 
 function renderQuizQuestion() {
-    // 1. Progress Bar Update
-    const progress = (currentQuizIndex / TOTAL_QUESTIONS) * 100;
-    document.getElementById('progress-bar').style.width = `${progress}%`;
+    const progressBar = document.getElementById('progress-bar');
+    if (progressBar) {
+        const progress = (currentQuizIndex / TOTAL_QUESTIONS) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
 
-    // 2. Logic: Pick 1 correct, 3 random distractors
     const target = AUSSIE_SLANG_DATA[Math.floor(Math.random() * AUSSIE_SLANG_DATA.length)];
     let options = [target.aussie];
+    
     while(options.length < 4) {
         let rand = AUSSIE_SLANG_DATA[Math.floor(Math.random() * AUSSIE_SLANG_DATA.length)].aussie;
         if(!options.includes(rand)) options.push(rand);
     }
-    options.sort(() => Math.random() - 0.5); // Shuffle
+    options.sort(() => Math.random() - 0.5);
 
-    // 3. Render UI
-    document.getElementById('quiz-question').innerText = target.english;
+    const questionEl = document.getElementById('quiz-question');
     const grid = document.getElementById('options-grid');
-    grid.innerHTML = '';
-    options.forEach(opt => {
-        const pill = document.createElement('button');
-        pill.className = 'pill-btn';
-        pill.innerText = opt;
-        pill.onclick = () => handleAnswer(opt, target.aussie);
-        grid.appendChild(pill);
-    });
+    if (questionEl) questionEl.innerText = target.english;
+    
+    if (grid) {
+        grid.innerHTML = '';
+        options.forEach(opt => {
+            const pill = document.createElement('button');
+            pill.className = 'pill-btn';
+            pill.innerText = opt;
+            pill.onclick = () => handleAnswer(opt, target.aussie);
+            grid.appendChild(pill);
+        });
+    }
 }
 
 function handleAnswer(selected, correct) {
@@ -219,41 +244,9 @@ function showResults() {
     const finalScore = (quizScore / TOTAL_QUESTIONS) * 100;
     if(finalScore >= 85) {
         alert("Crikey! You earned your Certificate! Score: " + finalScore + "%");
-        // Trigger certificate function here
     } else {
         alert("You muppet. Not quite, mate. You scored " + finalScore + "%. Try again!");
         startQuiz();
     }
 }
-
-
-
-// Ensure this runs only when the page is ready
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('quiz-question')) {
-        startQuiz();
-    }
-});
-
-function startQuiz() {
-    console.log("Quiz initializing..."); // Check console (F12) to see if this logs
-    currentQuizIndex = 0;
-    quizScore = 0;
-    renderQuizQuestion();
-}
-const quizNavBtn = document.getElementById('quiz-nav-btn');
-const backBtn = document.getElementById('back-to-dashboard-btn');
-const dashboard = document.querySelector('.main-content-display');
-const quizScreen = document.getElementById('quiz-screen');
-
-// Switch to Quiz Screen
-quizNavBtn.addEventListener('click', () => {
-    dashboard.classList.add('dashboard-hidden');
-    quizScreen.classList.add('visible-screen');
-});
-
-// Return to Dashboard
-backBtn.addEventListener('click', () => {
-    dashboard.classList.remove('dashboard-hidden');
-    quizScreen.classList.remove('visible-screen');
-});
+   
