@@ -1,11 +1,7 @@
-/* ==========================================================================
-   THE GREAT AUSSIE SLANG DICTIONARY - FULL STYLESHEET
-   ========================================================================== */
-
-/* 1. Global & Layout */
+/* --- Original Layout Styles --- */
 body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 20px; background-color: #f4f7f6; }
 
-/* 2. Grid & Card Styles (RESTORED) */
+/* The container that holds your cards - Ensure this matches your ID */
 #slang-grid-root {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -21,21 +17,24 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 20px; b
     border: 1px solid #eee;
 }
 
-/* 3. Flashcard Flip Logic */
-.flashcard-inner { position: relative; width: 100%; height: 200px; transition: transform 0.6s; transform-style: preserve-3d; }
-.slang-card.flipped .flashcard-inner { transform: rotateY(180deg); }
-.flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; }
-.flashcard-back { transform: rotateY(180deg); }
-
-/* 4. Screen Switching (Required for Quiz) */
+/* --- New Quiz Screen Styles --- */
 .hidden-screen { display: none; }
 .visible-screen { display: block; }
 .dashboard-hidden { display: none; }
 
-/* 5. Quiz Interface Styles */
-.quiz-container { max-width: 600px; margin: 40px auto; padding: 2rem; text-align: center; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.quiz-container { 
+    max-width: 600px; 
+    margin: 40px auto; 
+    padding: 2rem; 
+    text-align: center; 
+    background: #fff; 
+    border-radius: 16px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+}
+
 #progress-bar-container { background: #eee; height: 10px; border-radius: 5px; margin: 20px 0; overflow: hidden; }
 #progress-bar { height: 100%; background: #ffcc00; width: 0%; transition: width 0.3s; }
+
 .options-grid { display: grid; gap: 12px; margin-top: 25px; }
 .pill-btn { padding: 15px; cursor: pointer; background: #f9f9f9; border: 2px solid #ddd; border-radius: 8px; }
 .pill-btn:hover { background: #ffcc00; }
