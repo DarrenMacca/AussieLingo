@@ -1,38 +1,16 @@
 /* ==========================================================================
-   THE GREAT AUSSIE SLANG DICTIONARY - FULL STYLESHEET (PART 1)
+   THE GREAT AUSSIE SLANG DICTIONARY - FULL STYLESHEET
    ========================================================================== */
 
-/* Base Setup */
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f7f6;
-    color: #333;
-    min-height: 100vh;
-}
+/* 1. Global & Layout */
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 20px; background-color: #f4f7f6; }
 
-/* Background Blobs */
-.blob {
-    position: fixed;
-    filter: blur(80px);
-    z-index: -1;
-    opacity: 0.6;
-}
-.blob-1 { top: -10%; left: -5%; width: 300px; height: 300px; background: #ffcc00; }
-.blob-2 { bottom: -10%; right: -5%; width: 400px; height: 400px; background: #4CAF50; }
-
-/* App Layout */
-.app-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px; }
-.app-header { margin-bottom: 2rem; }
-/* ==========================================================================
-   DICTIONARY GRID & CARDS (PART 2)
-   ========================================================================== */
-
-.slang-responsive-grid {
+/* 2. Grid & Card Styles (RESTORED) */
+#slang-grid-root {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
+    padding: 20px 0;
 }
 
 .slang-card {
@@ -40,77 +18,25 @@ body {
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: transform 0.3s;
+    border: 1px solid #eee;
 }
 
-/* Flashcard Flip Logic */
+/* 3. Flashcard Flip Logic */
 .flashcard-inner { position: relative; width: 100%; height: 200px; transition: transform 0.6s; transform-style: preserve-3d; }
 .slang-card.flipped .flashcard-inner { transform: rotateY(180deg); }
-.flashcard-front, .flashcard-back { position: absolute; width: 100%; backface-visibility: hidden; }
+.flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; }
 .flashcard-back { transform: rotateY(180deg); }
-/* ==========================================================================
-   SCREEN SWITCHING & QUIZ ENGINE (PART 3)
-   ========================================================================== */
 
-/* View States */
+/* 4. Screen Switching (Required for Quiz) */
 .hidden-screen { display: none; }
 .visible-screen { display: block; }
 .dashboard-hidden { display: none; }
 
-/* Quiz UI */
-.quiz-container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 2rem;
-    text-align: center;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-#progress-bar-container {
-    background: #e0e0e0;
-    height: 10px;
-    border-radius: 5px;
-    margin: 20px 0;
-    overflow: hidden;
-}
-
-#progress-bar {
-    height: 100%;
-    background: #ffcc00;
-    width: 0%;
-    transition: width 0.4s ease;
-}
-
-.options-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 25px;
-}
-
-.pill-btn {
-    padding: 15px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    background: #ffffff;
-    border: 2px solid #ddd;
-    border-radius: 12px;
-    transition: all 0.2s ease;
-}
-
-.pill-btn:hover {
-    background: #ffcc00;
-    border-color: #e6b800;
-}
-
-.secondary-btn {
-    padding: 8px 16px;
-    background: #555;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
+/* 5. Quiz Interface Styles */
+.quiz-container { max-width: 600px; margin: 40px auto; padding: 2rem; text-align: center; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+#progress-bar-container { background: #eee; height: 10px; border-radius: 5px; margin: 20px 0; overflow: hidden; }
+#progress-bar { height: 100%; background: #ffcc00; width: 0%; transition: width 0.3s; }
+.options-grid { display: grid; gap: 12px; margin-top: 25px; }
+.pill-btn { padding: 15px; cursor: pointer; background: #f9f9f9; border: 2px solid #ddd; border-radius: 8px; }
+.pill-btn:hover { background: #ffcc00; }
+.secondary-btn { padding: 8px 16px; background: #555; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 20px; }
