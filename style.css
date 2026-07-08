@@ -1,594 +1,116 @@
 /* ==========================================================================
-   SECTION 1: SYSTEM CORE DESIGN TOKENS & ROOT SETUP
+   THE GREAT AUSSIE SLANG DICTIONARY - FULL STYLESHEET (PART 1)
    ========================================================================== */
-:root {
-    /* Main Deep Royal Blue Theme Matrix Color Variables */
-    --primary-deep-royal: #0a194f;
-    --primary-royal-mid: #102a83;
-    --primary-royal-light: #1b42c5;
-    --primary-neon-glow: #3b66ff;
-    
-    /* Pure Glassmorphism Transparency Layers Spec System */
-    --glass-bg-primary: rgba(10, 25, 79, 0.25);
-    --glass-bg-secondary: rgba(16, 42, 131, 0.4);
-    --glass-bg-cards: rgba(255, 255, 255, 0.04);
-    --glass-border-light: rgba(255, 255, 255, 0.12);
-    --glass-border-heavy: rgba(255, 255, 255, 0.22);
-    --glass-blur-radius: 16px;
-    
-    /* High Contrast Text Definitions */
-    --text-pure-white: #ffffff;
-    --text-muted-silver: #cbd5e1;
-    --text-dark-subtle: #94a3b8;
-    
-    /* Layout Variables */
-    --interface-max-width: 1440px;
-    --interface-padding: 2rem;
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --radius-rounded-lg: 16px;
-    --radius-rounded-sm: 8px;
-    
-    /* Mobile Accessibility Targets */
-    --touch-target-min: 44px;
-}
 
-/* Base Document Canvas Normalizations */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
+/* Base Setup */
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #030712;
-    color: var(--text-pure-white);
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
     min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    line-height: 1.6;
 }
 
-/* ==========================================================================
-   SECTION 2: GLASSMORPHIC AMBIENT BACKGROUND GLOW BLOBS
-   ========================================================================== */
+/* Background Blobs */
 .blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(140px);
-    z-index: 0;
-    opacity: 0.45;
-    pointer-events: none;
+    position: fixed;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.6;
 }
-.blob-1 {
-    top: -10%;
-    left: -10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, var(--primary-royal-light) 0%, rgba(0,0,0,0) 80%);
-}
-.blob-2 {
-    bottom: 20%;
-    right: -5%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, var(--primary-deep-royal) 0%, rgba(0,0,0,0) 80%);
-}
-.blob-3 {
-    top: 40%;
-    left: 35%;
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, #1e1b4b 0%, rgba(0,0,0,0) 80%);
-}
+.blob-1 { top: -10%; left: -5%; width: 300px; height: 300px; background: #ffcc00; }
+.blob-2 { bottom: -10%; right: -5%; width: 400px; height: 400px; background: #4CAF50; }
 
-/* App Wrapper Master Scaffold */
-.app-wrapper {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: var(--interface-max-width);
-    margin: 0 auto;
-    padding: var(--interface-padding);
-}/* ==========================================================================
-   SECTION 3: HEADER & FOOTER UI COMPONENTS
-   ========================================================================== */
-.app-header {
-    background: var(--glass-bg-primary);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    border: 1px solid var(--glass-border-light);
-    border-radius: var(--radius-rounded-lg);
-    padding: 3rem 2.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
-.brand-tag {
-    display: inline-block;
-    background: rgba(59, 102, 255, 0.25);
-    border: 1px solid var(--primary-neon-glow);
-    color: var(--text-pure-white);
-    padding: 0.35rem 0.85rem;
-    border-radius: 30px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-}
-.app-header h1 {
-    font-size: 2.75rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #ffffff 40%, var(--text-muted-silver) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.app-header p {
-    color: var(--text-muted-silver);
-    font-size: 1.1rem;
-    max-width: 800px;
-}
-
-.app-footer {
-    text-align: center;
-    padding: 2.5rem 1rem;
-    margin-top: 3rem;
-    border-top: 1px solid var(--glass-border-light);
-    color: var(--text-dark-subtle);
-    font-size: 0.9rem;
-}
-
+/* App Layout */
+.app-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.app-header { margin-bottom: 2rem; }
 /* ==========================================================================
-   SECTION 4: CORE INTERFACE LAYOUT SHELL ARCHITECTURE
+   DICTIONARY GRID & CARDS (PART 2)
    ========================================================================== */
-.app-layout-shell {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 2rem;
-    align-items: start;
-}
 
-/* Sidebar Wrapper Panels */
-.sidebar-wrapper {
-    position: sticky;
-    top: 2rem;
-    z-index: 10;
-}
-.sidebar-sticky-panel {
-    background: var(--glass-bg-primary);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    border: 1px solid var(--glass-border-light);
-    border-radius: var(--radius-rounded-lg);
-    padding: 2rem 1.5rem;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    
-    /* Scroll-Safe Constraints for Small Laptops & Screen Heights */
-    max-height: calc(100vh - 4rem);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
-}
-
-/* WebKit scroll track overrides */
-.sidebar-sticky-panel::-webkit-scrollbar {
-    width: 4px;
-}
-.sidebar-sticky-panel::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-}
-
-.sidebar-header {
-    margin-bottom: 1.75rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--glass-border-light);
-}
-.sidebar-header h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-.sidebar-header p {
-    font-size: 0.85rem;
-    color: var(--text-dark-subtle);
-}
-
-/* Navigation Interactive Items */
-.filter-navigation {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-.filter-btn {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0.85rem 1.15rem;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: var(--radius-rounded-sm);
-    color: var(--text-muted-silver);
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 500;
-    text-align: left;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-}
-.btn-icon {
-    margin-right: 0.85rem;
-    font-size: 1.1rem;
-}
-.filter-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-pure-white);
-    transform: translateX(4px);
-}
-.filter-btn.active {
-    background: var(--glass-bg-secondary);
-    border-color: var(--glass-border-heavy);
-    color: var(--text-pure-white);
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(16, 42, 131, 0.4);
-}/* ==========================================================================
-   SECTION 5: DISPLAY RESPONSIVE GRID & CARDS
-   ========================================================================== */
 .slang-responsive-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
 }
 
-/* Glassmorphic Data Cards */
 .slang-card {
-    background: var(--glass-bg-cards);
-    backdrop-filter: blur(var(--glass-blur-radius));
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius));
-    border: 1px solid var(--glass-border-light);
-    border-radius: var(--radius-rounded-lg);
-    padding: 1.75rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 1.25rem;
-    transition: var(--transition-smooth);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
 }
 
-.slang-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--glass-border-heavy);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 12px 30px rgba(16, 42, 131, 0.3);
-}
-
-/* Fixed Layout Header Component */
-.slang-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 1rem;
-}
-
-/* Internal Card Components */
-.category-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    color: var(--text-dark-subtle);
-    border: 1px solid var(--glass-border-light);
-    padding: 0.25rem 0.65rem;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.02);
-    white-space: nowrap;
-}
-
-.slang-card-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-/* Synced class name layout links */
-.aussie-term, .aussie-word {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-pure-white);
-    letter-spacing: -0.01em;
-}
-
-.english-translation {
-    color: var(--text-muted-silver);
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
+/* Flashcard Flip Logic */
+.flashcard-inner { position: relative; width: 100%; height: 200px; transition: transform 0.6s; transform-style: preserve-3d; }
+.slang-card.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-front, .flashcard-back { position: absolute; width: 100%; backface-visibility: hidden; }
+.flashcard-back { transform: rotateY(180deg); }
 /* ==========================================================================
-   SECTION 6: INTERACTIVE PRONUNCIATION CONTROLS
+   SCREEN SWITCHING & QUIZ ENGINE (PART 3)
    ========================================================================== */
-.audio-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.85rem;
-    background: rgba(59, 102, 255, 0.12);
-    border: 1px solid rgba(59, 102, 255, 0.3);
-    border-radius: var(--radius-rounded-sm);
-    color: var(--text-pure-white);
-    font-family: inherit;
-    font-size: 0.85rem;
+
+/* View States */
+.hidden-screen { display: none; }
+.visible-screen { display: block; }
+.dashboard-hidden { display: none; }
+
+/* Quiz UI */
+.quiz-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 2rem;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+#progress-bar-container {
+    background: #e0e0e0;
+    height: 10px;
+    border-radius: 5px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+#progress-bar {
+    height: 100%;
+    background: #ffcc00;
+    width: 0%;
+    transition: width 0.4s ease;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.pill-btn {
+    padding: 15px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: var(--transition-smooth);
-    white-space: nowrap;
+    background: #ffffff;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    transition: all 0.2s ease;
 }
 
-.audio-btn:hover {
-    background: var(--primary-royal-light);
-    border-color: var(--primary-neon-glow);
-    box-shadow: 0 0 12px rgba(59, 102, 255, 0.5);
+.pill-btn:hover {
+    background: #ffcc00;
+    border-color: #e6b800;
 }
 
-.audio-btn:active {
-    transform: scale(0.96);
+.secondary-btn {
+    padding: 8px 16px;
+    background: #555;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
-
-.audio-btn.playing {
-    background: rgba(16, 42, 131, 0.6);
-    border-color: var(--primary-neon-glow);
-    box-shadow: inset 0 0 8px rgba(59, 102, 255, 0.4);
-}
-
-/* Empty State Filter Messaging Styles */
-.no-results {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-dark-subtle);
-    font-size: 1.1rem;
-    background: var(--glass-bg-cards);
-    border: 1px dashed var(--glass-border-light);
-    border-radius: var(--radius-rounded-lg);
-}
-
-/* ==========================================================================
-   SECTION 7: RESPONSIVE MEDIA ADAPTATION QUERY LAYERS
-   ========================================================================== */
-@media (max-width: 1024px) {
-    .app-layout-shell {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-    
-    .sidebar-wrapper {
-        position: relative;
-        top: 0;
-        width: 100%;
-        z-index: 20;
-    }
-    
-    .sidebar-sticky-panel {
-        max-height: none;
-        overflow-y: visible;
-        padding: 1.5rem;
-    }
-
-    /* Convert structural grid layout into an horizontally swipeable button trail row */
-    .filter-navigation {
-        flex-direction: row;
-        overflow-x: auto;
-        padding-bottom: 0.75rem;
-        gap: 0.65rem;
-        -webkit-overflow-scrolling: touch; /* Custom touch layer momentum acceleration on mobile engines */
-        scrollbar-width: none; /* Firefox viewport normalization */
-    }
-    
-    .filter-navigation::-webkit-scrollbar {
-        display: none; /* Webkit browser interface removal patch */
-    }
-    
-    .filter-btn {
-        width: auto;
-        white-space: nowrap; /* Forces content string layout parameters into explicit linear structures */
-        padding: 0.75rem 1.25rem;
-        min-height: var(--touch-target-min);
-    }
-    
-    .filter-btn:hover {
-        transform: none; /* Disables translations on horizontal slider rails to preserve boundaries */
-    }
-}
-
-@media (max-width: 640px) {
-    body {
-        overflow-x: hidden;
-    }
-
-    .app-wrapper {
-        padding: 0.75rem;
-    }
-    
-    .app-header {
-        padding: 2rem 1.25rem;
-        margin-bottom: 1.25rem;
-        text-align: center;
-    }
-    
-    .app-header h1 {
-        font-size: 1.95rem; /* Dynamic layout adjustments to preserve text balance properties */
-        line-height: 1.2;
-    }
-    
-    .app-header p {
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-    
-    .slang-responsive-grid {
-        grid-template-columns: 1fr; /* Pure linear data block cascade arrangement constraints */
-        gap: 1rem;
-    }
-    
-    .slang-card {
-        padding: 1.25rem;
-    }
-}
-
-/* ==========================================================================
-   SECTION 8: 3D FLASHCARD FLIP INTERACTION ENGINE (CONTAINMENT SAFETY PATCH)
-   ========================================================================== */
-
-/* 1. Global structural enforcement when flashcards are active */
-body.flashcard-active .slang-responsive-grid,
-.flashcard-active .slang-responsive-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)) !important;
-    gap: 1.5rem !important;
-    width: 100% !important;
-}
-
-/* 2. Reset the main card block to act as an uncollapsible container */
-body.flashcard-active .slang-card,
-.flashcard-active .slang-card {
-    perspective: 1200px !important;
-    cursor: pointer !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    height: 220px !important;
-    position: relative !important;
-    width: 100% !important;
-    display: block !important; /* Prevents JS flex/grid overrides from shrinking the card width */
-}
-
-/* 3. Force the flipper wrapper to span the full width of the card */
-.flashcard-inner {
-    position: relative !important;
-    width: 100% !important;
-    height: 100% !important;
-    text-align: left !important;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    transform-style: preserve-3d !important;
-}
-
-/* Flipped interaction handle */
-.slang-card.flipped .flashcard-inner {
-    transform: rotateY(180deg) !important;
-}
-
-/* 4. CRITICAL MOBILE EDGE-TO-EDGE ENFORCEMENT */
-/* Force absolute card faces to fill 100% width of their grid block, leaving no room to shrink */
-body.flashcard-active .flashcard-front,
-body.flashcard-active .flashcard-back,
-.flashcard-active .flashcard-front,
-.flashcard-active .flashcard-back {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important; /* Anchors right edge to eliminate the narrow column effect */
-    width: 100% !important; /* Completely overrides inline JS width adjustments */
-    height: 100% !important;
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-    border-radius: var(--radius-rounded-lg) !important;
-    border: 1px solid var(--glass-border-light) !important;
-    padding: 1.5rem !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    box-sizing: border-box !important; /* Safely encloses padding within the 100% width barrier */
-}
-
-/* Front face initialization matrix */
-.flashcard-front {
-    background: var(--glass-bg-cards) !important;
-    backdrop-filter: blur(var(--glass-blur-radius)) !important;
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius)) !important;
-    color: var(--text-pure-white) !important;
-    transform: rotateY(0deg) !important;
-    z-index: 2 !important;
-}
-
-/* Back face initialization matrix */
-.flashcard-back {
-    background: rgba(16, 42, 131, 0.35) !important;
-    backdrop-filter: blur(var(--glass-blur-radius)) !important;
-    -webkit-backdrop-filter: blur(var(--glass-blur-radius)) !important;
-    border-color: var(--glass-border-heavy) !important;
-    color: var(--text-pure-white) !important;
-    transform: rotateY(180deg) !important;
-    z-index: 1 !important;
-}
-
-/* 5. Internal item layouts inside active flashcards */
-.flashcard-active .slang-card-header {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    width: 100% !important;
-    margin-bottom: auto !important;
-}
-
-.flashcard-active .slang-card-body {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-    width: 100% !important;
-    text-align: center !important;
-}
-
-/* --- 1. Mobile viewport adjustments --- */
-@media (max-width: 640px) {
-    body.flashcard-active .slang-responsive-grid,
-    .flashcard-active .slang-responsive-grid {
-        grid-template-columns: 1fr !important;
-        width: 100% !important;
-    }
-    body.flashcard-active .slang-card,
-    .flashcard-active .slang-card {
-        height: 200px !important;
-        width: 100% !important;
-    }
-}
-
-/* --- 2. Main Layout --- */
-.main-content-display {
-    position: relative; /* Anchors the floating quiz inside this area */
-    display: block; 
-    padding: 20px;
-    width: 100%;
-}
-
-/* --- 3. Dictionary Grid --- */
-#slang-grid-root, .slang-responsive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    width: 100%;
-}
-/* Screen Switching */
-.hidden-screen {
-    display: none; /* Hidden by default */
-}
-
-.visible-screen {
-    display: block; /* Shown when active */
-}
-
-/* Ensure the main grid hides when quiz is active */
-.dashboard-hidden {
-    display: none;
-}
-
