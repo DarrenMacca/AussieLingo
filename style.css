@@ -578,4 +578,17 @@ body.flashcard-active .flashcard-back,
     gap: 20px;
     width: 100%;
 }
+/* Screen Switching */
+.hidden-screen {
+    display: none; /* Hidden by default */
+}
+
+.visible-screen {
+    display: block; /* Shown when active */
+}
+
+/* Ensure the main grid hides when quiz is active */
+.dashboard-hidden {
+    display: none;
+}
 
