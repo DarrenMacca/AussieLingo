@@ -100,11 +100,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Flashcard Click Delegation with Audio Trigger
     if (gridRoot) {
         gridRoot.addEventListener('click', (event) => {
             if (!isFlashcardMode) return;
             const slangCard = event.target.closest('.slang-card');
-            if (slangCard) slangCard.classList.toggle('flipped');
+            if (!slangCard) return;
+
+            slangCard.classList.toggle('flipped');
+            const isFlipped = slangCard.classList.contains('flipped');
+            const textTarget = slangCard.getAttribute('data-spoken');
+            const audioBtn = slangCard.querySelector('.flashcard-back .audio-btn');
+
+            if (isFlipped && textTarget) {
+                speakAussieSlang(textTarget, audioBtn);
+            } else {
+                window.speechSynthesis.cancel();
+            }
         });
     }
 
@@ -130,6 +142,12 @@ function speakAussieSlang(textToSpeak, buttonElement) {
     const utterance = new SpeechSynthesisUtterance(decodeURIComponent(textToSpeak));
     utterance.rate = 0.85; 
     utterance.pitch = 0.90;
+    
+    if (buttonElement) {
+        buttonElement.classList.add('playing');
+        utterance.onend = () => buttonElement.classList.remove('playing');
+    }
+    
     window.speechSynthesis.speak(utterance);
 }
 
