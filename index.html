@@ -10,98 +10,42 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div class="blob blob-1" aria-hidden="true"></div>
-    <div class="blob blob-2" aria-hidden="true"></div>
-    <div class="blob blob-3" aria-hidden="true"></div>
-
-    <div class="app-wrapper">
-        <header class="app-header">
-            <div class="header-content">
-                <span class="brand-tag">🇦🇺 True Blue Strine</span>
-                <h1>The Great Aussie Slang Dictionary</h1>
-                <p>Aussie's by nature are light hearted people. Taking this step into learning Aussie Lingo may at first appear offensive, however more often than not, what appears offensive is one of the greatest forms of acknowledgement. An interactive dictionary translating classic Australian colloquialisms into standard global English.</p>
-            </div>
+    <!-- Main Dashboard -->
+    <main class="main-content-display">
+        <!-- Your Header/Dictionary Content -->
+        <header>
+            <h1>Aussie Slang Dictionary</h1>
         </header>
 
-        <!-- Primary Application Shell -->
-        <div class="app-layout-shell">
-            
-            <aside class="sidebar-wrapper">
-                <div class="sidebar-sticky-panel">
-                    <div class="sidebar-header">
-                        <h2>Navigation Menu</h2>
-                        <p>Filter entries by category</p>
-                    </div>
-                    <div class="mode-toggle-container" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--glass-border-light);">
-                        <label class="switch-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: var(--text-muted-silver);">
-                            <span>🃏 Flashcard Mode</span>
-                            <input type="checkbox" id="flashcard-mode-checkbox" style="width: 18px; height: 18px; cursor: pointer;">
-                        </label>
-                    </div>
-                    <nav class="filter-navigation" aria-label="Slang categories">
-                        <button class="filter-btn active" data-category="all" aria-current="page">
-                            <span class="btn-icon">📚</span> All Slang Words
-                        </button>
-                        <button class="filter-btn" data-category="everyday-people">
-                            <span class="btn-icon">👥</span> Everyday & People
-                        </button>
-                        <button class="filter-btn" data-category="core-phrases">
-                            <span class="btn-icon">💬</span> Greetings & Phrases
-                        </button>
-                        <button class="filter-btn" data-category="food-drink">
-                            <span class="btn-icon">🍺</span> Food & Drink
-                        </button>
-                        <button class="filter-btn" data-category="time-places">
-                            <span class="btn-icon">📍</span> Time & Places
-                        </button>
-                        <button class="filter-btn" data-category="clothing-items">
-                            <span class="btn-icon">🩴</span> Clothing & Items
-                        </button>
-                        <button class="filter-btn" data-category="adjectives-modifiers">
-                            <span class="btn-icon">✨</span> Adjectives
-                        </button>
-                        <button class="filter-btn" data-category="actions-verbs">
-                            <span class="btn-icon">🏃‍♂️</span> Actions & Verbs
-                        </button>
-                        <button class="filter-btn" data-category="idioms">
-                            <span class="btn-icon">🦘</span> Idioms & Metaphors
-                        </button>
-                        <button class="filter-btn" data-category="Multiple-Use-Same-Word">
-                            <span class="btn-icon">🔄</span> Multiple Use Words
-                        </button>
-                        <button class="filter-btn" data-category="quiz" id="quiz-nav-btn">
-                            <span class="btn-icon">🧠</span> Quiz Mode
-                        </button>
-                    </nav>
-                </div>
-            </aside>
+        <!-- Your Existing Filter Buttons -->
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="core-phrases">Greetings</button>
+            <!-- Add your other buttons here -->
+        </div>
 
-            <!-- DASHBOARD SCREEN -->
-            <main class="main-content-display">
-                <div id="slang-grid-root" class="slang-responsive-grid"></div>
-            </main>
+        <!-- Dictionary Grid -->
+        <div id="slang-grid-root" class="grid-container"></div>
 
-            <!-- QUIZ SCREEN -->
-            <div id="quiz-screen" class="hidden-screen">
-                <button id="back-to-dashboard-btn" class="pill-btn">⬅ Back to Dashboard</button>
-                <div id="quiz-content">
-                    <div class="progress-container" style="width: 100%; background: #ddd; border-radius: 10px; margin: 20px 0;">
-                        <div id="progress-bar" style="height: 10px; background: #4CAF50; width: 0%; border-radius: 10px; transition: width 0.3s;"></div>
-                    </div>
-                    <h2 id="quiz-question" style="color: white; margin-bottom: 20px;"></h2>
-                    <div id="options-grid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                </div>
+        <!-- Quiz Navigation Button -->
+        <section class="quiz-nav-section" style="text-align: center; margin: 40px 0;">
+            <button id="quiz-nav-btn" class="primary-btn">Take the Aussie Slang Quiz! 🦘</button>
+        </section>
+    </main>
+
+    <!-- New Quiz Screen (Hidden by default) -->
+    <section id="quiz-screen" class="hidden-screen">
+        <div class="quiz-container">
+            <button id="back-to-dashboard-btn" class="secondary-btn">← Back to Dashboard</button>
+            <div id="progress-bar-container" style="background: #eee; height: 10px; margin: 20px 0;">
+                <div id="progress-bar" style="height: 100%; background: #ffcc00; width: 0%; transition: width 0.3s;"></div>
             </div>
+            <h2 id="quiz-question">Loading question...</h2>
+            <div id="options-grid" class="options-grid"></div>
+        </div>
+    </section>
 
-        </div> 
-
-        <footer class="app-footer">
-            <p>&copy; 2026 The Great Aussie Slang Project by Macca. If you can call someone or be called by someone any of what you learn here and walk away with a smile, your on your way to being accepted.</p>
-        </footer>
-    </div>
-
-    <script src="dictionary-data.js"></script>
+    <!-- Ensure your script is linked at the bottom -->
     <script src="data.js"></script>
 </body>
 </html>
