@@ -24,6 +24,7 @@
             </div>
         </header>
 
+        <!-- Primary Application Shell -->
         <div class="app-layout-shell">
             
             <aside class="sidebar-wrapper">
@@ -69,16 +70,27 @@
                         <button class="filter-btn" data-category="Multiple-Use-Same-Word">
                             <span class="btn-icon">🔄</span> Multiple Use Words
                         </button>
+                        <button class="filter-btn" data-category="quiz" id="quiz-nav-btn">
+                            <span class="btn-icon">🧠</span> Quiz Mode
+                        </button>
                     </nav>
                 </div>
             </aside>
 
-            <!-- THIS MAIN SECTION WAS MISSING AND IS NOW RESTORED -->
+            <!-- DASHBOARD SCREEN -->
             <main class="main-content-display">
                 <div id="slang-grid-root" class="slang-responsive-grid"></div>
             </main>
-            
-        </div>
+
+            <!-- QUIZ SCREEN -->
+            <div id="quiz-screen" class="hidden-screen">
+                <button id="back-to-dashboard-btn" class="pill-btn">⬅ Back to Dashboard</button>
+                <div id="quiz-content">
+                    <!-- Quiz logic -->
+                </div>
+            </div>
+
+        </div> 
 
         <footer class="app-footer">
             <p>&copy; 2026 The Great Aussie Slang Project by Macca. If you can call someone or be called by someone any of what you learn here and walk away with a smile, your on your way to being accepted.</p>
