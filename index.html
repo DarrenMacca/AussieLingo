@@ -86,7 +86,11 @@
             <div id="quiz-screen" class="hidden-screen">
                 <button id="back-to-dashboard-btn" class="pill-btn">⬅ Back to Dashboard</button>
                 <div id="quiz-content">
-                    <!-- Quiz logic -->
+                    <div class="progress-container" style="width: 100%; background: #ddd; border-radius: 10px; margin: 20px 0;">
+                        <div id="progress-bar" style="height: 10px; background: #4CAF50; width: 0%; border-radius: 10px; transition: width 0.3s;"></div>
+                    </div>
+                    <h2 id="quiz-question" style="color: white; margin-bottom: 20px;"></h2>
+                    <div id="options-grid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                 </div>
             </div>
 
