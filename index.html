@@ -11,39 +11,39 @@
 </head>
 <body>
     <!-- Main Dashboard -->
-    <main class="main-content-display">
-        <!-- Your Header/Dictionary Content -->
-        <header>
-            <h1>Aussie Slang Dictionary</h1>
-        </header>
+   <main class="main-content-display">
+    <header>
+        <h1>Aussie Slang Dictionary</h1>
+    </header>
 
-        <!-- Your Existing Filter Buttons -->
-        <div class="filters">
-            <button class="filter-btn active" data-category="all">All</button>
-            <button class="filter-btn" data-category="core-phrases">Greetings</button>
-            <!-- Add your other buttons here -->
-        </div>
+    <div class="filters">
+        <button class="filter-btn active" data-category="all" aria-current="page"><span class="btn-icon">📚</span> All Slang Words</button>
+        <button class="filter-btn" data-category="everyday-people"><span class="btn-icon">👥</span> Everyday & People</button>
+        <button class="filter-btn" data-category="core-phrases"><span class="btn-icon">💬</span> Greetings & Phrases</button>
+        <button class="filter-btn" data-category="food-drink"><span class="btn-icon">🍺</span> Food & Drink</button>
+        <button class="filter-btn" data-category="time-places"><span class="btn-icon">📍</span> Time & Places</button>
+        <button class="filter-btn" data-category="clothing-items"><span class="btn-icon">🩴</span> Clothing & Items</button>
+        <button class="filter-btn" data-category="adjectives-modifiers"><span class="btn-icon">✨</span> Adjectives</button>
+        <button class="filter-btn" data-category="actions-verbs"><span class="btn-icon">🏃‍♂️</span> Actions & Verbs</button>
+        <button class="filter-btn" data-category="idioms"><span class="btn-icon">🦘</span> Idioms & Metaphors</button>
+        <button class="filter-btn" data-category="Multiple-Use-Same-Word"><span class="btn-icon">🔄</span> Multiple Use Words</button>
+    </div>
 
-        <!-- Dictionary Grid -->
-        <div id="slang-grid-root" class="grid-container"></div>
+    <div id="slang-grid-root" class="grid-container"></div>
 
-        <!-- Quiz Navigation Button -->
-        <section class="quiz-nav-section" style="text-align: center; margin: 40px 0;">
-            <button id="quiz-nav-btn" class="primary-btn">Take the Aussie Slang Quiz! 🦘</button>
-        </section>
-    </main>
-
-    <!-- New Quiz Screen (Hidden by default) -->
-    <section id="quiz-screen" class="hidden-screen">
-        <div class="quiz-container">
-            <button id="back-to-dashboard-btn" class="secondary-btn">← Back to Dashboard</button>
-            <div id="progress-bar-container" style="background: #eee; height: 10px; margin: 20px 0;">
-                <div id="progress-bar" style="height: 100%; background: #ffcc00; width: 0%; transition: width 0.3s;"></div>
-            </div>
-            <h2 id="quiz-question">Loading question...</h2>
-            <div id="options-grid" class="options-grid"></div>
-        </div>
+    <section class="quiz-nav-section" style="text-align: center; margin: 40px 0;">
+        <button id="quiz-nav-btn" class="primary-btn">Take the Aussie Slang Quiz! 🦘</button>
     </section>
+</main>
+
+<section id="quiz-screen" class="hidden-screen">
+    <div class="quiz-container">
+        <button id="back-to-dashboard-btn" class="secondary-btn">← Back to Dashboard</button>
+        <div id="progress-bar-container"><div id="progress-bar"></div></div>
+        <h2 id="quiz-question">Loading question...</h2>
+        <div id="options-grid" class="options-grid"></div>
+    </div>
+</section>
 
     <!-- Ensure your script is linked at the bottom -->
    <script src="dictionary-data.js"></script> 
