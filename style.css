@@ -579,39 +579,3 @@ body.flashcard-active .flashcard-back,
     width: 100%;
 }
 
-/* --- 4. Floating Quiz Box --- */
-#quiz-container {
-    position: absolute; 
-    top: 20px;
-    right: 20px;
-    width: 300px;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.85);
-    padding: 15px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* --- 5. Quiz Button Pills --- */
-.pill-btn {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
-    padding: 8px 16px;
-    margin: 5px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.3s ease;
-}
-
-.pill-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-#options-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-}
