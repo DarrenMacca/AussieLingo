@@ -4,22 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Great Aussie Slang Dictionary</title>
-    <!-- Google Fonts for crisp UI typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Main Style Sheet Connection -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Glassmorphic Background Decorative Elements -->
     <div class="blob blob-1" aria-hidden="true"></div>
     <div class="blob blob-2" aria-hidden="true"></div>
     <div class="blob blob-3" aria-hidden="true"></div>
 
     <div class="app-wrapper">
-        <!-- Main Application Header -->
         <header class="app-header">
             <div class="header-content">
                 <span class="brand-tag">🇦🇺 True Blue Strine</span>
@@ -28,10 +24,8 @@
             </div>
         </header>
 
-        <!-- Primary Application Shell Layout Container -->
         <div class="app-layout-shell">
             
-            <!-- Structural Sidebar Interface Layout Element -->
             <aside class="sidebar-wrapper">
                 <div class="sidebar-sticky-panel">
                     <div class="sidebar-header">
@@ -39,11 +33,11 @@
                         <p>Filter entries by category</p>
                     </div>
                     <div class="mode-toggle-container" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--glass-border-light);">
-        <label class="switch-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: var(--text-muted-silver);">
-            <span>🃏 Flashcard Mode</span>
-            <input type="checkbox" id="flashcard-mode-checkbox" style="width: 18px; height: 18px; cursor: pointer;">
-        </label>
-    </div>
+                        <label class="switch-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: var(--text-muted-silver);">
+                            <span>🃏 Flashcard Mode</span>
+                            <input type="checkbox" id="flashcard-mode-checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                        </label>
+                    </div>
                     <nav class="filter-navigation" aria-label="Slang categories">
                         <button class="filter-btn active" data-category="all" aria-current="page">
                             <span class="btn-icon">📚</span> All Slang Words
@@ -54,7 +48,6 @@
                         <button class="filter-btn" data-category="core-phrases">
                             <span class="btn-icon">💬</span> Greetings & Phrases
                         </button>
-                        
                         <button class="filter-btn" data-category="food-drink">
                             <span class="btn-icon">🍺</span> Food & Drink
                         </button>
@@ -73,29 +66,25 @@
                         <button class="filter-btn" data-category="idioms">
                             <span class="btn-icon">🦘</span> Idioms & Metaphors
                         </button>
-                        
                         <button class="filter-btn" data-category="Multiple-Use-Same-Word">
                             <span class="btn-icon">🔄</span> Multiple Use Words
                         </button>
-                        
                     </nav>
-
-</div>
-     </div>
+                </div>
             </aside>
 
-            <!-- Main Stream Canvas Component Grid View Space Area -->
-       
+            <!-- THIS MAIN SECTION WAS MISSING AND IS NOW RESTORED -->
+            <main class="main-content-display">
+                <div id="slang-grid-root" class="slang-responsive-grid"></div>
+            </main>
             
         </div>
 
-        <!-- Global Application Footer Structure -->
         <footer class="app-footer">
             <p>&copy; 2026 The Great Aussie Slang Project by Macca. If you can call someone or be called by someone any of what you learn here and walk away with a smile, your on your way to being accepted.</p>
         </footer>
     </div>
 
-    <!-- Application Script Execution Pipelines -->
     <script src="dictionary-data.js"></script>
     <script src="data.js"></script>
 </body>
